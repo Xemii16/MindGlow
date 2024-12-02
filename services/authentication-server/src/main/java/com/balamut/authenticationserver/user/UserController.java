@@ -32,6 +32,11 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<UserResponse> getUser(@PathVariable Integer id) {
+        return ResponseEntity.ok(userService.getUser(id));
+    }
+
     @GetMapping
     public ResponseEntity<List<UserResponse>> getUsers(@RequestParam(defaultValue = "all") String role) {
         return ResponseEntity.ok(userService.getUsers(role));

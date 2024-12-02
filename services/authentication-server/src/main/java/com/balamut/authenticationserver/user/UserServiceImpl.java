@@ -1,6 +1,5 @@
 package com.balamut.authenticationserver.user;
 
-import com.balamut.authenticationserver.authentication.expection.BadCredentialsException;
 import com.balamut.authenticationserver.core.BadRequestException;
 import com.balamut.authenticationserver.jwt.JwtService;
 import com.balamut.authenticationserver.jwt.TokenType;
@@ -20,7 +19,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.security.Principal;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -105,6 +103,23 @@ public class UserServiceImpl implements UserService {
             throw new UserPermissionException("You are not allowed to delete users");
         }
         userRepository.deleteById(id);
+    }
+
+    @Override
+    public UserResponse getUser(Integer id) throws UserException {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (user.getRole() == Role.ADMIN) {
+            return userRepository.findById(id)
+                    .map(userResponseMapper::map)
+                    .orElseThrow(() -> new UserNotExistsException("User not found with id: " + id));
+        }
+        if (user.getRole() == Role.STUDENT) {
+            throw new UserPermissionException("You are not allowed to see users");
+        }
+        return userRepository.findById(id)
+                .filter(u -> u.getRole() != Role.ADMIN)
+                .map(userResponseMapper::map)
+                .orElseThrow(() -> new UserNotExistsException("User not found with id: " + id));
     }
 
     protected boolean matchesPassword(User user, String password) {
