@@ -4,6 +4,7 @@ import com.balamut.authenticationserver.jwt.TokenType;
 import com.balamut.authenticationserver.user.exception.UserException;
 import com.balamut.authenticationserver.user.request.RegisterRequest;
 import com.balamut.authenticationserver.user.response.RegisterResponse;
+import com.balamut.authenticationserver.user.response.UserResponse;
 
 public interface UserService {
 
@@ -13,4 +14,5 @@ public interface UserService {
 
     String generateToken(String email, TokenType type) throws UserException;
 
+    UserResponse getCurrentUser() throws UserException;
 }

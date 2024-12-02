@@ -1,6 +1,8 @@
 package com.balamut.authenticationserver.jwt;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;
+import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -30,5 +32,14 @@ public class JwtServiceImpl implements JwtService {
                 .notBefore(Date.from(Instant.now()))
                 .signWith(keyPair.getPrivate(), SignatureAlgorithm.RS256);
         return builder.compact();
+    }
+
+    @Override
+    public Claims getPayload(String token) {
+        return Jwts.parser()
+                .verifyWith(keyPair.getPublic())
+                .build()
+                .parseSignedClaims(token)
+                .getPayload();
     }
 }

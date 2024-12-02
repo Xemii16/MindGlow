@@ -7,12 +7,17 @@ import com.balamut.authenticationserver.user.exception.UserException;
 import com.balamut.authenticationserver.user.exception.UserNotExistsException;
 import com.balamut.authenticationserver.user.mapper.RegisterUserMapper;
 import com.balamut.authenticationserver.user.mapper.UserJwtMapper;
+import com.balamut.authenticationserver.user.mapper.UserResponseMapper;
 import com.balamut.authenticationserver.user.request.RegisterRequest;
 import com.balamut.authenticationserver.user.response.RegisterResponse;
+import com.balamut.authenticationserver.user.response.UserResponse;
 import io.jsonwebtoken.JwtBuilder;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.security.Principal;
 
 @Service
 @RequiredArgsConstructor
@@ -23,6 +28,7 @@ public class UserServiceImpl implements UserService {
     private final UserJwtMapper userJwtMapper;
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
+    private final UserResponseMapper userResponseMapper;
 
     @Override
     public RegisterResponse register(RegisterRequest request) throws UserException {
@@ -44,6 +50,12 @@ public class UserServiceImpl implements UserService {
     public String generateToken(String email, TokenType type) throws UserException {
         User user = findUser(email);
         return generateToken(user, type);
+    }
+
+    @Override
+    public UserResponse getCurrentUser() {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return userResponseMapper.map(user);
     }
 
     protected boolean matchesPassword(User user, String password) {
