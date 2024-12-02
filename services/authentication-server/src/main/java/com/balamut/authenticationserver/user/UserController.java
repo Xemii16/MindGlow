@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/v1/users")
 @RequiredArgsConstructor
@@ -19,8 +21,13 @@ public class UserController {
         return ResponseEntity.ok(userService.register(registerRequest));
     }
 
-    @GetMapping
+    @GetMapping("/me")
     public ResponseEntity<UserResponse> getCurrentUser() {
         return ResponseEntity.ok(userService.getCurrentUser());
+    }
+
+    @GetMapping
+    public ResponseEntity<List<UserResponse>> getUsers(@RequestParam(defaultValue = "all") String role) {
+        return ResponseEntity.ok(userService.getUsers(role));
     }
 }

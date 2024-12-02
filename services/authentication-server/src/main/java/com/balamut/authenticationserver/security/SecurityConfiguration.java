@@ -26,8 +26,10 @@ public class SecurityConfiguration {
                 .addFilterBefore(bearerAuthenticationTokenFilter, AnonymousAuthenticationFilter.class)
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/api/v1/users/register").anonymous()
+                        .requestMatchers(HttpMethod.GET, "/api/v1/users/me").authenticated()
                         .requestMatchers(HttpMethod.GET, "/api/v1/users").authenticated()
                         .requestMatchers(HttpMethod.POST, "/api/v1/authentication").anonymous()
+                        .anyRequest().authenticated()
                 );
         return http.build();
     }

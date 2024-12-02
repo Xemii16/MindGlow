@@ -1,10 +1,13 @@
 package com.balamut.authenticationserver.user;
 
+import com.balamut.authenticationserver.authentication.expection.BadCredentialsException;
+import com.balamut.authenticationserver.core.BadRequestException;
 import com.balamut.authenticationserver.jwt.JwtService;
 import com.balamut.authenticationserver.jwt.TokenType;
 import com.balamut.authenticationserver.user.exception.BadRegisterException;
 import com.balamut.authenticationserver.user.exception.UserException;
 import com.balamut.authenticationserver.user.exception.UserNotExistsException;
+import com.balamut.authenticationserver.user.exception.UserPermissionException;
 import com.balamut.authenticationserver.user.mapper.RegisterUserMapper;
 import com.balamut.authenticationserver.user.mapper.UserJwtMapper;
 import com.balamut.authenticationserver.user.mapper.UserResponseMapper;
@@ -18,6 +21,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.security.Principal;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Service
 @RequiredArgsConstructor
@@ -56,6 +62,44 @@ public class UserServiceImpl implements UserService {
     public UserResponse getCurrentUser() {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return userResponseMapper.map(user);
+    }
+
+    @Override
+    public List<UserResponse> getUsers(String role) throws UserException {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (role.equals("all")) {
+            if (user.getRole() != Role.ADMIN) {
+                throw new UserPermissionException("You are not allowed to see all users");
+            }
+            return StreamSupport.stream(userRepository.findAll().spliterator(), false)
+                    .filter(u -> !u.getId().equals(user.getId()))
+                    .map(userResponseMapper::map)
+                    .collect(Collectors.toList());
+        }
+        if (role.equals("teachers")) {
+            if (user.getRole() != Role.ADMIN) {
+                throw new UserPermissionException("You are not allowed to see teachers");
+            }
+            return userRepository.findAllByRole(Role.TEACHER).stream()
+                    .map(userResponseMapper::map)
+                    .collect(Collectors.toList());
+        }
+        if (role.equals("students")) {
+            if (user.getRole() == Role.STUDENT) {
+                throw new UserPermissionException("You are not allowed to see students");
+            }
+            return userRepository.findAllByRole(Role.STUDENT).stream()
+                    .map(userResponseMapper::map)
+                    .collect(Collectors.toList());
+        }
+        throw new BadRequestException("invalid role " + role);
+    }
+
+    private List<UserResponse> getUsersByRole(String role) {
+        return StreamSupport.stream(userRepository.findAll().spliterator(), false)
+                .filter(user -> user.getRole().name().equals(role))
+                .map(userResponseMapper::map)
+                .collect(Collectors.toList());
     }
 
     protected boolean matchesPassword(User user, String password) {
