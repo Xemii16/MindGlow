@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: web-bff
+  security:
+    oauth2:
+      client:
+        registration:
+          authorization-server:
+            client-id: oidc-client
+            client-secret: secret
+            authorization-grant-type: authorization_code
+            redirect-uri: "http://127.0.0.1:8080/login/oauth2/code/oidc-client"
+            scope: openid, profile
+        provider:
+          authorization-server:
+            authorization-uri: http://localhost:9000/oauth2/authorize
