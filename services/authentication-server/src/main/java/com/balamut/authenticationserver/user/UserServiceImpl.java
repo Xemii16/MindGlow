@@ -95,11 +95,16 @@ public class UserServiceImpl implements UserService {
         throw new BadRequestException("invalid role " + role);
     }
 
-    private List<UserResponse> getUsersByRole(String role) {
-        return StreamSupport.stream(userRepository.findAll().spliterator(), false)
-                .filter(user -> user.getRole().name().equals(role))
-                .map(userResponseMapper::map)
-                .collect(Collectors.toList());
+    @Override
+    public void deleteUser(Integer id) throws UserException {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (user.getId().equals(id)) {
+            throw new UserPermissionException("You are not allowed to delete yourself");
+        }
+        if (user.getRole() != Role.ADMIN) {
+            throw new UserPermissionException("You are not allowed to delete users");
+        }
+        userRepository.deleteById(id);
     }
 
     protected boolean matchesPassword(User user, String password) {

@@ -26,6 +26,12 @@ public class UserController {
         return ResponseEntity.ok(userService.getCurrentUser());
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteUser(@PathVariable Integer id) {
+        userService.deleteUser(id);
+        return ResponseEntity.noContent().build();
+    }
+
     @GetMapping
     public ResponseEntity<List<UserResponse>> getUsers(@RequestParam(defaultValue = "all") String role) {
         return ResponseEntity.ok(userService.getUsers(role));

@@ -19,4 +19,6 @@ public interface UserService {
     UserResponse getCurrentUser() throws UserException;
 
     List<UserResponse> getUsers(String role);
+
+    void deleteUser(Integer id) throws UserException;
 }
