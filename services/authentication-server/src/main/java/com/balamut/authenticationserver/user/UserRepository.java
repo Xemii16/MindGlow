@@ -9,4 +9,6 @@ public interface UserRepository extends CrudRepository<User, Integer> {
     Optional<User> findByEmail(String email);
 
     List<User> findAllByRole(Role role);
+
+    boolean existsByEmail(String email);
 }

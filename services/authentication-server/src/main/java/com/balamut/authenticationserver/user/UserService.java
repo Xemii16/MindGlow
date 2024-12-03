@@ -3,6 +3,7 @@ package com.balamut.authenticationserver.user;
 import com.balamut.authenticationserver.jwt.TokenType;
 import com.balamut.authenticationserver.user.exception.UserException;
 import com.balamut.authenticationserver.user.request.RegisterRequest;
+import com.balamut.authenticationserver.user.response.EmailResponse;
 import com.balamut.authenticationserver.user.response.RegisterResponse;
 import com.balamut.authenticationserver.user.response.UserResponse;
 
@@ -23,4 +24,6 @@ public interface UserService {
     void deleteUser(Integer id) throws UserException;
 
     UserResponse getUser(Integer id) throws UserException;
+
+    EmailResponse getEmailInformation(String email);
 }

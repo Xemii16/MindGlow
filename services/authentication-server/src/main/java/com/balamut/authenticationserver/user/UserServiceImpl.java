@@ -11,6 +11,7 @@ import com.balamut.authenticationserver.user.mapper.RegisterUserMapper;
 import com.balamut.authenticationserver.user.mapper.UserJwtMapper;
 import com.balamut.authenticationserver.user.mapper.UserResponseMapper;
 import com.balamut.authenticationserver.user.request.RegisterRequest;
+import com.balamut.authenticationserver.user.response.EmailResponse;
 import com.balamut.authenticationserver.user.response.RegisterResponse;
 import com.balamut.authenticationserver.user.response.UserResponse;
 import io.jsonwebtoken.JwtBuilder;
@@ -120,6 +121,14 @@ public class UserServiceImpl implements UserService {
                 .filter(u -> u.getRole() != Role.ADMIN)
                 .map(userResponseMapper::map)
                 .orElseThrow(() -> new UserNotExistsException("User not found with id: " + id));
+    }
+
+    @Override
+    public EmailResponse getEmailInformation(String email) {
+        return new EmailResponse(
+                email,
+                userRepository.existsByEmail(email)
+        );
     }
 
     protected boolean matchesPassword(User user, String password) {

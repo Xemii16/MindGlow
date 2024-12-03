@@ -28,6 +28,7 @@ public class SecurityConfiguration {
                         .requestMatchers("/api/v1/users/register").anonymous()
                         .requestMatchers(HttpMethod.GET, "/api/v1/users/me").authenticated()
                         .requestMatchers(HttpMethod.GET, "/api/v1/users").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/api/v1/users/email/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/v1/authentication").anonymous()
                         .anyRequest().authenticated()
                 );

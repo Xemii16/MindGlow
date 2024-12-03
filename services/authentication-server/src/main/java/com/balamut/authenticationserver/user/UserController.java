@@ -1,6 +1,7 @@
 package com.balamut.authenticationserver.user;
 
 import com.balamut.authenticationserver.user.request.RegisterRequest;
+import com.balamut.authenticationserver.user.response.EmailResponse;
 import com.balamut.authenticationserver.user.response.RegisterResponse;
 import com.balamut.authenticationserver.user.response.UserResponse;
 import lombok.RequiredArgsConstructor;
@@ -40,5 +41,10 @@ public class UserController {
     @GetMapping
     public ResponseEntity<List<UserResponse>> getUsers(@RequestParam(defaultValue = "all") String role) {
         return ResponseEntity.ok(userService.getUsers(role));
+    }
+
+    @GetMapping("/email/{email}")
+    public ResponseEntity<EmailResponse> getEmailInformation(@PathVariable String email) {
+        return ResponseEntity.ok(userService.getEmailInformation(email));
     }
 }
