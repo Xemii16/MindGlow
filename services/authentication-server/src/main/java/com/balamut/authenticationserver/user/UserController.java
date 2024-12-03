@@ -1,11 +1,13 @@
 package com.balamut.authenticationserver.user;
 
 import com.balamut.authenticationserver.user.request.RegisterRequest;
+import com.balamut.authenticationserver.user.request.UserRequest;
 import com.balamut.authenticationserver.user.response.EmailResponse;
 import com.balamut.authenticationserver.user.response.RegisterResponse;
 import com.balamut.authenticationserver.user.response.UserResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -46,5 +48,16 @@ public class UserController {
     @GetMapping("/email/{email}")
     public ResponseEntity<EmailResponse> getEmailInformation(@PathVariable String email) {
         return ResponseEntity.ok(userService.getEmailInformation(email));
+    }
+
+    @PutMapping("/me/password")
+    public ResponseEntity<Void> changePassword(@RequestParam String password, @RequestParam("old_password") String oldPassword) {
+        userService.changePassword(oldPassword, password);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> changeUser(@RequestBody UserRequest request, @PathVariable Integer id) {
+        return userService.changeUser(id ,request);
     }
 }

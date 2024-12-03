@@ -6,4 +6,6 @@ import com.balamut.authenticationserver.user.exception.UserException;
 public interface AuthenticationService {
 
     AuthenticationResponse authenticate(String email, String password) throws UserException;
+
+    AuthenticationResponse refresh();
 }

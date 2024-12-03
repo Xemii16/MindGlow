@@ -3,9 +3,11 @@ package com.balamut.authenticationserver.user;
 import com.balamut.authenticationserver.jwt.TokenType;
 import com.balamut.authenticationserver.user.exception.UserException;
 import com.balamut.authenticationserver.user.request.RegisterRequest;
+import com.balamut.authenticationserver.user.request.UserRequest;
 import com.balamut.authenticationserver.user.response.EmailResponse;
 import com.balamut.authenticationserver.user.response.RegisterResponse;
 import com.balamut.authenticationserver.user.response.UserResponse;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
@@ -26,4 +28,8 @@ public interface UserService {
     UserResponse getUser(Integer id) throws UserException;
 
     EmailResponse getEmailInformation(String email);
+
+    void changePassword(String oldPassword, String password);
+
+    ResponseEntity<Void> changeUser(Integer id, UserRequest request);
 }

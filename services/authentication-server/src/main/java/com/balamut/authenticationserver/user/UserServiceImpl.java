@@ -1,5 +1,6 @@
 package com.balamut.authenticationserver.user;
 
+import com.balamut.authenticationserver.authentication.expection.BadCredentialsException;
 import com.balamut.authenticationserver.core.BadRequestException;
 import com.balamut.authenticationserver.jwt.JwtService;
 import com.balamut.authenticationserver.jwt.TokenType;
@@ -10,12 +11,15 @@ import com.balamut.authenticationserver.user.exception.UserPermissionException;
 import com.balamut.authenticationserver.user.mapper.RegisterUserMapper;
 import com.balamut.authenticationserver.user.mapper.UserJwtMapper;
 import com.balamut.authenticationserver.user.mapper.UserResponseMapper;
+import com.balamut.authenticationserver.user.modifier.UserRequestModifier;
 import com.balamut.authenticationserver.user.request.RegisterRequest;
+import com.balamut.authenticationserver.user.request.UserRequest;
 import com.balamut.authenticationserver.user.response.EmailResponse;
 import com.balamut.authenticationserver.user.response.RegisterResponse;
 import com.balamut.authenticationserver.user.response.UserResponse;
 import io.jsonwebtoken.JwtBuilder;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -34,14 +38,16 @@ public class UserServiceImpl implements UserService {
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
     private final UserResponseMapper userResponseMapper;
+    private final UserRequestModifier userRequestModifier;
 
     @Override
     public RegisterResponse register(RegisterRequest request) throws UserException {
         if (userRepository.findByEmail(request.email()).isPresent()) {
             throw new BadRegisterException("Email already exists: " + request.email());
         }
-
-        User user = userRepository.save(registerUserMapper.toEntity(request));
+        User rawUser = registerUserMapper.toEntity(request);
+        rawUser.setPassword(passwordEncoder.encode(request.password()));
+        User user = userRepository.save(rawUser);
         return registerUserMapper.toResponse(user);
     }
 
@@ -129,6 +135,25 @@ public class UserServiceImpl implements UserService {
                 email,
                 userRepository.existsByEmail(email)
         );
+    }
+
+    @Override
+    public void changePassword(String oldPassword, String password) {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (!matchesPassword(user, oldPassword)) {
+            throw new BadCredentialsException();
+        }
+        user.setPassword(passwordEncoder.encode(password));
+        userRepository.save(user);
+    }
+
+    @Override
+    public ResponseEntity<Void> changeUser(Integer id, UserRequest request) {
+        User user = userRepository
+                .findById(id)
+                .orElseThrow(() -> new UserNotExistsException("User with id " + id + " not exists"));
+        userRepository.save(userRequestModifier.modify(user, request));
+        return null;
     }
 
     protected boolean matchesPassword(User user, String password) {
