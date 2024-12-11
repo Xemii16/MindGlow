@@ -14,7 +14,6 @@ spring:
     password: password
     url: jdbc:postgresql://postgres:5432/mindglow
     baseline-on-migrate: true
-    clean-disabled: false
 logging:
   level:
     web: debug
