@@ -16,6 +16,7 @@ public class SecurityConfiguration {
     @Bean
     public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
         http
+                .cors(ServerHttpSecurity.CorsSpec::disable)
                 .addFilterBefore(filter, SecurityWebFiltersOrder.ANONYMOUS_AUTHENTICATION)
                 .csrf(ServerHttpSecurity.CsrfSpec::disable)
                 .authorizeExchange(exchange -> exchange

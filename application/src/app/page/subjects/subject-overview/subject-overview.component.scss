@@ -1,0 +1,16 @@
+.title-container {
+  display: flex;
+  align-items: center;
+  align-content: center;
+  justify-content: center;
+  height: 100%;
+  margin-left: 12px;
+}
+
+.title {
+  margin: 0;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}

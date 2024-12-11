@@ -1,0 +1,10 @@
+<div class="pupils-container">
+  <nav mat-tab-nav-bar [tabPanel]="tabPanel" style="width: 100%">
+    <a mat-tab-link [active]="isCurrentRoute('/dashboard/pupils')" (click)="route()">Всі учні</a>
+    <a mat-tab-link [active]="isCurrentRoute('/dashboard/pupils/subjects')" routerLink="subjects">По предметах</a>
+    <a mat-tab-link [active]="isCurrentRoute('/dashboard/pupils/teachers')" routerLink="teachers" *ngIf="this.user?.role === 'ADMIN'">По вчителях</a>
+  </nav>
+  <mat-tab-nav-panel #tabPanel style="width: 100%; height: fit-content; min-height: 100%">
+    <router-outlet></router-outlet>
+  </mat-tab-nav-panel>
+</div>

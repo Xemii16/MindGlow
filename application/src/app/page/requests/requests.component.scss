@@ -1,0 +1,72 @@
+@use 'sass:map';
+@use '../../../../node_modules/@angular/material/index' as mat;
+
+.request-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  width: 100%;
+  height: fit-content;
+  min-height: 100%;
+  box-sizing: border-box;
+  padding: 20px;
+  border-top-left-radius: 16px;
+  overflow: hidden;
+}
+
+.request-box {
+  display: flex;
+  flex-direction: column;
+  row-gap: 10px;
+  min-width: 600px;
+  max-width: 700px;
+  width: 600px;
+}
+
+.action-box-checkbox {
+  display: flex;
+  column-gap: 8px;
+}
+
+.action-box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.title {
+  margin-bottom: 0;
+}
+
+@mixin color($theme) {
+  .request-container {
+    background-color: mat.get-theme-color($theme, surface);
+  }
+  .title-divider {
+    border-top-color: mat.get-theme-color($theme, on-surface-variant);
+  }
+}
+
+@mixin typography($theme) {
+  .title {
+    color: mat.get-theme-color($theme, on-surface);
+    font: mat.get-theme-typography($theme, headline-large, font);
+  }
+  .list-title {
+    color: mat.get-theme-color($theme, on-surface);
+    font: mat.get-theme-typography($theme, body-large, font);
+  }
+  .list-line {
+    color: mat.get-theme-color($theme, on-surface-variant);
+    font: mat.get-theme-typography($theme, body-medium, font);
+  }
+}
+
+@mixin theme($theme) {
+  @if mat.theme-has($theme, color) {
+    @include color($theme);
+  }
+  @if mat.theme-has($theme, typography) {
+    @include typography($theme);
+  }
+}

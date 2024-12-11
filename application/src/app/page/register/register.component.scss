@@ -1,0 +1,80 @@
+@use '@angular/material' as mat;
+
+.register-page {
+  display: flex;
+  justify-content: center;
+  justify-items: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  padding: 0;
+}
+
+.register-box {
+  max-width: 562px;
+  min-width: 420px;
+  width: 500px;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  row-gap: 50px;
+  align-content: flex-start;
+  padding: 50px 80px;
+  border-radius: 16px;
+
+  p {
+    margin: 0;
+  }
+
+  mat-form-field {
+    width: 100%;
+  }
+}
+
+.form-box {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  row-gap: 20px;
+
+  mat-form-field {
+  }
+}
+
+.same-information-box {
+  display: flex;
+  flex-direction: column;
+  row-gap: 10px;
+}
+
+.register-buttons {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+
+@mixin color($theme) {
+  .register-page {
+    background-color: mat.get-theme-color($theme, surface);
+  }
+  .register-box {
+    background-color: mat.get-theme-color($theme, surface-container-low);
+  }
+}
+
+@mixin typography($theme) {
+  .register-box p {
+    color: mat.get-theme-color($theme, on-surface);
+    font: mat.get-theme-typography($theme, display-medium, font);
+  }
+}
+
+@mixin theme($theme) {
+  @if mat.theme-has($theme, color) {
+    @include color($theme);
+  }
+  @if mat.theme-has($theme, typography) {
+    @include typography($theme);
+  }
+}

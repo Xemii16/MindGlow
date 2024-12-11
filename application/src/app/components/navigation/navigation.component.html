@@ -1,0 +1,57 @@
+<div class="wrapper">
+  <mat-toolbar color="primary" class="toolbar">
+    <button mat-icon-button aria-label="Іконка меню">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <img ngSrc="assets/mindglow_logo.svg" width= "1000" draggable="false" priority="5" height="400" alt="" class="logo">
+    <span class="spacer"></span>
+    <button mat-icon-button aria-label="Акаунт" [matMenuTriggerFor]="menu">
+      <mat-icon>person</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu" class="account-menu">
+      <button mat-menu-item disabled>Мій акаунт</button>
+      <button mat-menu-item (click)="openDialog()">Змінити пароль</button>
+      <button mat-menu-item (click)="logout()">Вийти</button>
+    </mat-menu>
+  </mat-toolbar>
+  <mat-sidenav-container autosize="true" class="sidenav-container">
+    <mat-sidenav [opened]="true" mode="side" class="sidenav">
+      <mat-nav-list class="navigation-list">
+        <a mat-list-item [activated]="isCurrentRoute('/dashboard')" routerLink="/dashboard">
+          Головна
+          <mat-icon matListItemIcon>home</mat-icon>
+        </a>
+        <a mat-list-item [activated]="isCurrentRoute('/dashboard/subjects/**')" routerLink="/dashboard/subjects">
+          Предмети
+          <mat-icon matListItemIcon>groups</mat-icon>
+        </a>
+        <a mat-list-item [activated]="isCurrentRoute('/dashboard/planning/**')" routerLink="/dashboard/planning">
+          Навчальний план
+          <mat-icon matListItemIcon>calendar_today</mat-icon>
+        </a>
+        <mat-divider *ngIf="this.availableNavigationList.requests && this.availableNavigationList.pupils && this.availableNavigationList.teachers"></mat-divider>
+        <a mat-list-item [activated]="isCurrentRoute('/dashboard/teachers/**')" routerLink="/dashboard/teachers" *ngIf="this.availableNavigationList.teachers">
+          Вчителі
+          <mat-icon matListItemIcon>person_apron</mat-icon>
+        </a>
+        <a mat-list-item [activated]="isCurrentRoute('/dashboard/pupils/**')" routerLink="/dashboard/pupils" *ngIf="this.availableNavigationList.pupils">
+          Учні
+          <mat-icon matListItemIcon>person</mat-icon>
+        </a>
+        <a mat-list-item [activated]="isCurrentRoute('/dashboard/requests/**')" routerLink="/dashboard/requests" *ngIf="this.availableNavigationList.requests">
+          Запити на реєстрацію
+          <mat-icon matListItemIcon>mail</mat-icon>
+        </a>
+        <mat-divider *ngIf="this.availableNavigationList.requests && this.availableNavigationList.pupils && this.availableNavigationList.teachers"></mat-divider>
+        <a mat-list-item [activated]="isCurrentRoute('/dashboard/settings')" routerLink="/dashboard/settings">
+          Налаштування
+          <mat-icon matListItemIcon>settings</mat-icon>
+        </a>
+      </mat-nav-list>
+    </mat-sidenav>
+    <mat-sidenav-content class="sidenav-content">
+      <router-outlet></router-outlet>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+
+</div>

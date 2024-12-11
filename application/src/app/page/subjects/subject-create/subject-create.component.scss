@@ -1,0 +1,9 @@
+.subject-create-field {
+  margin: 5px;
+  display: flex;
+  flex-direction: column;
+  row-gap: 7px;
+  mat-form-field {
+    min-width: 300px;
+  }
+}

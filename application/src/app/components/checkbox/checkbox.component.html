@@ -1,0 +1,24 @@
+<div *ngIf="isFull" class="checkbox-container">
+    <div class="container" [ngClass]="{checked: isChecked}">
+        <input type="checkbox" class="checkbox" [ngModel]="isChecked" (change)="setChecked($event)">
+        <app-icon
+                iconName="Check"
+                [size]=IconSize.SMALL
+                class="icon"
+                [color]="getIconColor()">
+        </app-icon>
+    </div>
+    <label class="small" *ngIf="showText">{{ text }}</label>
+</div>
+<div *ngIf="!isFull" class="checkbox-container">
+    <div class="container-notfull" [ngClass]="{checked: isChecked}">
+        <input type="checkbox" class="checkbox" [ngModel]="isChecked" (change)="setChecked($event); setFull()">
+        <app-icon
+                iconName="CheckBoxRectangle"
+                [size]=IconSize.SMALL
+                class="icon"
+                [color]="getIconColor()">
+        </app-icon>
+    </div>
+    <label class="small" *ngIf="showText">{{ text }}</label>
+</div>

@@ -1,0 +1,70 @@
+@use 'sass:map';
+@use '../../../../node_modules/@angular/material/index' as mat;
+
+.subjects-container {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: 100%;
+  height: fit-content;
+  min-height: 100%;
+  box-sizing: border-box;
+  padding: 20px 30px;
+  border-top-left-radius: 16px;
+  flex-direction: column;
+}
+
+.nothing-text {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+}
+
+.subject-card {
+  overflow-wrap: break-word;
+  max-width: 300px;
+}
+
+.subjects-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.card-subjects-container {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  width: 100%;
+  gap: 20px;
+  margin-top: 30px;
+}
+
+@mixin color($theme) {
+  .subjects-container {
+    background-color: mat.get-theme-color($theme, surface);
+  }
+}
+
+@mixin typography($theme) {
+  .title {
+    color: mat.get-theme-color($theme, on-surface);
+  }
+  .nothing-text h6 {
+    color: mat.get-theme-color($theme, on-surface-variant);
+  }
+}
+
+@mixin theme($theme) {
+  @if mat.theme-has($theme, color) {
+    @include color($theme);
+  }
+  @if mat.theme-has($theme, typography) {
+    @include typography($theme);
+  }
+}
+

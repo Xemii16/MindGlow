@@ -1,0 +1,42 @@
+<div class="subject-pupils-container">
+  <div class="subject-pupils-all-box">
+    <h4 style="margin: 0">Учні</h4>
+    <mat-divider class="title-divider" style="width: 100%;"></mat-divider>
+    <div class="subject-all-action-box">
+      <mat-checkbox disabled></mat-checkbox>
+      <button mat-stroked-button disabled>
+        Дії
+        <mat-icon iconPositionEnd>arrow_drop_down</mat-icon>
+      </button>
+      <span class="spacer"></span>
+      <button mat-icon-button (click)="openDialog()" *ngIf="this.user?.role !== 'STUDENT'">
+        <mat-icon>person_add</mat-icon>
+      </button>
+    </div>
+    <mat-list>
+      <div *ngFor="let pupil of this.pupils; index as i">
+        <mat-list-item>
+          <p matListItemTitle style="margin: 0" class="list-title">{{ pupil.lastname + " " + pupil.firstname }}</p>
+          <p matListItemLine style="margin: 0" class="list-line">{{ pupil.email }}</p>
+          <div matListItemMeta>
+            <button mat-icon-button [matMenuTriggerFor]="menu" *ngIf="this.user?.role !== 'STUDENT'">
+              <mat-icon>more_vert</mat-icon>
+            </button>
+          </div>
+        </mat-list-item>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item disabled>
+            <mat-icon>mail</mat-icon>
+            <span>Написати лист учню</span>
+          </button>
+          <button mat-menu-item (click)="deletePupilFromSubject(this.pupil.id)">
+            <mat-icon>person_remove</mat-icon>
+            <span>Вилучити з предмету</span>
+          </button>
+        </mat-menu>
+        <mat-divider *ngIf="i + 1 !== pupils.length"></mat-divider>
+      </div>
+    </mat-list>
+  </div>
+</div>
+

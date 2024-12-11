@@ -1,0 +1,54 @@
+@use 'sass:map';
+@use '../../../../../node_modules/@angular/material/index' as mat;
+
+.register-pending-page {
+  display: flex;
+  justify-content: center;
+  justify-items: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  padding: 0;
+}
+
+.register-pending-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  align-content: flex-start;
+  padding: 50px 80px;
+  height: auto;
+  width: 100%;
+  max-width: 500px;
+  min-width: 300px;
+  border-radius: 16px;
+}
+
+@mixin color($theme) {
+  .register-pending-box {
+    background-color: mat.get-theme-color($theme, surface-container-low);
+  }
+  .register-pending-page {
+    background-color: mat.get-theme-color($theme, surface);
+  }
+}
+
+@mixin typography($theme) {
+  .title {
+    color: mat.get-theme-color($theme, on-surface);
+    font: mat.get-theme-typography($theme, display-medium, font);
+  }
+  .text {
+    color: mat.get-theme-color($theme, on-surface);
+    font: mat.get-theme-typography($theme, body-large, font);
+  }
+}
+
+@mixin theme($theme) {
+  @if mat.theme-has($theme, color) {
+    @include color($theme);
+  }
+  @if mat.theme-has($theme, typography) {
+    @include typography($theme);
+  }
+}

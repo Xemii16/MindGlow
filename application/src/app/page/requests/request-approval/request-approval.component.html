@@ -1,0 +1,52 @@
+<form class="request-approval-container" [formGroup]="request" (submit)="onSubmit()">
+  <mat-toolbar color="primary">
+    <button mat-icon-button aria-label="Повернутися назад" (click)="returnBackPage()" type="button">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <div class="title-container">
+      <p class="title">{{ this.user?.lastname + " " + this.user?.firstname + " (" + this.user?.email + ")" }}</p>
+    </div>
+    <span class="spacer"></span>
+    <button mat-icon-button aria-label="Акаунт" style="margin-right: 12px" color="primary" type="button" matTooltip="Видалити акаунт" (click)="openDialog()">
+      <mat-icon>close</mat-icon>
+    </button>
+    <button mat-flat-button type="submit" matTooltip="Надати користувачу доступ до платформи">
+      Схвалити запит
+      <mat-icon>done</mat-icon>
+    </button>
+  </mat-toolbar>
+  <div style="box-sizing: border-box; min-height: 100%; width: 100%; padding: 10px">
+    <div class="request-approval-box">
+      <mat-form-field subscriptSizing="dynamic" hideRequiredMarker="true">
+        <mat-label>Електронна пошта</mat-label>
+        <input type="text" matInput [value]="this.user?.email" disabled>
+      </mat-form-field>
+      <mat-form-field subscriptSizing="dynamic" hideRequiredMarker="true">
+        <mat-label>Ім'я</mat-label>
+        <input type="text" matInput formControlName="firstName">
+        @if (request.get("firstName")?.invalid) {
+          <mat-error>{{ errorHandlers.firstName.getErrorMessage() }}</mat-error>
+        }
+      </mat-form-field>
+      <mat-form-field subscriptSizing="dynamic" hideRequiredMarker="true">
+        <mat-label>Прізвище</mat-label>
+        <input type="text" matInput formControlName="lastName">
+        @if (request.get("lastName")?.invalid) {
+          <mat-error>{{ errorHandlers.lastName.getErrorMessage() }}</mat-error>
+        }
+      </mat-form-field>
+      <mat-form-field hideRequiredMarker="true" subscriptSizing="dynamic">
+        <mat-label>Роль</mat-label>
+        <mat-autocomplete #auto="matAutocomplete">
+          @for (option of options; track option) {
+            <mat-option [value]="option">{{ option }}</mat-option>
+          }
+        </mat-autocomplete>
+        <input type="text" matInput formControlName="role" [matAutocomplete]="auto">
+        @if (request.get('role')?.invalid) {
+          <mat-error>Може бути лише <strong>Вчитель</strong> або <strong>Студент</strong></mat-error>
+        }
+      </mat-form-field>
+    </div>
+  </div>
+</form>

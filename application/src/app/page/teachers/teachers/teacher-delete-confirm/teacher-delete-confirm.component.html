@@ -1,0 +1,8 @@
+<h2 mat-dialog-title>Вилучити вчителя <strong>{{this.user?.lastname +  " " + this.user?.firstname}}</strong></h2>
+<mat-dialog-content>
+  <p>Акаунт вчителя буде вилучений і він не зможе отримати доступ до платформи</p>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Скасувати</button>
+  <button mat-button (click)="deleteUser()" cdkFocusInitial>Вилучити</button>
+</mat-dialog-actions>
