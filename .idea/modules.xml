@@ -4,7 +4,8 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/mindglow.iml" filepath="$PROJECT_DIR$/.idea/modules/mindglow.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/mindglow-authentication-server.main.iml" filepath="$PROJECT_DIR$/.idea/modules/mindglow-authentication-server.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/web-bff.main.iml" filepath="$PROJECT_DIR$/.idea/modules/web-bff.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/mindglow-subject-server.main.iml" filepath="$PROJECT_DIR$/.idea/modules/mindglow-subject-server.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/mindglow-web-bff.main.iml" filepath="$PROJECT_DIR$/.idea/modules/mindglow-web-bff.main.iml" />
     </modules>
   </component>
 </project>

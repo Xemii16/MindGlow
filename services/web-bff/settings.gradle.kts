@@ -1,1 +1,1 @@
-rootProject.name = "web-bff"
+rootProject.name = "mindglow-web-bff"

@@ -7,7 +7,6 @@ import com.balamut.authenticationserver.user.response.RegisterResponse;
 import com.balamut.authenticationserver.user.response.UserResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -58,6 +57,6 @@ public class UserController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Void> changeUser(@RequestBody UserRequest request, @PathVariable Integer id) {
-        return userService.changeUser(id ,request);
+        return userService.changeUser(id, request);
     }
 }
