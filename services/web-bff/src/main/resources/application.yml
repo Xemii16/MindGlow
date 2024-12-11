@@ -1,0 +1,26 @@
+spring:
+  application:
+    name: web-bff
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      routes:
+        - id: authentication-server-users
+          uri: lb:http://mindglow-authentication-server-service:8080
+          predicates:
+            - Path=/api/v1/users/**
+        - id: subject-server
+          uri: lb:http://mindglow-subject-server-service:8081
+          predicates:
+            - Path=/api/v1/subjects/**
+        - id: authentication-server-auth
+          uri: lb:http://mindglow-authentication-server-service:8080
+          predicates:
+            - Path=/api/v1/authentication/**
+server:
+  port: 8082
+logging:
+  level:
+    web: debug

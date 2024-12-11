@@ -1,0 +1,28 @@
+spring:
+  application:
+    name: authorization-server
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://postgres-service:5432/mindglow
+    username: postgres
+    password: 12345678
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    database: postgresql
+server:
+  port: 8080
+logging:
+  level:
+    org.springframework.security: DEBUG
+token:
+  expiration:
+    access: 300
+    refresh: 432000
+  secret: secret
+  algorithm: RSA
