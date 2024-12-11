@@ -1,0 +1,40 @@
+<form [formGroup]="subjectCreateGroup" (submit)="onSubmit()">
+  <h2 mat-dialog-title>Створити предмет</h2>
+  <mat-dialog-content>
+    <div class="subject-create-field">
+      <mat-form-field appearance="outline" hideRequiredMarker="true">
+        <mat-label>Назва</mat-label>
+        <input matInput type="text" required formControlName="name">
+        @if (subjectCreateGroup.get("name")?.invalid) {
+          <mat-error>{{createSubjectHandlers.name.getErrorMessage()}}</mat-error>
+        }
+      </mat-form-field>
+      <mat-form-field appearance="outline" hideRequiredMarker="true">
+        <mat-label>Опис</mat-label>
+        <textarea matInput type="text" required formControlName="description"></textarea>
+        @if (subjectCreateGroup.get("description")?.invalid) {
+          <mat-error>{{createSubjectHandlers.description.getErrorMessage()}}</mat-error>
+        }
+      </mat-form-field>
+      <div *ngIf="!disabled">
+        <mat-form-field appearance="outline" hideRequiredMarker="true">
+          <mat-label>Вчитель</mat-label>
+          <input matInput type="text" required [matAutocomplete]="auto" formControlName="teacher" [disabled]="disabled">
+          @if (subjectCreateGroup.get("teacher")?.invalid) {
+            <mat-error>{{createSubjectHandlers.teacher.getErrorMessage()}}</mat-error>
+          }
+        </mat-form-field>
+        <mat-autocomplete #auto="matAutocomplete">
+          @for (teacher of this.teachers; track teacher) {
+            <mat-option [value]="teacher.lastname + ' ' + teacher.firstname">{{teacher.lastname + " " + teacher.firstname}}</mat-option>
+          }
+        </mat-autocomplete>
+      </div>
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button mat-button (click)="onNoClick()" type="button">Скасувати</button>
+    <button mat-button cdkFocusInitial type="submit">Створити</button>
+  </mat-dialog-actions>
+
+</form>

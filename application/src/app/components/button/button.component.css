@@ -1,0 +1,80 @@
+.ButtonFilled{
+    background: var(--accent);
+    border-radius: 112px;
+    border: none;
+    color: white;
+    transition: all 130ms ease;
+}
+
+.ButtonFilled:hover{
+    background: var(--accent-60);
+    transition: all 130ms ease-in-out;
+}
+
+.ButtonFilled:active{
+    background: var(--accent);
+    transition: all 100ms ease-in-out;
+}
+
+
+
+.ButtonOutLine{
+    background: white;
+    border-color: var(--accent);
+    border-radius: 112px;
+    border:solid 1.5px var(--accent);
+    color: var(--accent);
+    transition: all 100ms ease;
+}
+
+.ButtonOutLine:hover{
+    color: var(--accent-60);
+    transition: all 130ms ease-in-out;
+}
+
+.ButtonOutLine:active{
+    color: var(--accent);
+    transition: all 130ms ease-in-out;
+}
+
+
+
+.ButtonText {
+    background: none;
+    color: var(--neutral-40);
+    border: none;
+    transition: all 100ms ease;
+}
+
+.ButtonText:hover{
+    color: var(--neutral-30);
+    transition: all 130ms ease-in-out;
+}
+
+.ButtonText:active{
+    color: var(--neutral-40);
+    transition: all 100ms ease-in-out;
+}
+
+
+
+.BigButton{
+    height: 48px;
+    min-width: 99px;
+    padding: 8px 16px;
+    text-align: center;
+}
+
+.LargeButton{
+    min-width: 99px;
+    height: 40px;
+    padding: 8px 16px;
+    text-align: center;
+}
+
+.SmallButton{
+    min-width: 99px;
+    height: 36px;
+    padding: 12px 12px;
+    text-align: center;
+}

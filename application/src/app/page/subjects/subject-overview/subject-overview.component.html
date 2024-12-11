@@ -1,0 +1,22 @@
+<div class="pupils-container">
+  <mat-toolbar color="primary">
+    <button mat-icon-button matTooltip="Повернутися назад" type="button" (click)="navigateToSubjects()">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <div class="title-container">
+      <p class="title">Алгебра</p>
+    </div>
+    <span class="spacer"></span>
+    <button mat-icon-button disabled>
+      <mat-icon>more_vert</mat-icon>
+    </button>
+  </mat-toolbar>
+  <mat-divider style="width: 100%"></mat-divider>
+  <nav mat-tab-nav-bar [tabPanel]="tabPanel" style="width: 100%">
+    <a mat-tab-link [active]="isCurrentRoute('/dashboard/subjects/' + getSubjectId())" (click)="route()">Огляд</a>
+    <a mat-tab-link [active]="isCurrentRoute('/dashboard/subjects/' + getSubjectId() + '/pupils')" routerLink="pupils">Учні</a>
+  </nav>
+  <mat-tab-nav-panel #tabPanel style="flex: 1; width:100%;min-height: 100%">
+    <router-outlet></router-outlet>
+  </mat-tab-nav-panel>
+</div>

@@ -1,0 +1,23 @@
+<div class="subject-overview-main-container">
+  <div class="first-subject-container">
+    <div class="code-container">
+      <div class="title-code-container">
+        <p><strong>Код курсу</strong></p>
+        <button mat-icon-button [cdkCopyToClipboard]="subject?.code ?? ''" matTooltip="Скопіювати код">
+          <mat-icon>content_copy</mat-icon>
+        </button>
+      </div>
+      <div class="code">
+        <p>{{ subject?.code }}</p>
+      </div>
+    </div>
+  </div>
+  <div class="second-subject-container">
+    <div class="send-message-container">
+      <p class="send-message-placeholder">Напишіть своє повідомлення</p>
+      <button mat-icon-button>
+        <mat-icon>more_vert</mat-icon>
+      </button>
+    </div>
+  </div>
+</div>

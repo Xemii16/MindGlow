@@ -1,0 +1,40 @@
+.onBat{
+  background-color: var(--accent-95);
+  border: none ;
+
+}
+.ofBat{
+  background-color: var(--accent-100);
+  border: none;
+}
+.norm img{
+  margin-right: 16px;
+}
+.norm img#second{
+  margin-left: 16px;
+
+ }
+.norm span{
+  min-width: 100px;
+  margin: auto;
+}
+.norm{
+  width: 200px;
+  height: 48px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.small{
+  width: 48px;
+  height: 48px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.small img{
+  margin: 0 auto;
+}
