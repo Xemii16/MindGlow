@@ -1,7 +1,7 @@
 package com.balamut.authenticationserver.user.exception;
 
-public class UserNotExistsException extends UserException {
-    public UserNotExistsException(String email) {
+public class UserNotFoundException extends UserException {
+    public UserNotFoundException(String email) {
         super("user with email " + email + " does not exist");
     }
 }

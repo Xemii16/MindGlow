@@ -6,7 +6,7 @@ import com.balamut.authenticationserver.jwt.JwtService;
 import com.balamut.authenticationserver.jwt.TokenType;
 import com.balamut.authenticationserver.user.exception.BadRegisterException;
 import com.balamut.authenticationserver.user.exception.UserException;
-import com.balamut.authenticationserver.user.exception.UserNotExistsException;
+import com.balamut.authenticationserver.user.exception.UserNotFoundException;
 import com.balamut.authenticationserver.user.exception.UserPermissionException;
 import com.balamut.authenticationserver.user.mapper.RegisterUserMapper;
 import com.balamut.authenticationserver.user.mapper.UserJwtMapper;
@@ -72,30 +72,32 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserResponse> getUsers(String role) throws UserException {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (role.equals("all")) {
-            if (user.getRole() != Role.ADMIN) {
-                throw new UserPermissionException("You are not allowed to see all users");
+        switch (role) {
+            case "all" -> {
+                if (user.getRole() != Role.ADMIN) {
+                    throw new UserPermissionException("You are not allowed to see all users");
+                }
+                return StreamSupport.stream(userRepository.findAll().spliterator(), false)
+                        .filter(u -> !u.getId().equals(user.getId()))
+                        .map(userResponseMapper::map)
+                        .collect(Collectors.toList());
             }
-            return StreamSupport.stream(userRepository.findAll().spliterator(), false)
-                    .filter(u -> !u.getId().equals(user.getId()))
-                    .map(userResponseMapper::map)
-                    .collect(Collectors.toList());
-        }
-        if (role.equals("teachers")) {
-            if (user.getRole() != Role.ADMIN) {
-                throw new UserPermissionException("You are not allowed to see teachers");
+            case "teachers" -> {
+                if (user.getRole() != Role.ADMIN) {
+                    throw new UserPermissionException("You are not allowed to see teachers");
+                }
+                return userRepository.findAllByRole(Role.TEACHER).stream()
+                        .map(userResponseMapper::map)
+                        .collect(Collectors.toList());
             }
-            return userRepository.findAllByRole(Role.TEACHER).stream()
-                    .map(userResponseMapper::map)
-                    .collect(Collectors.toList());
-        }
-        if (role.equals("students")) {
-            if (user.getRole() == Role.STUDENT) {
-                throw new UserPermissionException("You are not allowed to see students");
+            case "students" -> {
+                if (user.getRole() == Role.STUDENT) {
+                    throw new UserPermissionException("You are not allowed to see students");
+                }
+                return userRepository.findAllByRole(Role.STUDENT).stream()
+                        .map(userResponseMapper::map)
+                        .collect(Collectors.toList());
             }
-            return userRepository.findAllByRole(Role.STUDENT).stream()
-                    .map(userResponseMapper::map)
-                    .collect(Collectors.toList());
         }
         throw new BadRequestException("invalid role " + role);
     }
@@ -118,7 +120,7 @@ public class UserServiceImpl implements UserService {
         if (user.getRole() == Role.ADMIN) {
             return userRepository.findById(id)
                     .map(userResponseMapper::map)
-                    .orElseThrow(() -> new UserNotExistsException("User not found with id: " + id));
+                    .orElseThrow(() -> new UserNotFoundException("User not found with id: " + id));
         }
         if (user.getRole() == Role.STUDENT) {
             throw new UserPermissionException("You are not allowed to see users");
@@ -126,7 +128,7 @@ public class UserServiceImpl implements UserService {
         return userRepository.findById(id)
                 .filter(u -> u.getRole() != Role.ADMIN)
                 .map(userResponseMapper::map)
-                .orElseThrow(() -> new UserNotExistsException("User not found with id: " + id));
+                .orElseThrow(() -> new UserNotFoundException("User not found with id: " + id));
     }
 
     @Override
@@ -151,7 +153,7 @@ public class UserServiceImpl implements UserService {
     public ResponseEntity<Void> changeUser(Integer id, UserRequest request) {
         User user = userRepository
                 .findById(id)
-                .orElseThrow(() -> new UserNotExistsException("User with id " + id + " not exists"));
+                .orElseThrow(() -> new UserNotFoundException("User with id " + id + " not exists"));
         userRepository.save(userRequestModifier.modify(user, request));
         return null;
     }
@@ -168,6 +170,6 @@ public class UserServiceImpl implements UserService {
     private User findUser(String email) throws UserException {
         return userRepository
                 .findByEmail(email)
-                .orElseThrow(() -> new UserNotExistsException(email));
+                .orElseThrow(() -> new UserNotFoundException(email));
     }
 }
