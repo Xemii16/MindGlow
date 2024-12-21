@@ -7,11 +7,8 @@
   <component name="ExternalStorageConfigurationManager" enabled="true" />
   <component name="FrameworkDetectionExcludesConfiguration">
     <file type="web" url="file://$PROJECT_DIR$/services/authentication-server" />
-    <file type="web" url="file://$PROJECT_DIR$/services/authorization-server" />
-    <file type="web" url="file://$PROJECT_DIR$/services/subject-server" />
-    <file type="web" url="file://$PROJECT_DIR$/services/web-bff" />
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_23" project-jdk-name="openjdk-21" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager">
     <output url="file://$PROJECT_DIR$/out" />
   </component>
 </project>

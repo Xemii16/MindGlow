@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mindglow-authentication-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mindglow-authentication-server
+  template:
+    metadata:
+      labels:
+        app: mindglow-authentication-server
+    spec:
+      containers:
+        - name: authentication-server
+          image: xemii16/mindglow-authentication-server:0.0.7-TEST
+          ports:
+            - containerPort: 8080
+          env:
+            - name: SPRING_DATASOURCE_URL
+              value: jdbc:postgresql://postgres:5432/mindglow
+            - name: SPRING_DATASOURCE_USERNAME
+              value: user
+            - name: SPRING_DATASOURCE_PASSWORD
+              value: password
