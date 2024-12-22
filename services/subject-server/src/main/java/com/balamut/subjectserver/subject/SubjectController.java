@@ -4,6 +4,10 @@ import com.balamut.subjectserver.subject.request.CreateCourseRequest;
 import com.balamut.subjectserver.subject.response.SubjectDeletePreparer;
 import com.balamut.subjectserver.subject.response.SubjectResponse;
 import com.balamut.subjectserver.subject.response.SubjectResponsePreparer;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -24,12 +28,22 @@ public class SubjectController {
 
     @PostMapping
     @PreAuthorize("hasAnyRole('ADMIN', 'TEACHER')")
+    @Operation(summary = "Create a new course")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Course created successfully"),
+            @ApiResponse(responseCode = "403", description = "No permission (only for teachers and admins)", content = {@Content})
+    })
     public Mono<ResponseEntity<SubjectResponse>> create(@RequestBody CreateCourseRequest request) {
         return subjectResponsePreparer
                 .prepare(subjectService.createCourse(request));
     }
 
     @GetMapping()
+    @Operation(summary = "Get all subjects")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Subjects retrieved successfully"),
+            @ApiResponse(responseCode = "403", description = "Unauthenticated", content = {@Content})
+    })
     public Mono<ResponseEntity<List<SubjectResponse>>> getSubjects() {
         return listSubjectResponsePreparer
                 .prepare(subjectService.getAllSubjects());
@@ -37,6 +51,11 @@ public class SubjectController {
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAnyRole('ADMIN', 'TEACHER')")
+    @Operation(summary = "Delete a course")
+    @ApiResponses({
+            @ApiResponse(responseCode = "204", description = "Course deleted successfully"),
+            @ApiResponse(responseCode = "403", description = "Unauthenticated", content = {@Content})
+    })
     public Mono<ResponseEntity<Void>> delete(@PathVariable Integer id) {
         return subjectDeletePreparer.prepare(subjectService.deleteSubject(id));
     }
