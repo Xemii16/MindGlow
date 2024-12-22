@@ -51,7 +51,7 @@ tasks.withType<Test> {
 tasks.named<BootBuildImage>("bootBuildImage") {
     imageName.set("docker.io/xemii16/${project.name}:${project.version}")
     createdDate.set("now")
-    /*publish.set(true)*/
+    publish.set(true)
     docker {
         publishRegistry {
             username.set(System.getenv("DOCKER_USERNAME"))

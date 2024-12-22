@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mindglow-subject-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mindglow-subject-server
+  template:
+    metadata:
+      labels:
+        app: mindglow-subject-server
+    spec:
+      containers:
+        - name: subject-server
+          image: xemii16/mindglow-subject-server:0.1.4-TEST
+          ports:
+            - containerPort: 8081

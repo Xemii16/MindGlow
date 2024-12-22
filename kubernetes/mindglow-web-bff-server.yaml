@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mindglow-web-bff-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mindglow-web-bff-server
+  template:
+    metadata:
+      labels:
+        app: mindglow-web-bff-server
+    spec:
+      containers:
+        - name: authentication-server
+          image: xemii16/mindglow-web-bff:0.0.7-TEST
+          ports:
+            - containerPort: 8082
