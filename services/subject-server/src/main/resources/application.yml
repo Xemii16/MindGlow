@@ -6,13 +6,13 @@ spring:
       loadbalancer:
         mode: pod
   r2dbc:
-    url: r2dbc:postgresql://postgres:5432/mindglow
-    username: user
-    password: password
+    url: r2dbc:postgresql://localhost:5432/mindglow
+    username: postgres
+    password: 12345678
   flyway:
-    user: user
-    password: password
-    url: jdbc:postgresql://postgres:5432/mindglow
+    user: postgres
+    password: 12345678
+    url: jdbc:postgresql://localhost:5432/mindglow
     baseline-on-migrate: true
 logging:
   level:
@@ -23,3 +23,8 @@ server:
 mindglow:
   subject-server-service:
     url: http://mindglow-subject-server:8081
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html

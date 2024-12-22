@@ -20,6 +20,7 @@ public class SecurityConfiguration {
                 .addFilterBefore(filter, SecurityWebFiltersOrder.ANONYMOUS_AUTHENTICATION)
                 .csrf(ServerHttpSecurity.CsrfSpec::disable)
                 .authorizeExchange(exchange -> exchange
+                        .pathMatchers("/v3/api-docs/**", "/swagger-ui.html", "/webjars/swagger-ui/**").permitAll()
                         .anyExchange().authenticated()
                 );
         return http.build();
