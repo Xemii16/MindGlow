@@ -17,10 +17,7 @@ import {
 } from "@angular/forms";
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 import {merge, take} from "rxjs";
-import {AuthenticationService} from "../../service/authentication/authentication.service";
-import {ErrorStateMatcher} from "@angular/material/core";
 import {ErrorMessageHandler} from "../../utility/error-message.handler";
-import {FormService} from "../../service/form/form.service";
 
 @Component({
     selector: 'app-login',
@@ -58,7 +55,6 @@ export class LoginComponent {
     hidePassword: boolean = true;
 
     constructor(
-        private formService: FormService,
         private router: Router) {
         const {email, password, rememberMe}= this.loginForm.controls;
         merge(email.statusChanges, email.valueChanges, email.updateOn)
@@ -80,11 +76,11 @@ export class LoginComponent {
             return;
         }
         const {email, password, rememberMe}= this.loginForm.controls;
-        this.formService.authenticate(email.value, password.value, rememberMe.value).then((isAuthenticated: boolean) => {
+        /*this.formService.authenticate(email.value, password.value, rememberMe.value).then((isAuthenticated: boolean) => {
             if (!isAuthenticated) {
                 this.setInputErrors();
             }
-        });
+        });*/
     }
 
     setInputErrors(): void {

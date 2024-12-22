@@ -9,12 +9,8 @@ import {MatList, MatListItem, MatListItemMeta, MatListItemTitle} from "@angular/
 import {MatMenu, MatMenuItem} from "@angular/material/menu";
 import {NgForOf, NgIf} from "@angular/common";
 import {FormControl, ReactiveFormsModule} from "@angular/forms";
-import {UserResponse} from "../../../service/user/response/user.response";
-import {UserService} from "../../../service/user/user.service";
 import {MatDialog} from "@angular/material/dialog";
 import {PupilDeleteConfirmComponent} from "../pupils-all/pupil-delete-confirm/pupil-delete-confirm.component";
-import {SubjectService} from "../../../service/subject/subject.service";
-import {SubjectResponse} from "../../../service/subject/subject.response";
 
 @Component({
   selector: 'app-pupils-subjects',
@@ -43,26 +39,22 @@ import {SubjectResponse} from "../../../service/subject/subject.response";
   styleUrl: './pupils-subjects.component.scss'
 })
 export class PupilsSubjectsComponent {
-  user?: UserResponse;
-  subjects: SubjectResponse[] = [];
   subjectsStudents: SubjectStudents[] = [];
 
   constructor(
-    private userService: UserService,
-    private subjectService: SubjectService
   ) {
   }
 
   ngOnInit(): void {
     this.getStudents();
-    this.userService.getUserByToken().then(user => {
+    /*this.userService.getUserByToken().then(user => {
       if (user == null) return;
       this.user = user;
-    });
+    });*/
   }
 
   private getStudents() {
-    this.subjectService.getSubjects().then(subjects => {
+    /*this.subjectService.getSubjects().then(subjects => {
       if (subjects == null) {
         return;
       }
@@ -75,11 +67,11 @@ export class PupilsSubjectsComponent {
           this.subjectsStudents.push({subject, students});
         });
       });
-    });
+    });*/
   }
 }
 
 interface SubjectStudents {
-  subject: SubjectResponse;
-  students: UserResponse[];
+/*  subject: SubjectResponse;
+  students: UserResponse[];*/
 }
