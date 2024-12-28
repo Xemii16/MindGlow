@@ -8,7 +8,7 @@ plugins {
 val springCloudVersion by extra("2024.0.0")
 
 group = "com.balamut"
-version = "0.0.7-TEST"
+version = "0.0.23-TEST"
 
 java {
     toolchain {
@@ -30,6 +30,8 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-webflux")
     implementation("org.springframework.cloud:spring-cloud-starter-gateway")
     implementation("org.springframework.cloud:spring-cloud-starter-kubernetes-client-loadbalancer")
+    implementation("org.springframework.boot:spring-boot-starter-data-mongodb-reactive")
+    implementation("org.springframework.session:spring-session-data-mongodb")
     testImplementation("io.projectreactor:reactor-test")
     testImplementation("io.projectreactor:reactor-test")
     compileOnly("org.projectlombok:lombok")
@@ -54,8 +56,8 @@ tasks.named<BootBuildImage>("bootBuildImage") {
     publish.set(true)
     docker {
         publishRegistry {
-            username.set(System.getProperty("DOCKER_USERNAME"))
-            password.set(System.getProperty("DOCKER_PASSWORD"))
+            username.set(System.getenv("DOCKER_USERNAME"))
+            password.set(System.getenv("DOCKER_PASSWORD"))
         }
     }
 }

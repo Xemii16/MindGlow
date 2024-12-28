@@ -1,6 +1,16 @@
 spring:
   application:
     name: web-bff
+  session:
+    mongodb:
+      collection-name: sessions
+  data:
+    mongodb:
+      host: mongodb
+      port: 27017
+      database: bff
+      username: root
+      password: example
   cloud:
     gateway:
       globalcors:
@@ -31,12 +41,9 @@ spring:
           uri: lb:http://mindglow-subject-server-service:8081
           predicates:
             - Path=/api/v1/subjects/**
-        - id: authentication-server-auth
-          uri: lb:http://mindglow-authentication-server-service:8080
-          predicates:
-            - Path=/api/v1/authentication/**
 server:
   port: 8082
 logging:
   level:
-    web: debug
+    com.balamut.webbff: DEBUG
+    org.springframework.session: DEBUG
