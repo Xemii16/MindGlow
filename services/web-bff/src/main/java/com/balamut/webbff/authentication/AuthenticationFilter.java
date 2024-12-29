@@ -1,5 +1,6 @@
 package com.balamut.webbff.authentication;
 
+import com.balamut.webbff.http.ServerWebExchangeUtilities;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
@@ -17,19 +18,12 @@ public class AuthenticationFilter implements GlobalFilter, Ordered {
             if (session.isExpired() && !session.isStarted()) {
                 return chain.filter(exchange);
             }
-            return chain.filter(mutateWithBearerToken(exchange, session.getAttribute("ACCESS_TOKEN")));
+            return chain.filter(ServerWebExchangeUtilities.mutateWithBearerToken(exchange, session.getAttribute("ACCESS_TOKEN")));
         });
     }
 
     @Override
     public int getOrder() {
         return HIGHEST_PRECEDENCE;
-    }
-
-    private ServerWebExchange mutateWithBearerToken(ServerWebExchange exchange, String token) {
-        ServerHttpRequest request = exchange.getRequest().mutate()
-                .header("Authorization", "Bearer " + token)
-                .build();
-        return exchange.mutate().request(request).build();
     }
 }
