@@ -8,7 +8,7 @@ plugins {
 val springCloudVersion by extra("2024.0.0")
 
 group = "com.balamut"
-version = "0.1.24-TEST"
+version = "0.1.25-TEST"
 
 java {
     toolchain {

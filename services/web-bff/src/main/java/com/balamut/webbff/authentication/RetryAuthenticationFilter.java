@@ -22,7 +22,7 @@ public class RetryAuthenticationFilter implements GlobalFilter, Ordered {
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         return chain.filter(exchange)
                 .then(Mono.defer(() -> {
-                    if (exchange.getResponse().getStatusCode() == HttpStatus.FORBIDDEN) {
+                    if (exchange.getResponse().getStatusCode() == HttpStatus.UNAUTHORIZED) {
                         ServerWebExchange mutatedExchange = ServerWebExchangeUtilities.mutateWithBearerToken(exchange, "new-token");
                         return chain.filter(reset(mutatedExchange));
                     }

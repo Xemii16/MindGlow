@@ -7,7 +7,7 @@ plugins {
 }
 
 group = "com.balamut"
-version = "0.0.7-TEST"
+version = "0.0.8-TEST"
 
 java {
     toolchain {

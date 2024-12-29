@@ -37,7 +37,7 @@ public class UserController {
     @Operation(summary = "Get current user (authenticated)")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "User information successfully"),
-            @ApiResponse(responseCode = "403", description = "Unauthenticated", content = {@Content()})
+            @ApiResponse(responseCode = "401", description = "Unauthenticated", content = {@Content()})
     })
     public ResponseEntity<UserResponse> getCurrentUser() {
         return ResponseEntity.ok(userService.getCurrentUser());
@@ -47,7 +47,7 @@ public class UserController {
     @Operation(summary = "Delete a user")
     @ApiResponses({
             @ApiResponse(responseCode = "204", description = "User deleted successfully"),
-            @ApiResponse(responseCode = "403", description = "Unauthenticated", content = {@Content()})
+            @ApiResponse(responseCode = "401", description = "Unauthenticated", content = {@Content()})
     })
     public ResponseEntity<Void> deleteUser(@PathVariable Integer id) {
         userService.deleteUser(id);
