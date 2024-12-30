@@ -1,5 +1,6 @@
 package com.balamut.authenticationserver.security;
 
+import com.balamut.authenticationserver.jwt.BadTokenException;
 import com.balamut.authenticationserver.jwt.JwtService;
 import com.balamut.authenticationserver.user.User;
 import io.jsonwebtoken.Claims;
@@ -45,7 +46,7 @@ public class BearerAuthenticationTokenFilter extends OncePerRequestFilter {
             SecurityContextHolder.getContext().setAuthentication(authentication);
         } catch (JwtException e) {
             log.info("Invalid token: {}", e.getMessage());
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            throw new BadTokenException("Invalid token");
         }
         filterChain.doFilter(request, response);
     }

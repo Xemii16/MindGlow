@@ -1,5 +1,6 @@
 package com.balamut.authenticationserver.security;
 
+import com.balamut.authenticationserver.authentication.UnauthorizedAuthenticationEntryPoint;
 import com.balamut.authenticationserver.jwt.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -13,6 +14,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.intercept.AuthorizationFilter;
 import org.springframework.security.web.authentication.AnonymousAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -26,13 +28,18 @@ import java.util.List;
 public class SecurityConfiguration {
 
     private final BearerAuthenticationTokenFilter bearerAuthenticationTokenFilter;
+    private final UnauthorizedAuthenticationEntryPoint unauthorizedAuthenticationEntryPoint;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .cors(AbstractHttpConfigurer::disable)
+                .anonymous(AbstractHttpConfigurer::disable)
+                .exceptionHandling(e -> {
+                    e.authenticationEntryPoint(unauthorizedAuthenticationEntryPoint);
+                })
                 .csrf(AbstractHttpConfigurer::disable) // need to enable later
-                .addFilterBefore(bearerAuthenticationTokenFilter, AnonymousAuthenticationFilter.class)
+                .addFilterBefore(bearerAuthenticationTokenFilter, AuthorizationFilter.class)
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/api/v1/users/register").anonymous()
                         .requestMatchers(HttpMethod.GET, "/api/v1/users/me").authenticated()
