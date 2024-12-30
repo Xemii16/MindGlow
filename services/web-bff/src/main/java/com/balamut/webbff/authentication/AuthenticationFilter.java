@@ -4,6 +4,7 @@ import com.balamut.webbff.http.ServerWebExchangeUtilities;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
@@ -15,6 +16,9 @@ public class AuthenticationFilter implements GlobalFilter, Ordered {
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         return exchange.getSession().flatMap(session -> {
+            if (exchange.getRequest().getURI().getPath().equals("/api/v1/authentication") && exchange.getRequest().getMethod() == HttpMethod.POST) {
+                return chain.filter(exchange);
+            }
             if (session.isExpired() && !session.isStarted()) {
                 return chain.filter(exchange);
             }

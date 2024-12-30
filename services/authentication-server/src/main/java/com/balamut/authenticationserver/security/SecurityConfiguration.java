@@ -41,12 +41,12 @@ public class SecurityConfiguration {
                 .csrf(AbstractHttpConfigurer::disable) // need to enable later
                 .addFilterBefore(bearerAuthenticationTokenFilter, AuthorizationFilter.class)
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/api/v1/users/register").anonymous()
+                        .requestMatchers("/api/v1/users/register").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/v1/users/me").authenticated()
                         .requestMatchers(HttpMethod.GET, "/api/v1/users").authenticated()
                         .requestMatchers(HttpMethod.PUT, "/api/v1/users/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET, "/api/v1/users/email/**").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/v1/authentication").anonymous()
+                        .requestMatchers(HttpMethod.POST, "/api/v1/authentication").permitAll()
                         .requestMatchers(HttpMethod.GET, "/swagger-ui/**").permitAll()
                         .requestMatchers("/v3/api-docs/**").permitAll()
                         .anyRequest().authenticated()

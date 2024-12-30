@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: authentication-server
-          image: xemii16/mindglow-web-bff:0.1.25-TEST
+          image: xemii16/mindglow-web-bff:0.1.26-TEST
           ports:
             - containerPort: 8082
           env:

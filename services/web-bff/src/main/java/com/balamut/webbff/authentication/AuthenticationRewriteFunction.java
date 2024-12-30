@@ -29,6 +29,10 @@ public class AuthenticationRewriteFunction implements RewriteFunction<String, St
             log.debug("Skipping rewrite for non-POST request");
             return Mono.just(s);
         }
+        if (serverWebExchange.getResponse().getStatusCode() == null || serverWebExchange.getResponse().getStatusCode().is5xxServerError()) {
+            log.debug("Skipping rewrite for error response");
+            return Mono.just(s);
+        }
         AuthenticationResponse response = gson.fromJson(s, AuthenticationResponse.class);
         log.trace("Rewriting response: {}", response);
 
