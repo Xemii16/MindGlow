@@ -1,10 +1,14 @@
 package com.balamut.webbff.authentication;
 
+import com.balamut.webbff.client.AuthenticationServerClient;
+import com.balamut.webbff.client.UnauthorizedClientException;
 import com.balamut.webbff.http.EmptyHeadersHttpResponseDecorator;
 import com.balamut.webbff.http.ServerWebExchangeUtilities;
+import com.balamut.webbff.session.AuthenticationSessionHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
+import org.springframework.cloud.gateway.filter.factory.RetryGatewayFilterFactory;
 import org.springframework.cloud.gateway.support.ServerWebExchangeUtils;
 import org.springframework.core.Ordered;
 import org.springframework.http.HttpStatus;
@@ -18,16 +22,13 @@ import reactor.netty.Connection;
 @RequiredArgsConstructor
 public class RetryAuthenticationFilter implements GlobalFilter, Ordered {
 
+    private final AuthenticationServerClient authenticationServerClient;
+    private final AuthenticationSessionHandler sessionHandler;
+
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         return chain.filter(exchange)
-                .then(Mono.defer(() -> {
-                    if (exchange.getResponse().getStatusCode() == HttpStatus.UNAUTHORIZED) {
-                        ServerWebExchange mutatedExchange = ServerWebExchangeUtilities.mutateWithBearerToken(exchange, "new-token");
-                        return chain.filter(reset(mutatedExchange));
-                    }
-                    return Mono.empty();
-                }));
+                .then(Mono.defer(() -> chain.filter(reset(exchange))));
     }
 
     private ServerWebExchange reset(ServerWebExchange exchange) {

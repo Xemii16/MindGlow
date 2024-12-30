@@ -20,7 +20,7 @@ public class GatewayConfiguration {
                         .filters(f -> f
                                 .modifyResponseBody(String.class, String.class, authenticationRewriteFunction)
                         )
-                        .uri("lb://mindglow-authentication-server-service:8080")
+                        .uri("lb:http://mindglow-authentication-server-service:8080")
                 )
                 .build();
     }

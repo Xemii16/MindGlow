@@ -26,7 +26,12 @@ public class AuthenticationSessionHandlerImpl implements AuthenticationSessionHa
                 return createSession(session, response);
             }
             log.debug("Session is already started, changing session id");
-            return session.changeSessionId();
+            return session.changeSessionId()
+                    .then(Mono.defer(() -> {
+                        session.getAttributes().put("ACCESS_TOKEN", response.accessToken());
+                        session.getAttributes().put("REFRESH_TOKEN", response.refreshToken());
+                        return session.save();
+                    }));
         });
     }
 
