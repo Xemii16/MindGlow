@@ -22,7 +22,8 @@ public class AuthenticationFilter implements GlobalFilter, Ordered {
             if (session.isExpired() && !session.isStarted()) {
                 return chain.filter(exchange);
             }
-            return chain.filter(ServerWebExchangeUtilities.mutateWithBearerToken(exchange, session.getAttribute("ACCESS_TOKEN")));
+            // NEED TO CHANGE THIS TO USE THE ACCESS TOKEN !!!
+            return chain.filter(ServerWebExchangeUtilities.mutateWithBearerToken(exchange, session.getAttribute("REFRESH_TOKEN")));
         });
     }
 
