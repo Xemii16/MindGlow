@@ -8,7 +8,7 @@ plugins {
 val springCloudVersion by extra("2024.0.0")
 
 group = "com.balamut"
-version = "0.1.48-TEST"
+version = "0.2.10"
 
 java {
     toolchain {
@@ -30,6 +30,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-webflux")
     implementation("org.springframework.cloud:spring-cloud-starter-gateway")
     implementation("org.springframework.cloud:spring-cloud-starter-kubernetes-client-loadbalancer")
+    implementation("org.springframework.cloud:spring-cloud-starter-kubernetes-client-config")
     implementation("org.springframework.boot:spring-boot-starter-data-mongodb-reactive")
     implementation("org.springframework.session:spring-session-data-mongodb")
     testImplementation("io.projectreactor:reactor-test")
@@ -39,6 +40,9 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.security:spring-security-test")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+    implementation("io.jsonwebtoken:jjwt-api:0.12.6")
+    runtimeOnly("io.jsonwebtoken:jjwt-impl:0.12.6")
+    runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.12.6")
 }
 dependencyManagement {
     imports {

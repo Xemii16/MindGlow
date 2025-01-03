@@ -1,4 +1,6 @@
 spring:
+  main:
+    cloud-platform: kubernetes
   application:
     name: web-bff
   session:
@@ -6,11 +8,12 @@ spring:
       collection-name: sessions
   data:
     mongodb:
-      host: mongodb
-      port: 27017
-      database: bff
-      username: root
-      password: example
+      host: ${SPRING_DATA_MONGODB_HOST}
+      port: ${SPRING_DATA_MONGODB_PORT}
+      database: ${SPRING_DATA_MONGODB_DATABASE}
+      username: ${SPRING_DATA_MONGODB_USERNAME}
+      password: ${SPRING_DATA_MONGODB_PASSWORD}
+      uri: mongodb://${SPRING_DATA_MONGODB_USERNAME}:${SPRING_DATA_MONGODB_PASSWORD}@${SPRING_DATA_MONGODB_HOST}:${SPRING_DATA_MONGODB_PORT}/?authMechanism=SCRAM-SHA-1
   cloud:
     gateway:
       globalcors:
@@ -41,9 +44,22 @@ spring:
           uri: lb:http://mindglow-subject-server-service:8081
           predicates:
             - Path=/api/v1/subjects/**
+    kubernetes:
+      reload:
+        enabled: true
+        monitoring-secrets: true
+      loadbalancer:
+        mode: service
+      secrets:
+        fail-fast: true
+        name: rsa-key-pair
 server:
   port: 8082
 logging:
   level:
+    org:
+      springframework:
+        cloud:
+          gateway: TRACE
     com.balamut.webbff: DEBUG
     org.springframework.session: DEBUG

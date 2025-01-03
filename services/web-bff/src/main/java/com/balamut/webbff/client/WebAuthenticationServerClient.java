@@ -21,6 +21,7 @@ public class WebAuthenticationServerClient implements AuthenticationServerClient
 
     @Override
     public Mono<AuthenticationResponse> refresh(String refreshToken) {
+        // TODO: add retry logic
         return webClient
                 .get()
                 .uri("/api/v1/authentication/refresh")

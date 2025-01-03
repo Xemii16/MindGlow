@@ -5,7 +5,6 @@ import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
@@ -22,13 +21,12 @@ public class AuthenticationFilter implements GlobalFilter, Ordered {
             if (session.isExpired() && !session.isStarted()) {
                 return chain.filter(exchange);
             }
-            // NEED TO CHANGE THIS TO USE THE ACCESS TOKEN !!!
-            return chain.filter(ServerWebExchangeUtilities.mutateWithBearerToken(exchange, session.getAttribute("REFRESH_TOKEN")));
+            return chain.filter(ServerWebExchangeUtilities.mutateWithBearerToken(exchange, session.getAttribute("ACCESS_TOKEN")));
         });
     }
 
     @Override
     public int getOrder() {
-        return HIGHEST_PRECEDENCE;
+        return HIGHEST_PRECEDENCE + 1;
     }
 }
