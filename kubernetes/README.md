@@ -4,6 +4,8 @@ First of all, you need to have a Kubernetes cluster running. If you don't have o
 Next, you need to have `kubectl` installed. You can install it by following the instructions [here](https://kubernetes.io/docs/tasks/tools/install-kubectl/).
 After you have `kubectl` installed, you can deploy the backend by running the following command:
 ```bash
+kubectl apply -f ./mongo-storage.yaml
+kubectl apply -f ./postgres-storage.yaml
 kubectl apply -f ./
 ```
 After that, to access the backend, you need to port-forward the service to your local machine. You can do that by running the following command:

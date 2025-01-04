@@ -7,7 +7,7 @@
   <component name="ExternalStorageConfigurationManager" enabled="true" />
   <component name="FrameworkDetectionExcludesConfiguration">
     <file type="web" url="file://$PROJECT_DIR$/services/authentication-server" />
-    <file type="web" url="file://$PROJECT_DIR$/services/subject-server" />
+    <file type="web" url="file://$PROJECT_DIR$/services/web-bff" />
   </component>
   <component name="ProjectRootManager">
     <output url="file://$PROJECT_DIR$/out" />

@@ -27,7 +27,7 @@ public class AuthenticationController {
     @GetMapping("/refresh")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Access and refresh token refreshed successfully. Returned new access and refresh token (JWT)"),
-            @ApiResponse(responseCode = "403", description = "Not authenticated", content = {@Content()})
+            @ApiResponse(responseCode = "401", description = "Not authenticated", content = {@Content()})
     })
     public ResponseEntity<AuthenticationResponse> refresh() {
         return ResponseEntity.ok(authenticationService.refresh());
