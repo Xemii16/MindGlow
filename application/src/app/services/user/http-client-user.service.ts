@@ -3,7 +3,6 @@ import {User} from "./user";
 import {UserService} from "./user.service";
 import {UserEmail} from "./user-email";
 import {HttpClientHelper} from "../../clients/http-client-helper";
-import {resolve} from "node:path";
 
 
 export class HttpClientUserService implements UserService {
@@ -88,14 +87,9 @@ getUserById(id: number): Promise<User | null> {
   });
 }
 
-register(user: User): Promise<boolean> {
+register(info: {firstname: string, lastname: string, email: string, password: string}): Promise<boolean> {
   return new Promise<boolean>((resolve, reject) => {
-    this.httpClient.post<{ id: number }>(HttpClientHelper.buildUrl('/api/v1/users/register'), {
-      firstname: user.firstname,
-      lastname: user.lastname,
-      email: user.email,
-      // password: user.password, //password not in class User
-    }, {
+    this.httpClient.post<{ id: number }>(HttpClientHelper.buildUrl('/api/v1/users/register'), info, {
       withCredentials: true
     }).subscribe({
       next: () => resolve(true),
