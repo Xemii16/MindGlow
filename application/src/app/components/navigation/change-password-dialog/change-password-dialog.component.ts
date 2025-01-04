@@ -1,12 +1,5 @@
-import {Component, Inject, OnInit} from '@angular/core';
-import {
-  MAT_DIALOG_DATA,
-  MatDialogActions,
-  MatDialogClose,
-  MatDialogContent,
-  MatDialogRef,
-  MatDialogTitle
-} from "@angular/material/dialog";
+import {Component, OnInit} from '@angular/core';
+import {MatDialogActions, MatDialogContent, MatDialogRef, MatDialogTitle} from "@angular/material/dialog";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
 import {MatButtonModule} from "@angular/material/button";
@@ -20,19 +13,11 @@ import {
   Validator,
   Validators
 } from "@angular/forms";
-import {Location, NgIf} from "@angular/common";
-import {CdkTrapFocus} from "@angular/cdk/a11y";
-import {RouterLink} from "@angular/router";
-import {UserResponse} from "../../../service/user/response/user.response";
-import {UserService} from "../../../service/user/user.service";
-import {MatAutocomplete, MatAutocompleteTrigger, MatOption} from "@angular/material/autocomplete";
+import {Location} from "@angular/common";
 import {ErrorMessageHandler} from "../../../utility/error-message.handler";
-import {SubjectService} from "../../../service/subject/subject.service";
 import {MatIcon} from "@angular/material/icon";
 import {merge} from "rxjs";
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
-import {AuthenticationService} from "../../../service/authentication/authentication.service";
-import {JwtService} from "../../../service/jwt/jwt.service";
 
 @Component({
   selector: 'app-request-delete-confirm',
@@ -45,14 +30,7 @@ import {JwtService} from "../../../service/jwt/jwt.service";
     MatDialogTitle,
     MatDialogContent,
     MatDialogActions,
-    MatDialogClose,
-    CdkTrapFocus,
-    RouterLink,
     ReactiveFormsModule,
-    MatAutocomplete,
-    MatAutocompleteTrigger,
-    MatOption,
-    NgIf,
     MatIcon,
   ],
   templateUrl: './change-password-dialog.component.html',
@@ -73,14 +51,10 @@ export class ChangePasswordDialogComponent implements OnInit {
     confirmPassword: new ErrorMessageHandler('Підтвердіть новий пароль', '', 'Паролі не співпадають'),
   }
   hidePassword: boolean = true;
-  user?: UserResponse;
 
   constructor(
     public dialogRef: MatDialogRef<ChangePasswordDialogComponent>,
-    private userService: UserService,
     private location: Location,
-    private authenticationService: AuthenticationService,
-    private jwtService: JwtService,
   ) {
     const {newPassword, confirmPassword, currentPassword} = this.changePasswordFormGroup.controls;
     const confirmPasswordValidator = new ConfirmPasswordValidator(newPassword);
@@ -97,10 +71,10 @@ export class ChangePasswordDialogComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.userService.getUserByToken().then(response => {
+    /*this.userService.getUserByToken().then(response => {
       if (response === null) return;
       this.user = response;
-    });
+    });*/
   }
 
   clickEvent(event: MouseEvent) {
@@ -119,7 +93,7 @@ export class ChangePasswordDialogComponent implements OnInit {
       return;
     }
     const {newPassword, currentPassword, confirmPassword} = this.changePasswordFormGroup.controls;
-    this.userService.changePassword(
+    /*this.userService.changePassword(
       currentPassword.value,
       newPassword.value,
       confirmPassword.value
@@ -132,7 +106,7 @@ export class ChangePasswordDialogComponent implements OnInit {
           this.dialogRef.close();
         });
       } else this.changePasswordFormGroup.markAsTouched();
-    })
+    })*/
   }
 }
 
@@ -152,5 +126,5 @@ export class ConfirmPasswordValidator implements Validator {
 }
 
 export interface RequestDeleteConfirmData {
-  user: UserResponse;
+  /*user: UserResponse;*/
 }

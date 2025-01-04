@@ -15,10 +15,6 @@ import {Location} from "@angular/common";
 import {CdkTrapFocus} from "@angular/cdk/a11y";
 import {RouterLink} from "@angular/router";
 import {MatListOption, MatSelectionList} from "@angular/material/list";
-import {UserResponse} from "../../../../../service/user/response/user.response";
-import {UserService} from "../../../../../service/user/user.service";
-import {SubjectResponse} from "../../../../../service/subject/subject.response";
-import {SubjectService} from "../../../../../service/subject/subject.service";
 
 @Component({
   selector: 'app-request-delete-confirm',
@@ -41,25 +37,21 @@ import {SubjectService} from "../../../../../service/subject/subject.service";
   styleUrl: './add-pupil-dialog.component.scss'
 })
 export class AddPupilDialogComponent implements OnInit {
-  pupils: UserResponse[] = [];
-  subject?: SubjectResponse;
   @ViewChild(MatSelectionList) pupilsList?: MatSelectionList
 
   constructor(
     public dialogRef: MatDialogRef<AddPupilDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: SubjectData,
-    private userService: UserService,
-    private subjectService: SubjectService
   ) {
   }
 
   ngOnInit(): void {
-    this.subjectService.getSubject(this.data.id).then(response => {
+    /*this.subjectService.getSubject(this.data.id).then(response => {
       if (response == null) {
         return;
       }
       this.subject = response;
-    });
+    });*/
     this.getPupils();
   }
 
@@ -68,7 +60,7 @@ export class AddPupilDialogComponent implements OnInit {
   }
 
   private getPupils() {
-    this.userService.getPupils().then(response => {
+    /*this.userService.getPupils().then(response => {
       if (response == null) {
         return;
       }
@@ -79,14 +71,14 @@ export class AddPupilDialogComponent implements OnInit {
         }
         this.pupils = this.pupils.filter(pupil => students.find(student => student.id === pupil.id) == null);
       });
-    });
+    });*/
   }
 
   onAddClick() {
     this.pupilsList?.selectedOptions.selected.forEach(option => {
       console.log(option.value)
-      this.subjectService.addStudent(this.data.id, option.value).then(() => {
-      });
+      /*this.subjectService.addStudent(this.data.id, option.value).then(() => {
+      });*/
     });
     this.dialogRef.close();
   }

@@ -5,10 +5,6 @@ import {MatDivider} from "@angular/material/divider";
 import {MatIcon} from "@angular/material/icon";
 import {MatList, MatListItem, MatListItemTitle} from "@angular/material/list";
 import {NgForOf, NgIf} from "@angular/common";
-import {UserResponse} from "../../../service/user/response/user.response";
-import {SubjectResponse} from "../../../service/subject/subject.response";
-import {UserService} from "../../../service/user/user.service";
-import {SubjectService} from "../../../service/subject/subject.service";
 
 @Component({
   selector: 'app-pupils-teachers',
@@ -29,26 +25,22 @@ import {SubjectService} from "../../../service/subject/subject.service";
   styleUrl: './pupils-teachers.component.scss'
 })
 export class PupilsTeachersComponent {
-  user?: UserResponse;
-  subjects: SubjectResponse[] = [];
   teacherSubjects: TeacherSubjects[] = [];
 
   constructor(
-    private userService: UserService,
-    private subjectService: SubjectService
   ) {
   }
 
   ngOnInit(): void {
     this.getStudents();
-    this.userService.getUserByToken().then(user => {
+    /*this.userService.getUserByToken().then(user => {
       if (user == null) return;
       this.user = user;
-    });
+    });*/
   }
 
   private getStudents() {
-    this.subjectService.getSubjects().then(subjects => {
+    /*this.subjectService.getSubjects().then(subjects => {
       if (subjects == null) {
         return;
       }
@@ -64,11 +56,11 @@ export class PupilsTeachersComponent {
           });
         });
       });
-    });
+    });*/
   }
 }
 
 interface TeacherSubjects {
   teacherId: string
-  students: UserResponse[];
+  // students: UserResponse[];
 }

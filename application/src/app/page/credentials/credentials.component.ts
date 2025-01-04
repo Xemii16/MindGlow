@@ -1,26 +1,21 @@
 import {Component, OnInit} from '@angular/core';
 import {MatAnchor, MatButton, MatIconButton} from "@angular/material/button";
-import {MatCheckbox} from "@angular/material/checkbox";
 import {MatError, MatFormField, MatLabel, MatSuffix} from "@angular/material/form-field";
 import {MatIcon} from "@angular/material/icon";
 import {MatInput} from "@angular/material/input";
-import {NgOptimizedImage} from "@angular/common";
 import {
   AbstractControl,
   FormControl,
   FormGroup,
   ReactiveFormsModule,
   ValidationErrors,
-  Validator, Validators
+  Validator,
+  Validators
 } from "@angular/forms";
-import {Router, RouterLink} from "@angular/router";
-import {UserResponse} from "../../service/user/response/user.response";
-import {UserService} from "../../service/user/user.service";
+import {Router} from "@angular/router";
 import {ErrorMessageHandler} from "../../utility/error-message.handler";
 import {merge} from "rxjs";
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
-import {AuthenticationService} from "../../service/authentication/authentication.service";
-import {JwtService} from "../../service/jwt/jwt.service";
 
 @Component({
   selector: 'app-credentials',
@@ -28,7 +23,6 @@ import {JwtService} from "../../service/jwt/jwt.service";
   imports: [
     MatAnchor,
     MatButton,
-    MatCheckbox,
     MatError,
     MatFormField,
     MatIcon,
@@ -36,15 +30,12 @@ import {JwtService} from "../../service/jwt/jwt.service";
     MatInput,
     MatLabel,
     MatSuffix,
-    NgOptimizedImage,
-    ReactiveFormsModule,
-    RouterLink
+    ReactiveFormsModule
   ],
   templateUrl: './credentials.component.html',
   styleUrl: './credentials.component.scss'
 })
 export class CredentialsComponent implements OnInit {
-  user?: UserResponse;
   credentialsForm: FormGroup = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
     lastName: new FormControl('', [Validators.required]),
@@ -65,10 +56,7 @@ export class CredentialsComponent implements OnInit {
   hidePassword: boolean = true;
 
   constructor(
-    private userService: UserService,
-    private authenticationService: AuthenticationService,
-    private router: Router,
-    private jwtService: JwtService
+    private router: Router
   ) {
     const {email, lastName, firstName, password, confirmPassword} = this.credentialsForm.controls;
     merge(email.statusChanges, email.updateOn)
@@ -90,15 +78,15 @@ export class CredentialsComponent implements OnInit {
     confirmPassword.setValidators(confirmPasswordValidator.validate.bind(confirmPasswordValidator));
   }
   ngOnInit(): void {
-      this.userService.getUserByToken().then(response => {
-        if (response === null) return;
-        this.user = response;
-        const {email, lastName, firstName, password} = this.credentialsForm.controls;
-        email.setValue(response.email);
-        lastName.setValue(response.lastname);
-        firstName.setValue(response.firstname);
-        password.setValue('');
-      });
+    /*this.userService.getUserByToken().then(response => {
+      if (response === null) return;
+      this.user = response;
+      const {email, lastName, firstName, password} = this.credentialsForm.controls;
+      email.setValue(response.email);
+      lastName.setValue(response.lastname);
+      firstName.setValue(response.firstname);
+      password.setValue('');
+    });*/
   }
 
 
@@ -108,7 +96,7 @@ export class CredentialsComponent implements OnInit {
       return;
     }
     const {email, lastName, firstName, password} = this.credentialsForm.controls;
-    this.userService.changeCredentials({
+    /*this.userService.changeCredentials({
       email: email.value,
       lastName: lastName.value,
       firstName: firstName.value,
@@ -126,7 +114,7 @@ export class CredentialsComponent implements OnInit {
         this.jwtService.saveTokens(response.access_token, response.refresh_token);
         this.router.navigate(['dashboard']);
       });
-    });
+    });*/
   }
 
   clickEvent($event: MouseEvent) {
@@ -135,7 +123,7 @@ export class CredentialsComponent implements OnInit {
   }
 
   logout() {
-    this.jwtService.removeTokens();
+    /*this.jwtService.removeTokens();*/
     this.router.navigate(['/login']);
   }
 }
