@@ -31,10 +31,12 @@ public class BearerAuthenticationTokenFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String authorization = request.getHeader("Authorization");
         if (authorization == null) {
+            log.debug("No authorization header");
             filterChain.doFilter(request, response);
             return;
         }
         String token = authorization.substring(7);
+        log.trace("Token from authorization header: {}", token);
         try {
             Claims claims = jwtService.getPayload(token);
             String email = claims.getSubject();
@@ -45,7 +47,7 @@ public class BearerAuthenticationTokenFilter extends OncePerRequestFilter {
         );*/
             SecurityContextHolder.getContext().setAuthentication(authentication);
         } catch (JwtException e) {
-            log.info("Invalid token: {}", e.getMessage());
+            log.debug("Invalid token: {}", e.getMessage());
             throw new BadTokenException("Invalid token");
         }
         filterChain.doFilter(request, response);

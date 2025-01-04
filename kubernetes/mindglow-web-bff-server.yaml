@@ -14,10 +14,12 @@ spec:
     spec:
       containers:
         - name: authentication-server
-          image: xemii16/mindglow-web-bff:0.2.10
+          image: xemii16/mindglow-web-bff:0.2.11
           ports:
             - containerPort: 8082
           env:
+            - name: LOGGING_LEVEL_APPLICATION
+              value: "trace"
             - name: RSA_PRIVATE_KEY
               valueFrom:
                   secretKeyRef:

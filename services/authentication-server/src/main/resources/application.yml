@@ -19,7 +19,8 @@ server:
   port: 8080
 logging:
   level:
-    org.springframework.security: DEBUG
+    com.balamut.authenticationserver: ${LOGGING_LEVEL_APPLICATION:info}
+    org.springframework.security: ${LOGGING_LEVEL_SECURITY:info}
 token:
   expiration:
     access: 300
