@@ -1,4 +1,4 @@
-<div class="request-container">
+<!--<div class="request-container">
     <div class="request-box">
         <h4 style="margin: 0">Запити на приєднання</h4>
         <mat-divider class="title-divider"></mat-divider>
@@ -20,10 +20,10 @@
         <mat-action-list>
             <div *ngFor="let user of users; index as i">
                 <button mat-list-item [routerLink]="'/dashboard/requests/' + user.id">
-                    <!--<div matListItemIcon
+                    &lt;!&ndash;<div matListItemIcon
                          style="display: flex; align-items: center; justify-content: center; justify-items: center">
                         <mat-checkbox></mat-checkbox>
-                    </div>-->
+                    </div>&ndash;&gt;
                     <p matListItemTitle style="margin: 0" class="list-title">{{user.lastname + " " + user.firstname}}</p>
                     <p matListItemLine style="margin: 0" class="list-line">{{user.email}}</p>
                     <div matListItemMeta>
@@ -35,4 +35,4 @@
         </mat-action-list>
         <button mat-button *ngIf="users.length >= 25 && hasNext" (click)="loadMore()">Завантажити ще</button>
     </div>
-</div>
+</div>-->
