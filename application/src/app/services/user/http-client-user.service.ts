@@ -57,8 +57,8 @@ export class HttpClientUserService implements UserService {
     });
   }
 
-  getCurrentUser(): Promise<User | null> {
-    return new Promise<User | null>((resolve, reject) => {
+  getCurrentUser(): Promise<User> {
+    return new Promise<User>((resolve, reject) => {
       this.httpClient.get<User>(HttpClientHelper.buildUrl('/api/v1/users/me'), {
         withCredentials: true
       }).subscribe({
@@ -68,8 +68,8 @@ export class HttpClientUserService implements UserService {
     });
   }
 
-  getInformationByEmail(email: string): Promise<UserEmail | null> {
-    return new Promise<UserEmail | null>((resolve, reject) => {
+  getInformationByEmail(email: string): Promise<UserEmail> {
+    return new Promise<UserEmail>((resolve, reject) => {
       this.httpClient.get<UserEmail>(HttpClientHelper.buildUrl(`/api/v1/users/email/${email}`), {
         withCredentials: true
       }).subscribe({
@@ -79,8 +79,8 @@ export class HttpClientUserService implements UserService {
     });
   }
 
-  getUserById(id: number): Promise<User | null> {
-    return new Promise<User | null>((resolve, reject) => {
+  getUserById(id: number): Promise<User> {
+    return new Promise<User>((resolve, reject) => {
       this.httpClient.get<User>(HttpClientHelper.buildUrl(`/api/v1/users/${id}`), {
         withCredentials: true
       }).subscribe({
