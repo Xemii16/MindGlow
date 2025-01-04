@@ -34,6 +34,7 @@ public class RetryAuthenticationFilter implements GlobalFilter, Ordered {
         return exchange.getSession().flatMap(session -> {
             String accessToken = session.getAttribute("ACCESS_TOKEN");
             if (accessToken == null) {
+                log.debug("Access token is not present in session, skipping filter");
                 return chain.filter(exchange);
             }
             return jwtService.verify(accessToken)
@@ -44,7 +45,10 @@ public class RetryAuthenticationFilter implements GlobalFilter, Ordered {
                                     log.debug("Refresh token is expired", e2);
                                     return session.invalidate().then(Mono.empty());
                                 })
-                                .flatMap(response -> sessionHandler.handle(exchange, response));
+                                .flatMap(response -> {
+                                    log.debug("Tokens refreshed");
+                                    return sessionHandler.handle(exchange, response);
+                                });
                     })
                     .then(chain.filter(exchange));
         });

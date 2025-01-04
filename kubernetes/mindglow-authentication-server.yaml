@@ -14,10 +14,12 @@ spec:
     spec:
       containers:
         - name: authentication-server
-          image: xemii16/mindglow-authentication-server:0.0.13
+          image: xemii16/mindglow-authentication-server:0.0.14
           ports:
             - containerPort: 8080
           env:
+            - name: LOGGING_LEVEL_APPLICATION
+              value: trace
             - name: JAVA_TOOL_OPTIONS
               value: "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005"
             - name: SPRING_DATASOURCE_URL
