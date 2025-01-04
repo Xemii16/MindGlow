@@ -1,10 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {MatTabLink, MatTabNav, MatTabNavPanel} from "@angular/material/tabs";
-import {MatButton, MatIconButton} from "@angular/material/button";
-import {ActivatedRoute, RouterOutlet} from "@angular/router";
-import {MatIcon} from "@angular/material/icon";
-import {MatToolbar} from "@angular/material/toolbar";
-import {Location, NgIf, NgOptimizedImage} from "@angular/common";
+import {ActivatedRoute} from "@angular/router";
+import {Location} from "@angular/common";
 import {
   AbstractControl,
   FormControl,
@@ -15,55 +11,26 @@ import {
   Validator,
   Validators
 } from "@angular/forms";
-import {UserService} from "../../../service/user/user.service";
-import {MatFormField, MatLabel, MatPrefix} from "@angular/material/form-field";
-import {MatInput, MatInputModule} from "@angular/material/input";
-import {
-  MatAutocomplete,
-  MatAutocompleteModule,
-  MatAutocompleteTrigger,
-  MatOption
-} from "@angular/material/autocomplete";
+import {MatInputModule} from "@angular/material/input";
+import {MatAutocompleteModule} from "@angular/material/autocomplete";
 import {ErrorMessageHandler} from "../../../utility/error-message.handler";
 import {merge} from "rxjs";
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
-import {MatTooltip} from "@angular/material/tooltip";
 import {MatDialog} from "@angular/material/dialog";
-import {RequestDeleteConfirmComponent} from "./request-delete-confirm/request-delete-confirm.component";
-import {UserResponse} from "../../../service/user/response/user.response";
 
 @Component({
   selector: 'app-request-approval',
   standalone: true,
   imports: [
-    MatTabNav,
-    MatTabLink,
-    MatTabNavPanel,
-    MatButton,
-    RouterOutlet,
-    MatIcon,
-    MatIconButton,
-    MatToolbar,
-    NgOptimizedImage,
     FormsModule,
     ReactiveFormsModule,
-    NgIf,
-    MatFormField,
-    MatInput,
-    MatLabel,
-    MatPrefix,
-    MatAutocomplete,
-    MatOption,
-    MatAutocompleteTrigger,
     MatAutocompleteModule,
-    MatInputModule,
-    MatTooltip
+    MatInputModule
   ],
   templateUrl: './request-approval.component.html',
   styleUrl: './request-approval.component.scss'
 })
 export class RequestApprovalComponent implements OnInit {
-  user?: UserResponse
   validator: Validator = new RoleValidator();
   options: string[] = ['Студент', 'Вчитель'];
   request: FormGroup = new FormGroup({
@@ -88,7 +55,6 @@ export class RequestApprovalComponent implements OnInit {
 
   constructor(private route: ActivatedRoute,
               private location: Location,
-              private userService: UserService,
               public dialog: MatDialog
   ) {
     const {firstName, lastName, role} = this.request.controls;
@@ -105,15 +71,15 @@ export class RequestApprovalComponent implements OnInit {
   }
 
   openDialog() {
-    const dialogRef = this.dialog.open(RequestDeleteConfirmComponent, {
+    /*const dialogRef = this.dialog.open(RequestDeleteConfirmComponent, {
       data: {user: this.user}
-    });
+    });*/
   }
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
     if (id === null) return;
-    this.userService.getUserById(id).then(response => {
+    /*this.userService.getUserById(id).then(response => {
       if (response === null) return;
       this.user = response;
       const {role, email, firstName, lastName} = this.request.controls;
@@ -121,7 +87,7 @@ export class RequestApprovalComponent implements OnInit {
       email.setValue(this.user?.email);
       firstName.setValue(this.user?.firstname);
       lastName.setValue(this.user?.lastname);
-    });
+    });*/
   }
 
   onSubmit() {
@@ -131,7 +97,7 @@ export class RequestApprovalComponent implements OnInit {
     }
     const {firstName, lastName, role, email} = this.request.controls;
     const userId: string | null = this.route.snapshot.paramMap.get('id');
-    if (userId === null) return;
+    if (userId === null) return;/*
     this.userService.putUser({
       id: userId,
       email: email.value,
@@ -141,7 +107,7 @@ export class RequestApprovalComponent implements OnInit {
       enabled: true
     }).then(() => {
       this.location.back();
-    });
+    });*/
   }
 }
 

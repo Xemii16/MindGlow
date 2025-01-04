@@ -17,9 +17,7 @@ import {Router, RouterLink} from "@angular/router";
 import {merge, Observable} from "rxjs";
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 import {ErrorMessageHandler} from "../../utility/error-message.handler";
-import {AuthenticationService} from "../../service/authentication/authentication.service";
 import {MatIcon} from "@angular/material/icon";
-import {FormService} from "../../service/form/form.service";
 
 @Component({
     selector: 'app-register',
@@ -77,7 +75,6 @@ export class RegisterComponent {
     constructor(
         private emailValidator: TakenEmailValidator,
         private router: Router,
-        private formService: FormService
     ) {
         const emailControl = this.registerForm.get('email');
         const firstNameControl = this.registerForm.get('firstName');
@@ -120,12 +117,12 @@ export class RegisterComponent {
             this.confirmPassword?.markAsTouched();
             return;
         }
-        this.formService.register(
+        /*this.formService.register(
             this.registerForm.get('email')?.value,
             this.registerForm.get('firstName')?.value,
             this.registerForm.get('lastName')?.value,
             this.registerForm.get('password')?.value
-        );
+        );*/
     }
 }
 
@@ -139,18 +136,18 @@ interface RegisterErrorHandlers {
 
 @Injectable({providedIn: 'root'})
 export class TakenEmailValidator implements AsyncValidator {
-    constructor(private service: AuthenticationService) {
+    constructor() {
     }
 
     validate(control: AbstractControl): Promise<ValidationErrors | null> | Observable<ValidationErrors | null> {
         return new Promise((resolve) => {
-            this.service.checkTakenEmail(control.value).then(r => {
+            /*this.service.checkTakenEmail(control.value).then(r => {
                 if (r) {
                     resolve({taken: true});
                 } else {
                     resolve(null);
                 }
-            });
+            });*/
         });
     }
 
