@@ -8,14 +8,17 @@ import {HttpClientHelper} from "../clients/http-client-helper";
 })
 export class HttpClientAuthenticationService implements AuthenticationService {
 
+  private readonly path: string = "/api/v1/authentication";
+
   constructor(private httpClient: HttpClient) {
   }
 
-  authenticate(username: string, password: string): Promise<boolean> {
+  authenticate(email: string, password: string): Promise<boolean> {
     return new Promise(resolve => {
-      this.httpClient.post(HttpClientHelper.buildUrl("/api/v1/authenticate"), {}, {
+      this.httpClient.post(HttpClientHelper.buildUrl(this.path), {}, {
+        withCredentials: true,
         params: {
-          username: username,
+          email: email,
           password: password
         }
       }).subscribe({next: () => resolve(true), error: () => resolve(false)})
