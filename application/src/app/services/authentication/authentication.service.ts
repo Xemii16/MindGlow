@@ -1,3 +1,3 @@
 export interface AuthenticationService {
-  authenticate: (username: string, password: string) => Promise<boolean>;
+  authenticate: (email: string, password: string) => Promise<boolean>;
 }
