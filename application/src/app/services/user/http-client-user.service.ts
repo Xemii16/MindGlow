@@ -32,7 +32,7 @@ export class HttpClientUserService implements UserService {
 
   deleteUserById(id: number): Promise<boolean> {
     return new Promise<boolean>(resolve => {
-        return this.httpClient.delete(HttpClientHelper.buildUrl('/ap1/v1/users/'+id),{
+        return this.httpClient.delete(HttpClientHelper.buildUrl('/api/v1/users/'+id),{
           withCredentials:true
         }).subscribe({
           next:()=> resolve(true),
