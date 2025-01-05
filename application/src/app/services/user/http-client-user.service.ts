@@ -32,7 +32,7 @@ export class HttpClientUserService implements UserService {
 
   deleteUserById(id: number): Promise<boolean> {
     return new Promise<boolean>(resolve => {
-        return this.httpClient.delete(HttpClientHelper.buildUrl('ap1/v1/users/'+id),{
+        return this.httpClient.delete(HttpClientHelper.buildUrl('/ap1/v1/users/'+id),{
           withCredentials:true
         }).subscribe({
           next:()=> resolve(true),
@@ -67,7 +67,7 @@ getAllUsers(role: string): Promise<User[]> {
 
   getInformationByEmail(email: string): Promise<UserEmail> {
     return new Promise<UserEmail>((resolve, reject) => {
-      this.httpClient.get<UserEmail>(HttpClientHelper.buildUrl(`/api/v1/users/email/${email}`), {
+      this.httpClient.get<UserEmail>(HttpClientHelper.buildUrl('/api/v1/users/email/'+email), {
         withCredentials: true
       }).subscribe({
         next: (userEmail) => resolve(userEmail),
@@ -78,7 +78,7 @@ getAllUsers(role: string): Promise<User[]> {
 
   getUserById(id: number): Promise<User> {
     return new Promise<User>((resolve, reject) => {
-      this.httpClient.get<User>(HttpClientHelper.buildUrl(`/api/v1/users/${id}`), {
+      this.httpClient.get<User>(HttpClientHelper.buildUrl('/api/v1/users/'+id), {
         withCredentials: true
       }).subscribe({
         next: (user) => resolve(user),
@@ -88,7 +88,7 @@ getAllUsers(role: string): Promise<User[]> {
   }
 
   register(info: { firstname: string, lastname: string, email: string, password: string }): Promise<boolean> {
-    return new Promise<boolean>((resolve, reject) => {
+    return new Promise<boolean>(resolve => {
       this.httpClient.post<{ id: number }>(HttpClientHelper.buildUrl('/api/v1/users/register'), info, {
         withCredentials: true
       }).subscribe({
