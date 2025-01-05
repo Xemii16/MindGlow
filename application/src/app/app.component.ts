@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {RouterOutlet} from '@angular/router';
 import {NgIf} from "@angular/common";
 import {MatIconRegistry} from "@angular/material/icon";
+import {HttpClientUserService} from "./services/user/http-client-user.service";
 
 @Component({
   selector: 'app-root',
@@ -12,7 +13,7 @@ import {MatIconRegistry} from "@angular/material/icon";
 })
 export class AppComponent implements OnInit {
 
-  constructor(private iconRegistry: MatIconRegistry) {
+  constructor(private iconRegistry: MatIconRegistry, private userService: HttpClientUserService) {
   }
 
   ngOnInit(): void {
