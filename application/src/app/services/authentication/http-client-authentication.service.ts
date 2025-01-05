@@ -1,7 +1,7 @@
 import {AuthenticationService} from "./authentication.service";
 import {Injectable} from "@angular/core";
 import {HttpClient} from "@angular/common/http";
-import {HttpClientHelper} from "../clients/http-client-helper";
+import {HttpClientHelper} from "../../clients/http-client-helper";
 
 @Injectable({
   providedIn: 'root'
