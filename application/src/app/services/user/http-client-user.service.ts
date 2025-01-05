@@ -3,7 +3,11 @@ import {User} from "./user";
 import {UserService} from "./user.service";
 import {UserEmail} from "./user-email";
 import {HttpClientHelper} from "../../clients/http-client-helper";
+import {Injectable} from "@angular/core";
 
+@Injectable({
+  providedIn: 'root'
+})
 
 export class HttpClientUserService implements UserService {
   constructor(private httpClient: HttpClient) {}

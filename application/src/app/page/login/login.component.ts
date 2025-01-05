@@ -4,20 +4,27 @@ import {NgIf, NgOptimizedImage} from "@angular/common";
 import {MatInput} from "@angular/material/input";
 import {MatIcon} from "@angular/material/icon";
 import {MatAnchor, MatButton, MatIconButton} from "@angular/material/button";
-import {Router, RouterLink, RouterOutlet} from "@angular/router";
+import { RouterLink, RouterOutlet} from "@angular/router";
 import {MatCheckbox} from "@angular/material/checkbox";
+
 import {
-    AbstractControl,
+
     FormControl, FormGroup,
-    FormGroupDirective,
+
     FormsModule,
-    NgForm,
+
     ReactiveFormsModule,
     Validators
 } from "@angular/forms";
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 import {merge, take} from "rxjs";
 import {ErrorMessageHandler} from "../../utility/error-message.handler";
+import {HttpClientAuthenticationService} from "../../services/authentication/http-client-authentication.service";
+
+
+
+
+
 
 @Component({
     selector: 'app-login',
@@ -55,8 +62,9 @@ export class LoginComponent {
     hidePassword: boolean = true;
 
     constructor(
-        private router: Router) {
-        const {email, password, rememberMe}= this.loginForm.controls;
+        private authService: HttpClientAuthenticationService,
+        ) {
+        const {email, password}= this.loginForm.controls;
         merge(email.statusChanges, email.valueChanges, email.updateOn)
             .pipe(takeUntilDestroyed())
             .subscribe(() => this.loginErrorHandlers.email.updateErrorMessage(email));
@@ -75,12 +83,12 @@ export class LoginComponent {
             this.loginForm.markAllAsTouched();
             return;
         }
-        const {email, password, rememberMe}= this.loginForm.controls;
-        /*this.formService.authenticate(email.value, password.value, rememberMe.value).then((isAuthenticated: boolean) => {
+        const {email, password}= this.loginForm.controls;
+       this.authService.authenticate(email.value, password.value).then((isAuthenticated: boolean) => {
             if (!isAuthenticated) {
                 this.setInputErrors();
             }
-        });*/
+        });
     }
 
     setInputErrors(): void {
