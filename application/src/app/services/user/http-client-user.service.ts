@@ -3,14 +3,14 @@ import {User} from "./user";
 import {UserService} from "./user.service";
 import {UserEmail} from "./user-email";
 import {HttpClientHelper} from "../../clients/http-client-helper";
-import {resolve} from "node:path";
+
 
 
 export class HttpClientUserService implements UserService {
   constructor(private httpClient: HttpClient) {}
   changePassword(password: string, oldPassword: string): Promise<boolean> {
     return new Promise<boolean>(resolve => {
-      return this.httpClient.post(HttpClientHelper.buildUrl('api/v1/users/me/password'), {
+      return this.httpClient.put(HttpClientHelper.buildUrl('/api/v1/authentication'), {
         password: password,
         old_password: oldPassword
       }, {
@@ -21,7 +21,7 @@ export class HttpClientUserService implements UserService {
 
   changeUserById(id: number, user: User): Promise<boolean> {
     return new Promise<boolean>(resolve => {
-      return this.httpClient.put(HttpClientHelper.buildUrl('api/v1/users/' + id), {
+      return this.httpClient.put(HttpClientHelper.buildUrl('/api/v1/users/' + id), {
         firstname: user.firstname,
         lastname: user.lastname,
         locked: user.locked
@@ -45,7 +45,7 @@ export class HttpClientUserService implements UserService {
 
 getAllUsers(role: string): Promise<User[]> {
   return new Promise<User[]>((resolve, reject) => {
-    this.httpClient.get<User[]>(HttpClientHelper.buildUrl(`/api/v1/users`), {
+    this.httpClient.get<User[]>(HttpClientHelper.buildUrl('/api/v1/users'), {
       params: { role: role },
       withCredentials: true
     }).subscribe({
@@ -68,7 +68,7 @@ getCurrentUser(): Promise<User | null> {
 
 getInformationByEmail(email: string): Promise<UserEmail | null> {
   return new Promise<UserEmail | null>((resolve, reject) => {
-    this.httpClient.get<UserEmail>(HttpClientHelper.buildUrl(`/api/v1/users/email/${email}`), {
+    this.httpClient.get<UserEmail>(HttpClientHelper.buildUrl('/api/v1/users/email/${email}'), {
       withCredentials: true
     }).subscribe({
       next: (userEmail) => resolve(userEmail),
