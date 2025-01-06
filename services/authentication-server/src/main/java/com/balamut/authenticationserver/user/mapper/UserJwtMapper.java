@@ -11,6 +11,6 @@ public class UserJwtMapper implements Mapper<User, JwtBuilder> {
     @Override
     public JwtBuilder map(User user) {
         return Jwts.builder()
-                .subject(user.getEmail());
+                .subject(user.getId().toString());
     }
 }
