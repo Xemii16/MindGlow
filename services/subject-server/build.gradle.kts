@@ -8,7 +8,7 @@ plugins {
 val springCloudVersion by extra("2024.0.0")
 
 group = "com.balamut"
-version = "0.1.5-TEST"
+version = "0.2.0"
 
 java {
     toolchain {
@@ -46,6 +46,9 @@ dependencies {
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     implementation("org.springframework.cloud:spring-cloud-starter-kubernetes-client-all")
     implementation("org.springframework.cloud:spring-cloud-starter-kubernetes-client-loadbalancer")
+    implementation("io.jsonwebtoken:jjwt-api:0.12.6")
+    runtimeOnly("io.jsonwebtoken:jjwt-impl:0.12.6")
+    runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.12.6")
 }
 dependencyManagement {
     imports {

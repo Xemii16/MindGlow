@@ -1,0 +1,7 @@
+spring:
+  cloud:
+    kubernetes:
+      loadbalancer:
+        mode: pod
+  profiles:
+    include: ${SPRING_PROFILES_ACTIVE:default}

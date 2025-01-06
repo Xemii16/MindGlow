@@ -1,0 +1,14 @@
+spring:
+  r2dbc:
+    url: r2dbc:postgresql://localhost:5432/mindglow
+    username: postgres
+    password: 12345678
+  flyway:
+    user: postgres
+    password: 12345678
+    url: jdbc:postgresql://localhost:5432/mindglow
+    baseline-on-migrate: true
+logging:
+  level:
+    web: debug
+    org.springframework.security: debug
