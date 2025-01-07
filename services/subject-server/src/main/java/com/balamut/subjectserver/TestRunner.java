@@ -1,7 +1,7 @@
 package com.balamut.subjectserver;
 
-import com.balamut.subjectserver.subject.SubjectEntity;
-import com.balamut.subjectserver.subject.SubjectEntityRepository;
+import com.balamut.subjectserver.subject.entity.SubjectEntity;
+import com.balamut.subjectserver.subject.entity.SubjectEntityRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;

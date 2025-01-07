@@ -1,4 +1,4 @@
-package com.balamut.subjectserver.subject;
+package com.balamut.subjectserver.subject.preparer;
 
 import com.balamut.subjectserver.core.ListResponseEntityPreparer;
 import com.balamut.subjectserver.subject.response.SubjectResponse;

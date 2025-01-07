@@ -1,6 +1,8 @@
 package com.balamut.subjectserver.subject;
 
 import com.balamut.subjectserver.core.Unifier;
+import com.balamut.subjectserver.subject.entity.SubjectEntity;
+import com.balamut.subjectserver.subject.entity.SubjectStudentsEntity;
 import org.springframework.lang.NonNull;
 
 import java.util.Collection;

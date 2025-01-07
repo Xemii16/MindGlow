@@ -1,4 +1,4 @@
-package com.balamut.subjectserver.subject;
+package com.balamut.subjectserver.subject.entity;
 
 import org.springframework.data.r2dbc.repository.R2dbcRepository;
 import org.springframework.stereotype.Repository;

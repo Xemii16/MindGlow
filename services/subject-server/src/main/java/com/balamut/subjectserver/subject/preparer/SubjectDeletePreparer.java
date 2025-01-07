@@ -1,4 +1,4 @@
-package com.balamut.subjectserver.subject.response;
+package com.balamut.subjectserver.subject.preparer;
 
 import com.balamut.subjectserver.core.ResponseEntityPreparer;
 import org.springframework.http.ResponseEntity;

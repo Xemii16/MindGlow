@@ -1,5 +1,6 @@
 package com.balamut.subjectserver.subject;
 
+import com.balamut.subjectserver.core.User;
 import com.balamut.subjectserver.subject.request.CreateCourseRequest;
 import com.balamut.subjectserver.subject.response.SubjectResponse;
 import reactor.core.publisher.Flux;
@@ -7,7 +8,7 @@ import reactor.core.publisher.Mono;
 
 public interface SubjectService {
 
-    Mono<SubjectResponse> createCourse(CreateCourseRequest request);
+    Mono<SubjectResponse> createCourse(CreateCourseRequest request, User user);
 
     Flux<SubjectResponse> getAllSubjects();
 

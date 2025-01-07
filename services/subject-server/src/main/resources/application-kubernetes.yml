@@ -2,6 +2,7 @@ spring:
   cloud:
     kubernetes:
       loadbalancer:
-        mode: pod
+      config:
+        name: subject-server
   profiles:
     include: ${SPRING_PROFILES_ACTIVE:default}

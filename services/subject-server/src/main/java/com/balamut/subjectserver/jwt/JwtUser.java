@@ -10,9 +10,11 @@ import java.util.List;
 public class JwtUser implements User {
 
     private final Integer id;
+    private final Collection<? extends GrantedAuthority> authorities;
 
-    public JwtUser(@NonNull Integer id) {
+    public JwtUser(@NonNull Integer id, Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
+        this.authorities = authorities;
     }
 
     @Override
@@ -22,7 +24,6 @@ public class JwtUser implements User {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        // not implemented
-        return List.of();
+        return this.authorities;
     }
 }

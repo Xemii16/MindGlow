@@ -1,4 +1,4 @@
-package com.balamut.subjectserver.subject;
+package com.balamut.subjectserver.subject.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
