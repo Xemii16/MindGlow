@@ -1,11 +1,9 @@
 package com.balamut.subjectserver.subject;
 
 import com.balamut.subjectserver.core.User;
-import com.balamut.subjectserver.subject.preparer.ListSubjectResponsePreparer;
 import com.balamut.subjectserver.subject.request.CreateCourseRequest;
-import com.balamut.subjectserver.subject.preparer.SubjectDeletePreparer;
+import com.balamut.subjectserver.subject.response.PupilResponse;
 import com.balamut.subjectserver.subject.response.SubjectResponse;
-import com.balamut.subjectserver.subject.preparer.SubjectResponsePreparer;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -25,9 +23,6 @@ import java.util.List;
 public class SubjectController {
 
     private final SubjectService subjectService;
-    private final SubjectResponsePreparer subjectResponsePreparer = new SubjectResponsePreparer();
-    private final ListSubjectResponsePreparer listSubjectResponsePreparer = new ListSubjectResponsePreparer();
-    private final SubjectDeletePreparer subjectDeletePreparer = new SubjectDeletePreparer();
 
     @PostMapping
     @PreAuthorize("hasAnyRole('ADMIN', 'TEACHER')")
@@ -37,8 +32,8 @@ public class SubjectController {
             @ApiResponse(responseCode = "403", description = "No permission (only for teachers and admins)", content = {@Content})
     })
     public Mono<ResponseEntity<SubjectResponse>> create(@RequestBody CreateCourseRequest request, @AuthenticationPrincipal User user) {
-        return subjectResponsePreparer
-                .prepare(subjectService.createCourse(request, user));
+        return subjectService.createCourse(request, user)
+                .map(ResponseEntity::ok);
     }
 
     @GetMapping()
@@ -48,8 +43,9 @@ public class SubjectController {
             @ApiResponse(responseCode = "403", description = "Unauthenticated", content = {@Content})
     })
     public Mono<ResponseEntity<List<SubjectResponse>>> getSubjects() {
-        return listSubjectResponsePreparer
-                .prepare(subjectService.getAllSubjects());
+        return subjectService.getAllSubjects()
+                .collectList()
+                .map(ResponseEntity::ok);
     }
 
     @DeleteMapping("/{id}")
@@ -60,6 +56,26 @@ public class SubjectController {
             @ApiResponse(responseCode = "403", description = "Unauthenticated", content = {@Content})
     })
     public Mono<ResponseEntity<Void>> delete(@PathVariable Integer id) {
-        return subjectDeletePreparer.prepare(subjectService.deleteSubject(id));
+        return subjectService.deleteSubject(id)
+                .then(Mono.fromCallable(() -> ResponseEntity.noContent().build()));
+    }
+
+    @GetMapping("/{id}/pupils")
+    public Mono<ResponseEntity<List<PupilResponse>>> getPupilsBySubject(@PathVariable Integer id) {
+        return subjectService.getPupilsBySubject(id)
+                .collectList()
+                .map(ResponseEntity::ok);
+    }
+
+    @PutMapping("/{id}/pupils")
+    public Mono<ResponseEntity<Void>> addPupilsToSubject(@PathVariable Integer id, @RequestBody List<Integer> pupilIds) {
+        return subjectService.addPupilsToSubject(id, pupilIds)
+                .then(Mono.fromCallable(() -> ResponseEntity.noContent().build()));
+    }
+
+    @DeleteMapping("/{id}/pupils")
+    public Mono<ResponseEntity<Void>> removePupilsFromSubject(@PathVariable Integer id, @RequestBody List<Integer> pupilIds) {
+        return subjectService.removePupilsFromSubject(id, pupilIds)
+                .then(Mono.fromCallable(() -> ResponseEntity.noContent().build()));
     }
 }

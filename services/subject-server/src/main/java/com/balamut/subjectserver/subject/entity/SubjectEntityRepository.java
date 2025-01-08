@@ -11,4 +11,5 @@ public interface SubjectEntityRepository extends R2dbcRepository<SubjectEntity, 
     Flux<SubjectEntity> findAllByTeacherId(Integer teacherId);
 
     Mono<Void> deleteByIdAndTeacherId(Integer id, Integer teacherId);
+
 }
