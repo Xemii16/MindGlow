@@ -1,0 +1,8 @@
+spring:
+  cloud:
+    kubernetes:
+      loadbalancer:
+      config:
+        name: subject-server
+  profiles:
+    include: ${SPRING_PROFILES_ACTIVE:default}

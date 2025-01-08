@@ -1,28 +1,8 @@
 spring:
   application:
     name: subject-server
-  cloud:
-    kubernetes:
-      loadbalancer:
-        mode: pod
-  r2dbc:
-    url: r2dbc:postgresql://localhost:5432/mindglow
-    username: postgres
-    password: 12345678
-  flyway:
-    user: postgres
-    password: 12345678
-    url: jdbc:postgresql://localhost:5432/mindglow
-    baseline-on-migrate: true
-logging:
-  level:
-    web: debug
-    org.springframework.security: debug
 server:
   port: 8081
-mindglow:
-  subject-server-service:
-    url: http://mindglow-subject-server:8081
 springdoc:
   api-docs:
     path: /v3/api-docs
