@@ -18,6 +18,7 @@ import {merge, Observable} from "rxjs";
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 import {ErrorMessageHandler} from "../../utility/error-message.handler";
 import {MatIcon} from "@angular/material/icon";
+import {HttpClientUserService} from "../../services/user/http-client-user.service";
 
 @Component({
     selector: 'app-register',
@@ -74,6 +75,7 @@ export class RegisterComponent {
 
     constructor(
         private emailValidator: TakenEmailValidator,
+        private userService: HttpClientUserService,
         private router: Router,
     ) {
         const emailControl = this.registerForm.get('email');
@@ -117,12 +119,21 @@ export class RegisterComponent {
             this.confirmPassword?.markAsTouched();
             return;
         }
-        /*this.formService.register(
-            this.registerForm.get('email')?.value,
-            this.registerForm.get('firstName')?.value,
-            this.registerForm.get('lastName')?.value,
-            this.registerForm.get('password')?.value
-        );*/
+        this.userService.register(
+          {
+            firstname : this.registerForm.get('firstName')?.value,
+            email : this.registerForm.get('email')?.value,
+            lastname : this.registerForm.get('lastName')?.value,
+            password : this.registerForm.get('password')?.value
+          }
+        ).then(bool => {
+          if (bool) {
+            this.router.navigate(['/dashboard']);
+          }
+        }).catch(error => {
+          this.registerForm.markAllAsTouched();
+          this.confirmPassword?.markAsTouched();
+        });
     }
 }
 
@@ -136,18 +147,22 @@ interface RegisterErrorHandlers {
 
 @Injectable({providedIn: 'root'})
 export class TakenEmailValidator implements AsyncValidator {
-    constructor() {
+    constructor(
+      private userService: HttpClientUserService,
+    ) {
     }
 
     validate(control: AbstractControl): Promise<ValidationErrors | null> | Observable<ValidationErrors | null> {
         return new Promise((resolve) => {
-            /*this.service.checkTakenEmail(control.value).then(r => {
-                if (r) {
-                    resolve({taken: true});
-                } else {
-                    resolve(null);
-                }
-            });*/
+            this.userService.getInformationByEmail(control.value).then(email => {
+              if (email.taken) {
+                resolve({ taken : true});
+                return;
+              }
+              resolve(null);
+            }).catch(() => {
+              resolve({ taken : true});
+            })
         });
     }
 
