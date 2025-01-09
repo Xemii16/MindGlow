@@ -16,6 +16,8 @@ import {
 import {ErrorMessageHandler} from "../../../utility/error-message.handler";
 import {merge, Observable} from "rxjs";
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
+import {HttpClientUserService} from "../../../services/user/http-client-user.service";
+import {SubjectService} from "../../../services/subject/subject.service";
 
 @Component({
   selector: 'app-request-delete-confirm',
@@ -51,6 +53,8 @@ export class SubjectCreateComponent implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<SubjectCreateComponent>,
     private teacherValidator: TeacherValidator,
+    private userService: HttpClientUserService,
+    private subjectService: SubjectService,
   ) {
     const {name, description, teacher} = this.subjectCreateGroup.controls;
     merge(name.statusChanges, name.updateOn)
@@ -74,20 +78,21 @@ export class SubjectCreateComponent implements OnInit {
   onSubmit() {
     this.subjectCreateGroup.enable();
     const {name, description, teacher} = this.subjectCreateGroup.controls;
-    /*const findTeacher = this.teachers.find(user => user.lastname + ' ' + user.firstname === teacher.value);
-    if (!findTeacher) {
-      this.createSubjectHandlers.teacher.updateErrorMessage(teacher);
-      return;
-    }
-    if (name.value === null || description.value === null) return;
-    this.subjectService.createSubject({
-      name: name.value,
-      description: description.value,
-      teacher_id: Number(findTeacher.id)
-    }).then(response => {
-      if (response === null) return;
-      this.dialogRef.close(response);
-    });*/
+    this.userService.getAllUsers("teachers").then((users) => {
+      const user = users.find(user => user.lastname + ' ' + user.firstname === teacher.value);
+      if (!user) {
+        this.createSubjectHandlers.teacher.updateErrorMessage(teacher);
+        return;
+      }
+      if (name.value === null || description.value === null) return;
+      this.subjectService.createSubject({
+        name: name.value,
+        description: description.value,
+        teacher_id: Number(user.id)
+      }).then((subject) => {
+        this.dialogRef.close();
+      })
+    })
   }
 }
 
@@ -103,21 +108,19 @@ interface CreateSubjectHandlers {
 
 @Injectable({providedIn: 'root'})
 export class TeacherValidator implements AsyncValidator {
-  constructor() {
+  constructor(
+    private userService: HttpClientUserService,
+  ) {
   }
 
   validate(control: AbstractControl): Promise<ValidationErrors | null> | Observable<ValidationErrors | null> {
     return new Promise((resolve) => {
-      /*this.service.getTeachers().then(response => {
-        if (response) {
-          if (response.users.find(user => user.lastname + ' ' + user.firstname === control.value)) {
-            resolve(null);
-          }
-          resolve({teacherNotFound: true});
-        } else {
-          resolve({teacherNotFound: true});
+      this.userService.getAllUsers("teachers").then(user => {
+        if (user.find(user => user.lastname + ' ' + user.firstname === control.value)) {
+          resolve(null);
         }
-      });*/
+        resolve({teacherNotFound: true});
+      })
     });
   }
 
