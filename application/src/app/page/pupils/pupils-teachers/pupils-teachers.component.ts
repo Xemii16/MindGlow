@@ -1,10 +1,15 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {MatButton, MatIconButton} from "@angular/material/button";
 import {MatCheckbox} from "@angular/material/checkbox";
 import {MatDivider} from "@angular/material/divider";
 import {MatIcon} from "@angular/material/icon";
 import {MatList, MatListItem, MatListItemTitle} from "@angular/material/list";
 import {NgForOf, NgIf} from "@angular/common";
+import {HttpClientUserService} from "../../../services/user/http-client-user.service";
+import {SubjectService} from "../../../services/subject/subject.service";
+import {User} from "../../../services/user/user";
+import {Subject} from "../../../services/subject/subject";
+import {Pupil} from "../../../services/subject/pupil";
 
 @Component({
   selector: 'app-pupils-teachers',
@@ -14,7 +19,6 @@ import {NgForOf, NgIf} from "@angular/common";
         MatCheckbox,
         MatDivider,
         MatIcon,
-        MatIconButton,
         MatList,
         MatListItem,
         MatListItemTitle,
@@ -24,43 +28,40 @@ import {NgForOf, NgIf} from "@angular/common";
   templateUrl: './pupils-teachers.component.html',
   styleUrl: './pupils-teachers.component.scss'
 })
-export class PupilsTeachersComponent {
+export class PupilsTeachersComponent implements OnInit {
   teacherSubjects: TeacherSubjects[] = [];
+  user ?: User;
+  subjects : Subject[] =[];
 
   constructor(
+    private userService: HttpClientUserService,
+    private subjectService: SubjectService,
   ) {
   }
 
   ngOnInit(): void {
     this.getStudents();
-    /*this.userService.getUserByToken().then(user => {
-      if (user == null) return;
+    this.userService.getCurrentUser().then(user => {
       this.user = user;
-    });*/
+    })
   }
 
   private getStudents() {
-    /*this.subjectService.getSubjects().then(subjects => {
-      if (subjects == null) {
-        return;
-      }
+    this.subjectService.getAllSubjects().then(subjects => {
       this.subjects.push(...subjects);
       this.subjects.forEach(subject => {
-        this.subjectService.getStudents(subject.id).then(students => {
-          if (students == null) {
-            return;
-          }
-          this.teacherSubjects.find(subjectStudents => subjectStudents.teacherId === subject.teacher_id)?.students.push(...students) || this.teacherSubjects.push({
+        this.subjectService.getPupilsBySubject(subject.id).then(subjects => {
+          this.teacherSubjects.find(subjectStudent => subjectStudent.teacherId === subject.teacher_id)?.students.push(...subjects) || this.teacherSubjects.push({
             teacherId: subject.teacher_id,
-            students: students
+            students: subjects
           });
-        });
+        })
       });
-    });*/
+    })
   }
 }
 
 interface TeacherSubjects {
-  teacherId: string
-  // students: UserResponse[];
+  teacherId: number
+  students: Pupil[];
 }
