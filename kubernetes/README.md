@@ -6,8 +6,32 @@ After you have `kubectl` installed, you can deploy the backend by running the fo
 ```bash
 kubectl apply -f ./mongo-storage.yaml
 kubectl apply -f ./postgres-storage.yaml
-kubectl apply -f ./
+kubectl apply -f ./mongo-deployment.yaml
+kubectl apply -f ./postgres-deployment.yaml
+kubectl apply -f ./mongo-service.yaml
+kubectl apply -f ./postgres-service.yaml
+kubectl apply -f ./role.yaml
+kubectl apply -f ./role-binding.yaml
+kubectl apply -f ./role-binding-pods.yaml
+kubectl apply -f ./role-pods.yaml
+kubectl apply -f ./rsa-key-pair.yaml
 ```
+After that, open the terminal and write
+```bash
+minikube dashboard
+```
+This will open the Kubernetes dashboard in your browser. 
+![img.png](kubernetes_databases.png)
+We should see 3 green charts. (if yellow, then wait until it turns green). If all are green, then write the following commands
+```bash
+kubectl apply -f ./mindglow-web-bff-server-deployment.yaml
+kubectl apply -f ./mindglow-web-bff-server-service.yaml
+kubectl apply -f ./mindglow-authentication-server.yaml
+kubectl apply -f ./mindglow-authentication-server-service.yaml
+kubectl apply -f ./mindglow-subject-server.yaml
+kubectl apply -f ./mindglow-subject-server-service.yaml
+```
+Waiting for 3 green charts.
 After that, to access the backend, you need to port-forward the service to your local machine. You can do that by running the following command:
 ```bash
 minikube service mindglow-web-bff-server-service --url
