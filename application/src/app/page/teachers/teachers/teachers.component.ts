@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {MatButton, MatIconButton} from "@angular/material/button";
 import {MatCheckbox} from "@angular/material/checkbox";
 import {MatDivider} from "@angular/material/divider";
@@ -9,6 +9,8 @@ import {NgForOf, NgIf} from "@angular/common";
 import {ReactiveFormsModule} from "@angular/forms";
 import {MatDialog} from "@angular/material/dialog";
 import {TeacherDeleteConfirmComponent} from "./teacher-delete-confirm/teacher-delete-confirm.component";
+import {HttpClientUserService} from "../../../services/user/http-client-user.service";
+import {User} from "../../../services/user/user";
 
 @Component({
   selector: 'app-teachers',
@@ -33,21 +35,28 @@ import {TeacherDeleteConfirmComponent} from "./teacher-delete-confirm/teacher-de
   templateUrl: './teachers.component.html',
   styleUrl: './teachers.component.scss'
 })
-export class TeachersComponent {
-  hasNext: boolean = false;
+export class TeachersComponent implements OnInit {
+  teachers: User[] = [];
 
   constructor(
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private userService: HttpClientUserService,
   ) {
   }
 
-  openDialog(id: string) {
-    const dialogRef = this.dialog.open(TeacherDeleteConfirmComponent, {
-      data: {
-        user: {
-          id: id
+  ngOnInit() {
+    this.userService.getAllUsers("teachers").then((response) => {
+      this.teachers = response;
+    })
+  }
+
+  openDialog(id: number) {
+    this.userService.getUserById(id).then(user => {
+      this.dialog.open(TeacherDeleteConfirmComponent, {
+        data: {
+          user: user
         }
-      }
+      });
     });
   }
 }
