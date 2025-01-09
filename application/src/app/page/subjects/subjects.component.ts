@@ -14,6 +14,10 @@ import {NgForOf, NgIf} from "@angular/common";
 import {MatDialog} from "@angular/material/dialog";
 import {SubjectCreateComponent} from "./subject-create/subject-create.component";
 import {RouterLink} from "@angular/router";
+import {User} from "../../services/user/user";
+import {Subject} from "../../services/subject/subject";
+import {HttpClientUserService} from "../../services/user/http-client-user.service";
+import {HttpClientSubjectService} from "../../services/subject/http-client-subject.service";
 
 @Component({
   selector: 'app-subjects',
@@ -38,12 +42,19 @@ import {RouterLink} from "@angular/router";
 })
 export class SubjectsComponent implements OnInit {
 
+  user?: User;
+  subjects: Subject[] = []
+
   constructor(
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private userService: HttpClientUserService,
+    private subjectService: HttpClientSubjectService
   ) {
   }
 
   ngOnInit(): void {
+    this.userService.getCurrentUser().then(user => this.user = user);
+    this.subjectService.getAllSubjects().then(subjects => this.subjects = subjects);
   }
 
   openDialog() {
