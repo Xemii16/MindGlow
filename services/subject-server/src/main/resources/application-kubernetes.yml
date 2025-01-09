@@ -1,8 +1,14 @@
 spring:
-  cloud:
-    kubernetes:
-      loadbalancer:
-      config:
-        name: subject-server
-  profiles:
-    include: ${SPRING_PROFILES_ACTIVE:default}
+  r2dbc:
+    url: r2dbc:postgresql://${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DATABASE}
+    username: ${POSTGRES_USERNAME}
+    password: ${POSTGRES_PASSWORD}
+  flyway:
+    user: ${POSTGRES_USERNAME}
+    password: ${POSTGRES_PASSWORD}
+    url: jdbc:postgresql://${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DATABASE}
+    baseline-on-migrate: true
+logging:
+  level:
+    web: ${LOGGING_LEVEL_APPLICATION:info}
+    org.springframework.security: ${LOGGING_LEVEL_SECURITY:info}
