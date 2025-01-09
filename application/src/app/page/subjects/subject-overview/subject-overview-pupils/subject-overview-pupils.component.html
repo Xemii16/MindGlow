@@ -1,4 +1,4 @@
-<!--
+
 <div class="subject-pupils-container">
   <div class="subject-pupils-all-box">
     <h4 style="margin: 0">Учні</h4>
@@ -17,8 +17,8 @@
     <mat-list>
       <div *ngFor="let pupil of this.pupils; index as i">
         <mat-list-item>
-          <p matListItemTitle style="margin: 0" class="list-title">{{ pupil.lastname + " " + pupil.firstname }}</p>
-          <p matListItemLine style="margin: 0" class="list-line">{{ pupil.email }}</p>
+          <p matListItemTitle style="margin: 0" class="list-title">{{ user?.lastname + " " + user?.firstname }}</p>
+          <p matListItemLine style="margin: 0" class="list-line">{{ user?.email }}</p>
           <div matListItemMeta>
             <button mat-icon-button [matMenuTriggerFor]="menu" *ngIf="this.user?.role !== 'STUDENT'">
               <mat-icon>more_vert</mat-icon>
@@ -41,4 +41,3 @@
   </div>
 </div>
 
--->

@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatButton, MatIconButton} from "@angular/material/button";
 import {MatCheckbox} from "@angular/material/checkbox";
@@ -10,6 +10,10 @@ import {NgForOf, NgIf} from "@angular/common";
 import {MatDialog} from "@angular/material/dialog";
 import {ActivatedRoute} from "@angular/router";
 import {AddPupilDialogComponent} from "./add-pupil-dialog/add-pupil-dialog.component";
+import {HttpClientUserService} from "../../../../services/user/http-client-user.service";
+import {User} from "../../../../services/user/user";
+import {SubjectService} from "../../../../services/subject/subject.service";
+import {Pupil} from "../../../../services/subject/pupil";
 
 @Component({
   selector: 'app-subject-overview-pupils',
@@ -35,29 +39,29 @@ import {AddPupilDialogComponent} from "./add-pupil-dialog/add-pupil-dialog.compo
   templateUrl: './subject-overview-pupils.component.html',
   styleUrl: './subject-overview-pupils.component.scss'
 })
-export class SubjectOverviewPupilsComponent {
+export class SubjectOverviewPupilsComponent implements OnInit {
+  user?: User;
+  pupils: Pupil[] = [];
 
   constructor(
     public dialog: MatDialog,
     private activatedRoute: ActivatedRoute,
+    private userService: HttpClientUserService,
+    private subjectService: SubjectService,
   ) {
   }
 
   ngOnInit(): void {
     this.getStudents();
-    /*this.userService.getUserByToken().then(user => {
-      if (user == null) return;
+    this.userService.getCurrentUser().then(user => {
       this.user = user;
-    });*/
+    })
   }
 
   private getStudents() {
-    /*this.subjectService.getStudents(this.getSubjectId()).then(students => {
-      if (students == null) {
-        return;
-      }
-      this.pupils.push(...students);
-    });*/
+    this.subjectService.getPupilsBySubject(this.getSubjectId()).then(subjects => {
+      this.pupils.push(...subjects);
+    })
   }
 
   openDialog() {
@@ -67,18 +71,18 @@ export class SubjectOverviewPupilsComponent {
       }
     });
     dialogRef.afterClosed().subscribe(() => {
-      /*this.pupils = [];*/
+      this.pupils = [];
       this.getStudents();
     });
   }
 
-  getSubjectId(): string {
+  getSubjectId(): number {
     return this.activatedRoute.parent?.snapshot.params['id'];
   }
 
-  deletePupilFromSubject(id: string) {
-    /*this.subjectService.deletePupilFromSubject(this.getSubjectId(), id).then(b => {
-      if (b) this.pupils = this.pupils.filter(pupil => pupil.id !== id);
-    });*/
+  deletePupilFromSubject(id: number) {
+    this.subjectService.deletePupilsFromSubject(this.getSubjectId(), [id]).then(result => {
+      this.pupils = this.pupils.filter(pupil => pupil.id !== id);
+    })
   }
 }
