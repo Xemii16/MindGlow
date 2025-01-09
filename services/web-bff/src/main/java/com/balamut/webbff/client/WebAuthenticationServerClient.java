@@ -3,7 +3,6 @@ package com.balamut.webbff.client;
 import com.balamut.webbff.authentication.AuthenticationResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
-import org.springframework.cloud.loadbalancer.annotation.LoadBalancerClient;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -13,15 +12,10 @@ import reactor.core.publisher.Mono;
 public class WebAuthenticationServerClient implements AuthenticationServerClient {
 
     private final WebClient webClient;
-    @Value("${mindglow.authentication-server.uri}")
-    private String authenticationServerUri;
 
-    public WebAuthenticationServerClient(@LoadBalanced WebClient.Builder webClientBuilder) {
+    public WebAuthenticationServerClient(@LoadBalanced WebClient.Builder webClientBuilder, @Value("${mindglow.authentication-server.uri}") String authenticationServerUri) {
         this.webClient = webClientBuilder
-                .baseUrl("lb://" + authenticationServerUri
-                        .replace("http://", "")
-                        .replace("https://", "")
-                )
+                .baseUrl(authenticationServerUri)
                 .build();
     }
 
