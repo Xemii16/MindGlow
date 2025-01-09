@@ -11,6 +11,8 @@ import {MatInputModule} from "@angular/material/input";
 import {MatButtonModule} from "@angular/material/button";
 import {FormsModule} from "@angular/forms";
 import {Location} from "@angular/common";
+import {User} from "../../../../services/user/user";
+import {HttpClientUserService} from "../../../../services/user/http-client-user.service";
 
 @Component({
   selector: 'app-request-delete-confirm',
@@ -32,7 +34,8 @@ export class RequestDeleteConfirmComponent {
   constructor(
     public dialogRef: MatDialogRef<RequestDeleteConfirmComponent>,
     @Inject(MAT_DIALOG_DATA) public data: RequestDeleteConfirmData,
-    private location: Location
+    private location: Location,
+    private userService: HttpClientUserService
   ) {
   }
 
@@ -41,12 +44,13 @@ export class RequestDeleteConfirmComponent {
   }
 
   deleteUser() {
-    /*this.userService.deleteUser(this.data.user).then(() => {
+    this.userService.deleteUserById(this.data.user.id).then(() => {
       this.dialogRef.close();
       this.location.back();
-    });*/
+    });
   }
 }
 
 export interface RequestDeleteConfirmData {
+  user: User;
 }
