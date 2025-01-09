@@ -12,6 +12,7 @@ public class UserRequestModifier implements Modifier<User, UserRequest> {
         entity.setFirstname(modifier.firstname());
         entity.setLastname(modifier.lastname());
         entity.setLocked(modifier.locked());
+        entity.setEnabled(modifier.enabled());
         return entity;
     }
 }
