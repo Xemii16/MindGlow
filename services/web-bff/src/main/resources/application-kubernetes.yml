@@ -1,0 +1,38 @@
+spring:
+  data:
+    mongodb:
+      host: ${SPRING_DATA_MONGODB_HOST}
+      port: ${SPRING_DATA_MONGODB_PORT}
+      database: ${SPRING_DATA_MONGODB_DATABASE}
+      username: ${SPRING_DATA_MONGODB_USERNAME}
+      password: ${SPRING_DATA_MONGODB_PASSWORD}
+      uri: mongodb://${SPRING_DATA_MONGODB_USERNAME}:${SPRING_DATA_MONGODB_PASSWORD}@${SPRING_DATA_MONGODB_HOST}:${SPRING_DATA_MONGODB_PORT}/?authMechanism=SCRAM-SHA-1
+  cloud:
+    gateway:
+      routes:
+        - id: authentication-server-users
+          uri: lb:${MINDGLOW_AUTHENTICATION_SERVICE_URI}
+          predicates:
+            - Path=/api/v1/users/**
+        - id: subject-server
+          uri: lb:${MINDGLOW_SUBJECT_SERVICE_URI}
+          predicates:
+            - Path=/api/v1/subjects/**
+    kubernetes:
+      loadbalancer:
+        mode: service
+      secrets:
+        fail-fast: true
+        name: rsa-key-pair
+logging:
+  level:
+    com.balamut.webbff: ${LOGGING_LEVEL_APPLICATION:info}
+    root: ${LOGGING_LEVEL_ROOT:info}
+cors:
+    allowed-origins: ${CORS_ALLOWED_ORIGINS}
+    allowed-methods: ${CORS_ALLOWED_METHODS}
+    allowed-headers: ${CORS_ALLOWED_HEADERS}
+    allow-credentials: ${CORS_ALLOW_CREDENTIALS}
+mindglow:
+  authentication-server:
+    uri: lb:${MINDGLOW_AUTHENTICATION_SERVICE_URI}
