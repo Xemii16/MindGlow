@@ -32,9 +32,9 @@
                         <mat-icon>arrow_right</mat-icon>
                     </div>
                 </button>
-                <mat-divider *ngIf="i + 1 !== users?.length"></mat-divider>
+                <mat-divider *ngIf="i + 1 !== users.length"></mat-divider>
             </div>
         </mat-action-list>
-        <button mat-button *ngIf="users?.length >= 25 && hasNext" (click)="loadMore()">Завантажити ще</button>
+        <button mat-button *ngIf="users.length >= 25 && hasNext" (click)="loadMore()">Завантажити ще</button>
     </div>
 </div>
