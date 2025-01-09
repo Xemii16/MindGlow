@@ -5,6 +5,8 @@ import {MatIcon} from "@angular/material/icon";
 import {CdkCopyToClipboard} from "@angular/cdk/clipboard";
 import {MatTooltip} from "@angular/material/tooltip";
 import {NgIf} from "@angular/common";
+import {SubjectService} from "../../../../services/subject/subject.service";
+import {Subject} from "../../../../services/subject/subject";
 
 @Component({
   selector: 'app-subjects-overview-main',
@@ -21,23 +23,23 @@ import {NgIf} from "@angular/common";
   styleUrl: './subject-overview-main.component.scss'
 })
 export class SubjectOverviewMainComponent implements OnInit {
+  subject?: Subject;
   constructor(
     private router: Router,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private subjectService: SubjectService,
   ) {
   }
 
   ngOnInit(): void {
-    /*this.subjectService.getSubject(this.getSubjectId()).then(subject => {
-      if (subject == null) {
-        this.router.navigate(['dashboard', 'subjects']);
-        return;
-      }
-      this.subject = subject;
-    });*/
+    this.subjectService.getAllSubjects().then(subjects => {
+      this.subject = subjects.find(result => {
+        return result.id === this.getSubjectId();
+      });
+    })
   }
 
-  getSubjectId(): string {
-    return this.activatedRoute.snapshot.params['id'];
+  getSubjectId(): number {
+    return Number(this.activatedRoute.snapshot.params['id']);
   }
 }
