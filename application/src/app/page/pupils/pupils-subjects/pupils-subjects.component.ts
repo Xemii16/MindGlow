@@ -3,8 +3,8 @@ import {ReactiveFormsModule} from "@angular/forms";
 import {HttpClientUserService} from "../../../services/user/http-client-user.service";
 import {SubjectService} from "../../../services/subject/subject.service";
 import {User} from "../../../services/user/user";
-import {Subject} from "rxjs";
 import {Pupil} from "../../../services/subject/pupil";
+import {Subject} from "../../../services/subject/subject";
 
 @Component({
   selector: 'app-pupils-subjects',
@@ -52,6 +52,6 @@ export class PupilsSubjectsComponent {
 }
 
   interface SubjectStudents {
-    // subject: Subject;
-    // students: Pupil[];
+    subject: Subject;
+    students: Pupil[];
 }
