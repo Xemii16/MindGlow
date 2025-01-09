@@ -20,7 +20,7 @@ import {User} from "../../services/user/user";
   styleUrl: './pupils.component.scss'
 })
 export class PupilsComponent implements OnInit {
-  user: User | null = null;
+  user ?: User;
 
   constructor(
     private router: Router,
@@ -30,7 +30,6 @@ export class PupilsComponent implements OnInit {
 
   ngOnInit(): void {
     this.userService.getCurrentUser().then(user => {
-      if (user === null) return;
       this.user = user;
     })
   }
