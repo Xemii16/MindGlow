@@ -6,56 +6,10 @@ spring:
   session:
     mongodb:
       collection-name: sessions
-  data:
-    mongodb:
-      host: ${SPRING_DATA_MONGODB_HOST}
-      port: ${SPRING_DATA_MONGODB_PORT}
-      database: ${SPRING_DATA_MONGODB_DATABASE}
-      username: ${SPRING_DATA_MONGODB_USERNAME}
-      password: ${SPRING_DATA_MONGODB_PASSWORD}
-      uri: mongodb://${SPRING_DATA_MONGODB_USERNAME}:${SPRING_DATA_MONGODB_PASSWORD}@${SPRING_DATA_MONGODB_HOST}:${SPRING_DATA_MONGODB_PORT}/?authMechanism=SCRAM-SHA-1
   cloud:
     gateway:
-      globalcors:
-        cors-configurations:
-          '[/**]':
-            allowedOrigins: "http://localhost:4200"
-            allowedMethods:
-              - GET
-              - OPTIONS
-              - POST
-              - PUT
-              - PATCH
-              - DELETE
-            allowedHeaders:
-              - "Authorization"
-              - "Content-Type"
-              - "Cache-Control"
-            allowCredentials: true
       discovery:
         locator:
           enabled: true
-      routes:
-        - id: authentication-server-users
-          uri: lb:http://mindglow-authentication-server-service:8080
-          predicates:
-            - Path=/api/v1/users/**
-        - id: subject-server
-          uri: lb:http://mindglow-subject-server-service:8081
-          predicates:
-            - Path=/api/v1/subjects/**
-    kubernetes:
-      reload:
-        enabled: true
-        monitoring-secrets: true
-      loadbalancer:
-        mode: service
-      secrets:
-        fail-fast: true
-        name: rsa-key-pair
 server:
   port: 8082
-logging:
-  level:
-    com.balamut.webbff: ${LOGGING_LEVEL_APPLICATION:info}
-    root: ${LOGGING_LEVEL_ROOT:info}
