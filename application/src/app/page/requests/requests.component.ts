@@ -40,7 +40,7 @@ export class RequestsComponent implements OnInit {
   hasNext: boolean = true;
   currentPage: number = 0;
   startWith: FormControl = new FormControl('');
-  users: User[] | null = null;
+  users?: User[];
 
   constructor(
     private userService: HttpClientUserService,
@@ -64,9 +64,7 @@ export class RequestsComponent implements OnInit {
 
   private getUsers() {
     this.userService.getAllUsers("PUPIL").then((res) => {
-      if (res != null) {
-        this.users = res.filter((user: User) => user.locked);
-      }
+      this.users = res.filter((user: User) => user.locked);
     })
   }
 }
