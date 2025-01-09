@@ -27,7 +27,8 @@ export class HttpClientUserService implements UserService {
       return this.httpClient.put(HttpClientHelper.buildUrl('/api/v1/users/' + id), {
         firstname: user.firstname,
         lastname: user.lastname,
-        locked: user.locked
+        locked: user.locked,
+        enabled: user.enabled
       }, {
         withCredentials: true
       }).subscribe({next: () => resolve(true), error: () => resolve(false)})
