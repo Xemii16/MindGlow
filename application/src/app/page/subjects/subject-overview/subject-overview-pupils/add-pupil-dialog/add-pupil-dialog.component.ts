@@ -15,6 +15,11 @@ import {Location} from "@angular/common";
 import {CdkTrapFocus} from "@angular/cdk/a11y";
 import {RouterLink} from "@angular/router";
 import {MatListOption, MatSelectionList} from "@angular/material/list";
+import {SubjectService} from "../../../../../services/subject/subject.service";
+import {HttpClientUserService} from "../../../../../services/user/http-client-user.service";
+import {Pupil} from "../../../../../services/subject/pupil";
+import {Subject} from "../../../../../services/subject/subject";
+import {User} from "../../../../../services/user/user";
 
 @Component({
   selector: 'app-request-delete-confirm',
@@ -27,9 +32,6 @@ import {MatListOption, MatSelectionList} from "@angular/material/list";
     MatDialogTitle,
     MatDialogContent,
     MatDialogActions,
-    MatDialogClose,
-    CdkTrapFocus,
-    RouterLink,
     MatSelectionList,
     MatListOption,
   ],
@@ -38,20 +40,21 @@ import {MatListOption, MatSelectionList} from "@angular/material/list";
 })
 export class AddPupilDialogComponent implements OnInit {
   @ViewChild(MatSelectionList) pupilsList?: MatSelectionList
+  pupils: User[] = [];
+  subjects ?: Subject;
 
   constructor(
     public dialogRef: MatDialogRef<AddPupilDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: SubjectData,
+    private subjectService: SubjectService,
+    private userService: HttpClientUserService,
   ) {
   }
 
   ngOnInit(): void {
-    /*this.subjectService.getSubject(this.data.id).then(response => {
-      if (response == null) {
-        return;
-      }
-      this.subject = response;
-    });*/
+    this.subjectService.getAllSubjects().then(subjects => {
+      this.subjects = subjects.find(subject => subject.id == this.data.id)
+    })
     this.getPupils();
   }
 
@@ -60,6 +63,12 @@ export class AddPupilDialogComponent implements OnInit {
   }
 
   private getPupils() {
+    this.userService.getAllUsers("pupils").then(users => {
+      this.pupils = users;
+      this.subjectService.getAllSubjects().then(subjects => {
+        this.pupils = this.pupils.filter(pupil => pupil.id == pupil.id);
+      })
+    })
     /*this.userService.getPupils().then(response => {
       if (response == null) {
         return;
@@ -85,5 +94,5 @@ export class AddPupilDialogComponent implements OnInit {
 }
 
 export interface SubjectData {
-  id: string;
+  id: number;
 }
