@@ -14,10 +14,38 @@ spec:
     spec:
       containers:
         - name: authentication-server
-          image: xemii16/mindglow-authentication-server:0.0.14
+          image: xemii16/mindglow-authentication-server:0.1.1
           ports:
             - containerPort: 8080
           env:
+            - name: RSA_PRIVATE_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: rsa-key-pair
+                  key: private-key
+            - name: RSA_PUBLIC_KEY
+              valueFrom:
+                  secretKeyRef:
+                    name: rsa-key-pair
+                    key: public-key
+            - name: KEY_ALGORITHM
+              value: "RSA"
+            - name: TOKEN_EXPIRATION_REFRESH
+              value: "432000"
+            - name: TOKEN_EXPIRATION_ACCESS
+              value: "300"
+            - name: TOKEN_ALGORITHM
+              value: "RSA"
+            - name: POSTGRES_HOST
+              value: "postgres"
+            - name: POSTGRES_PORT
+              value: "5432"
+            - name: POSTGRES_DATABASE
+              value: "mindglow"
+            - name: POSTGRES_USERNAME
+              value: "user"
+            - name: POSTGRES_PASSWORD
+              value: "password"
             - name: LOGGING_LEVEL_APPLICATION
               value: trace
             - name: JAVA_TOOL_OPTIONS

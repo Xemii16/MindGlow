@@ -1,0 +1,15 @@
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DATABASE}
+    username: ${POSTGRES_USERNAME}
+    password: ${POSTGRES_PASSWORD}
+logging:
+  level:
+    com.balamut.authenticationserver: ${LOGGING_LEVEL_APPLICATION:info}
+    org.springframework.security: ${LOGGING_LEVEL_SECURITY:info}
+token:
+  expiration:
+    access: ${TOKEN_EXPIRATION_ACCESS}
+    refresh: ${TOKEN_EXPIRATION_REFRESH}
+  algorithm: ${TOKEN_ALGORITHM}
