@@ -17,7 +17,7 @@ import {Subject} from "../../../services/subject/subject";
 })
 export class PupilsSubjectsComponent {
   subjectsStudents: SubjectStudents[] = [];
-  user: User | null = null;
+  user ?: User;
 
   constructor(
     private userService: HttpClientUserService,
