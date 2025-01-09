@@ -30,7 +30,6 @@ import {User} from "../../../../services/user/user";
   styleUrl: './teacher-confirm.component.scss'
 })
 export class TeacherDeleteConfirmComponent implements OnInit {
-  user ?: User;
 
   constructor(
     public dialogRef: MatDialogRef<TeacherDeleteConfirmComponent>,
@@ -40,9 +39,7 @@ export class TeacherDeleteConfirmComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.userService.getUserById(this.data.user.id).then(user => {
-      this.user = user;
-    })
+
   }
 
   onNoClick(): void {
@@ -50,10 +47,8 @@ export class TeacherDeleteConfirmComponent implements OnInit {
   }
 
   deleteUser() {
-    this.userService.deleteUserById(this.data.user.id).then(Answer => {
-      if (Answer) {
-        this.dialogRef.close();
-      }
+    this.userService.deleteUserById(this.data.user.id).then(() => {
+      this.dialogRef.close();
     })
   }
 }
