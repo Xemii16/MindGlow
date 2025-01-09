@@ -17,6 +17,13 @@ import {ErrorMessageHandler} from "../../../utility/error-message.handler";
 import {merge} from "rxjs";
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 import {MatDialog} from "@angular/material/dialog";
+import {HttpClientUserService} from "../../../services/user/http-client-user.service";
+import {User} from "../../../services/user/user";
+import {RequestDeleteConfirmComponent} from "./request-delete-confirm/request-delete-confirm.component";
+import {MatToolbar} from "@angular/material/toolbar";
+import {MatIcon} from "@angular/material/icon";
+import {MatTooltip} from "@angular/material/tooltip";
+import {MatButton, MatIconButton} from "@angular/material/button";
 
 @Component({
   selector: 'app-request-approval',
@@ -25,7 +32,12 @@ import {MatDialog} from "@angular/material/dialog";
     FormsModule,
     ReactiveFormsModule,
     MatAutocompleteModule,
-    MatInputModule
+    MatInputModule,
+    MatToolbar,
+    MatIcon,
+    MatTooltip,
+    MatButton,
+    MatIconButton
   ],
   templateUrl: './request-approval.component.html',
   styleUrl: './request-approval.component.scss'
@@ -53,11 +65,14 @@ export class RequestApprovalComponent implements OnInit {
     lastName: new ErrorMessageHandler('Введіть прізвище', '', "Прізвище має мати більше більше ніж 1 символ"),
   };
 
+  user?: User;
+
   constructor(private route: ActivatedRoute,
               private location: Location,
+              private userService: HttpClientUserService,
               public dialog: MatDialog
   ) {
-    const {firstName, lastName, role} = this.request.controls;
+    const {firstName, lastName} = this.request.controls;
     merge(firstName.valueChanges, firstName.updateOn)
       .pipe(takeUntilDestroyed())
       .subscribe(() => this.errorHandlers.firstName.updateErrorMessage(firstName));
@@ -71,23 +86,22 @@ export class RequestApprovalComponent implements OnInit {
   }
 
   openDialog() {
-    /*const dialogRef = this.dialog.open(RequestDeleteConfirmComponent, {
+    this.dialog.open(RequestDeleteConfirmComponent, {
       data: {user: this.user}
-    });*/
+    });
   }
 
   ngOnInit(): void {
-    const id = this.route.snapshot.paramMap.get('id');
+    const id = Number(this.route.snapshot.paramMap.get('id'));
     if (id === null) return;
-    /*this.userService.getUserById(id).then(response => {
-      if (response === null) return;
+    this.userService.getUserById(id).then(response => {
       this.user = response;
       const {role, email, firstName, lastName} = this.request.controls;
-      role.setValue(this.user?.role === 'TEACHER' ? 'Вчитель' : 'Студент');
-      email.setValue(this.user?.email);
-      firstName.setValue(this.user?.firstname);
-      lastName.setValue(this.user?.lastname);
-    });*/
+      role.setValue(this.user.role === 'TEACHER' ? 'Вчитель' : 'Студент');
+      email.setValue(this.user.email);
+      firstName.setValue(this.user.firstname);
+      lastName.setValue(this.user.lastname);
+    })
   }
 
   onSubmit() {
@@ -96,18 +110,19 @@ export class RequestApprovalComponent implements OnInit {
       return;
     }
     const {firstName, lastName, role, email} = this.request.controls;
-    const userId: string | null = this.route.snapshot.paramMap.get('id');
-    if (userId === null) return;/*
-    this.userService.putUser({
-      id: userId,
-      email: email.value,
+    const userId: number = Number(this.route.snapshot.paramMap.get('id'));
+    if (userId === null) return;
+    this.userService.changeUserById(userId, {
+      id: -1,
       firstname: firstName.value,
       lastname: lastName.value,
-      role: role.value === 'Вчитель' ? 'TEACHER' : 'STUDENT',
+      email: email.value,
+      role: role.value === 'Вчитель' ? 'TEACHER' : 'PUPIL',
+      locked: false,
       enabled: true
     }).then(() => {
       this.location.back();
-    });*/
+    });
   }
 }
 

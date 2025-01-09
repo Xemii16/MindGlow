@@ -45,7 +45,9 @@ public class BearerAuthenticationTokenFilter extends OncePerRequestFilter {
         /*authentication.setDetails(
                 new WebAuthenticationDetailsSource().buildDetails(request)
         );*/
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+            if (user.isEnabled() && !user.isLocked()) {
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+            }
         } catch (JwtException e) {
             log.debug("Invalid token: {}", e.getMessage());
             throw new BadTokenException("Invalid token");

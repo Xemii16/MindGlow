@@ -20,6 +20,8 @@ public class RegisterUserMapper implements RestMapper<RegisterRequest, RegisterR
                 .firstname(registerRequest.firstname())
                 .lastname(registerRequest.lastname())
                 .password(registerRequest.password())
+                .locked(false)
+                .enabled(false)
                 .build();
     }
 }

@@ -28,7 +28,10 @@ public class JwtAuthenticationManager implements ReactiveAuthenticationManager {
                     List<SimpleGrantedAuthority> authorities = Arrays.stream(claims.get("authorities", String[].class))
                             .map(SimpleGrantedAuthority::new)
                             .collect(Collectors.toList());
-                    JwtUser user = new JwtUser(claims.get("sub", Integer.class), authorities);
+                    JwtUser user = new JwtUser(claims.get("sub", Integer.class), authorities, claims.get("locked", Boolean.class), claims.get("enabled", Boolean.class));
+                    if (user.isLocked() || !user.isEnabled()) {
+                        return Mono.error(new JwtAuthenticationException("User is locked or disabled"));
+                    }
                     return Mono.just(JwtAuthentication.authenticated(user, (String) jwtAuthentication.getCredentials(), user.getAuthorities()));
                 });
     }
