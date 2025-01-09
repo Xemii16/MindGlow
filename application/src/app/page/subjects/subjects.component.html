@@ -1,17 +1,17 @@
-<!--<div class="subjects-container">
+<div class="subjects-container">
   <div class="subjects-header">
     <h4>Предмети</h4>
-    &lt;!&ndash;<button mat-flat-button (click)="openDialog()" *ngIf="this.user?.role !== 'STUDENT'">
+    <button mat-flat-button (click)="openDialog()" *ngIf="this.user?.role !== 'PUPIL'">
       Створити предмет
       <mat-icon>add_circle</mat-icon>
-    </button>&ndash;&gt;
+    </button>
   </div>
-  &lt;!&ndash;<div class="nothing-text" *ngIf="this.subjects.length === 0">&ndash;&gt;
-    &lt;!&ndash;<h6 *ngIf="this.user?.role === 'TEACHER' || this.user?.role === 'ADMIN'">Предметів немає... Може час створити?</h6>
-    <h6 *ngIf="this.user?.role === 'STUDENT'">Предметів немає... Можливо настав час приєднатися?</h6>&ndash;&gt;
+  <div class="nothing-text" *ngIf="this.subjects.length === 0">
+    <h6 *ngIf="this.user?.role === 'TEACHER' || this.user?.role === 'ADMIN'">Предметів немає... Може час створити?</h6>
+    <h6 *ngIf="this.user?.role === 'PUPIL'">Предметів немає... Можливо настав час приєднатися?</h6>
   </div>
   <div class="card-subjects-container">
-    &lt;!&ndash;<div *ngFor="let subject of this.subjects; index as i">
+    <div *ngFor="let subject of this.subjects; index as i">
       <mat-card class="subject-card">
         <mat-card-header>
           <mat-card-title-group>
@@ -26,14 +26,14 @@
           <p>{{subject.description}}</p>
         </mat-card-content>
         <mat-card-actions>
-          <button mat-button [routerLink]="subject.id">
+          <button mat-button [routerLink]="subject.id.toString()">
             Відкрити
           </button>
-          <button mat-icon-button disabled *ngIf="this.user?.role !== 'STUDENT'">
+          <button mat-icon-button disabled *ngIf="this.user?.role !== 'PUPIL'">
             <mat-icon>edit</mat-icon>
           </button>
         </mat-card-actions>
       </mat-card>
-    </div>&ndash;&gt;
+    </div>
   </div>
-</div>-->
+</div>
