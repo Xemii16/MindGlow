@@ -1,5 +1,4 @@
-<!--
-<h2 mat-dialog-title>Вилучити учня <strong>{{this.user?.lastname +  " " + this.user?.firstname}}</strong></h2>
+<h2 mat-dialog-title>Вилучити учня <strong>{{this.data.user.lastname +  " " + this.data.user.firstname}}</strong></h2>
 <mat-dialog-content>
   <p>Акаунт учня буде вилучений і він не зможе отримати доступ до платформи</p>
 </mat-dialog-content>
@@ -7,4 +6,3 @@
   <button mat-button (click)="onNoClick()">Скасувати</button>
   <button mat-button (click)="deleteUser()" cdkFocusInitial>Вилучити</button>
 </mat-dialog-actions>
--->
