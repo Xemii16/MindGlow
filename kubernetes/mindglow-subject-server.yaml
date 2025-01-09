@@ -14,6 +14,29 @@ spec:
     spec:
       containers:
         - name: subject-server
-          image: xemii16/mindglow-subject-server:0.1.5-TEST
+          image: xemii16/mindglow-subject-server:0.2.1
           ports:
             - containerPort: 8081
+          env:
+            - name: RSA_PUBLIC_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: rsa-key-pair
+                  key: public-key
+            - name: RSA_PRIVATE_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: rsa-key-pair
+                  key: private-key
+            - name: KEY_ALGORITHM
+              value: "RSA"
+            - name: POSTGRES_HOST
+              value: "postgres"
+            - name: POSTGRES_PORT
+              value: "5432"
+            - name: POSTGRES_DATABASE
+              value: "mindglow"
+            - name: POSTGRES_USERNAME
+              value: "user"
+            - name: POSTGRES_PASSWORD
+              value: "password"
