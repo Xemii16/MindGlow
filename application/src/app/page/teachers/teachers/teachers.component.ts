@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {MatButton, MatIconButton} from "@angular/material/button";
 import {MatCheckbox} from "@angular/material/checkbox";
 import {MatDivider} from "@angular/material/divider";
@@ -35,9 +35,8 @@ import {User} from "../../../services/user/user";
   templateUrl: './teachers.component.html',
   styleUrl: './teachers.component.scss'
 })
-export class TeachersComponent {
-  hasNext: boolean = false;
-  teachers : User[] = [];
+export class TeachersComponent implements OnInit {
+  teachers: User[] = [];
 
   constructor(
     public dialog: MatDialog,
@@ -52,12 +51,12 @@ export class TeachersComponent {
   }
 
   openDialog(id: number) {
-    const dialogRef = this.dialog.open(TeacherDeleteConfirmComponent, {
-      data: {
-        user: {
-          id: id
+    this.userService.getUserById(id).then(user => {
+      this.dialog.open(TeacherDeleteConfirmComponent, {
+        data: {
+          user: user
         }
-      }
+      });
     });
   }
 }
