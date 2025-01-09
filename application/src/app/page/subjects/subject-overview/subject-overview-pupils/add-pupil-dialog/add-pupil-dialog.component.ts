@@ -2,7 +2,6 @@ import {Component, Inject, OnInit, ViewChild} from '@angular/core';
 import {
   MAT_DIALOG_DATA,
   MatDialogActions,
-  MatDialogClose,
   MatDialogContent,
   MatDialogRef,
   MatDialogTitle
@@ -11,10 +10,11 @@ import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
 import {MatButtonModule} from "@angular/material/button";
 import {FormsModule} from "@angular/forms";
-import {Location} from "@angular/common";
-import {CdkTrapFocus} from "@angular/cdk/a11y";
-import {RouterLink} from "@angular/router";
 import {MatListOption, MatSelectionList} from "@angular/material/list";
+import {HttpClientSubjectService} from "../../../../../services/subject/http-client-subject.service";
+import {Subject} from "../../../../../services/subject/subject";
+import {User} from "../../../../../services/user/user";
+import {HttpClientUserService} from "../../../../../services/user/http-client-user.service";
 
 @Component({
   selector: 'app-request-delete-confirm',
@@ -27,9 +27,6 @@ import {MatListOption, MatSelectionList} from "@angular/material/list";
     MatDialogTitle,
     MatDialogContent,
     MatDialogActions,
-    MatDialogClose,
-    CdkTrapFocus,
-    RouterLink,
     MatSelectionList,
     MatListOption,
   ],
@@ -38,20 +35,21 @@ import {MatListOption, MatSelectionList} from "@angular/material/list";
 })
 export class AddPupilDialogComponent implements OnInit {
   @ViewChild(MatSelectionList) pupilsList?: MatSelectionList
+  subject?: Subject;
+  pupils: User[] = [];
 
   constructor(
     public dialogRef: MatDialogRef<AddPupilDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: SubjectData,
+    private subjectService: HttpClientSubjectService,
+    private userService: HttpClientUserService,
+    @Inject(MAT_DIALOG_DATA) public data: SubjectData
   ) {
   }
 
   ngOnInit(): void {
-    /*this.subjectService.getSubject(this.data.id).then(response => {
-      if (response == null) {
-        return;
-      }
-      this.subject = response;
-    });*/
+    this.subjectService.getAllSubjects().then(subject => {
+      this.subject = subject.find(subject => subject.id === this.data.id);
+    });
     this.getPupils();
   }
 
@@ -60,30 +58,25 @@ export class AddPupilDialogComponent implements OnInit {
   }
 
   private getPupils() {
-    /*this.userService.getPupils().then(response => {
-      if (response == null) {
-        return;
-      }
-      this.pupils = response.users;
-      this.subjectService.getStudents(this.data.id).then(students => {
-        if (students == null) {
-          return;
-        }
-        this.pupils = this.pupils.filter(pupil => students.find(student => student.id === pupil.id) == null);
+    this.userService.getAllUsers("pupils").then(users => {
+      this.pupils = users;
+      this.subjectService.getPupilsBySubject(this.data.id).then(pupils => {
+        this.pupils = this.pupils.filter(pupil => pupils.find(student => student.id === pupil.id) == null);
       });
-    });*/
+    });
   }
 
   onAddClick() {
     this.pupilsList?.selectedOptions.selected.forEach(option => {
       console.log(option.value)
-      /*this.subjectService.addStudent(this.data.id, option.value).then(() => {
-      });*/
+      this.subjectService.addPupilsToSubject(this.data.id, [option.value]).then(() => {
+
+      });
     });
     this.dialogRef.close();
   }
 }
 
 export interface SubjectData {
-  id: string;
+  id: number;
 }

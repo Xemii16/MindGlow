@@ -1,8 +1,7 @@
-<!--
 <h2 mat-dialog-title>Додати учня</h2>
 <mat-dialog-content>
   <p>Виберіть з поданого списку учнів</p>
-  <mat-selection-list #shoes>
+  <mat-selection-list>
     @for (pupil of this.pupils; track pupil) {
       <mat-list-option [value]="pupil.id">{{pupil.lastname + " " + pupil.firstname}}</mat-list-option>
     }
@@ -12,4 +11,3 @@
   <button mat-button (click)="onNoClick()">Скасувати</button>
   <button mat-button (click)="onAddClick()" cdkFocusInitial>Додати</button>
 </mat-dialog-actions>
--->
