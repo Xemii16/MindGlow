@@ -10,12 +10,6 @@
                     <mat-icon iconPositionEnd>arrow_drop_down</mat-icon>
                 </button>
             </div>
-            <mat-form-field appearance="outline" subscriptSizing="dynamic">
-                <mat-label>Знайти людину</mat-label>
-                <mat-icon matPrefix>search</mat-icon>
-                <input type="text" matInput [formControl]="startWith" (blur)="reloadPages()">
-                <mat-icon matSuffix>mode_edit</mat-icon>
-            </mat-form-field>
         </div>
         <mat-action-list>
             <div *ngFor="let user of users; index as i">
@@ -35,6 +29,5 @@
                 <mat-divider *ngIf="i + 1 !== users.length"></mat-divider>
             </div>
         </mat-action-list>
-        <button mat-button *ngIf="users.length >= 25 && hasNext" (click)="loadMore()">Завантажити ще</button>
     </div>
 </div>
