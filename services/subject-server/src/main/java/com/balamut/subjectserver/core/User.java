@@ -10,4 +10,8 @@ public interface User {
 
     Collection<? extends GrantedAuthority> getAuthorities();
 
+    boolean isLocked();
+
+    boolean isEnabled();
+
 }
