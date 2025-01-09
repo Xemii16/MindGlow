@@ -2,6 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {MatTabLink, MatTabNav, MatTabNavPanel} from "@angular/material/tabs";
 import {Router, RouterLink, RouterOutlet} from "@angular/router";
 import {NgIf} from "@angular/common";
+import {HttpClientUserService} from "../../services/user/http-client-user.service";
+import {User} from "../../services/user/user";
 
 @Component({
   selector: 'app-pupils',
@@ -18,17 +20,18 @@ import {NgIf} from "@angular/common";
   styleUrl: './pupils.component.scss'
 })
 export class PupilsComponent implements OnInit {
+  user ?: User;
 
   constructor(
     private router: Router,
+    private userService: HttpClientUserService
   ) {
   }
 
   ngOnInit(): void {
-    /*this.userService.getUserByToken().then(response => {
-      if (response === null) return;
-      this.user = response;
-    })*/
+    this.userService.getCurrentUser().then(user => {
+      this.user = user;
+    })
   }
 
   isCurrentRoute(route: string): boolean {
