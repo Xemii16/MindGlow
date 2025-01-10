@@ -58,7 +58,7 @@ export class AddPupilDialogComponent implements OnInit {
   }
 
   private getPupils() {
-    this.userService.getAllUsers("pupils").then(users => {
+    this.userService.getAllUsers("students").then(users => {
       this.pupils = users;
       this.subjectService.getPupilsBySubject(this.data.id).then(pupils => {
         this.pupils = this.pupils.filter(pupil => pupils.find(student => student.id === pupil.id) == null);
