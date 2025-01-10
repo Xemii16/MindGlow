@@ -18,6 +18,7 @@ import {merge, Observable} from "rxjs";
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 import {HttpClientUserService} from "../../../services/user/http-client-user.service";
 import {SubjectService} from "../../../services/subject/subject.service";
+import {HttpClientSubjectService} from "../../../services/subject/http-client-subject.service";
 
 @Component({
   selector: 'app-request-delete-confirm',
@@ -54,7 +55,7 @@ export class SubjectCreateComponent implements OnInit {
     public dialogRef: MatDialogRef<SubjectCreateComponent>,
     private teacherValidator: TeacherValidator,
     private userService: HttpClientUserService,
-    private subjectService: SubjectService,
+    private subjectService: HttpClientSubjectService,
   ) {
     const {name, description, teacher} = this.subjectCreateGroup.controls;
     merge(name.statusChanges, name.updateOn)

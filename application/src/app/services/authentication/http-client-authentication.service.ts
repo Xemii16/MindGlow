@@ -17,7 +17,8 @@ export class HttpClientAuthenticationService implements AuthenticationService {
         params: {
           email: email,
           password: password
-        }
+        },
+        withCredentials: true
       }).subscribe({next: () => resolve(true), error: () => resolve(false)})
     })
   }
