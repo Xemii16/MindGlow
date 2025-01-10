@@ -10,6 +10,7 @@ import {SubjectService} from "../../../services/subject/subject.service";
 import {User} from "../../../services/user/user";
 import {Subject} from "../../../services/subject/subject";
 import {Pupil} from "../../../services/subject/pupil";
+import {HttpClientSubjectService} from "../../../services/subject/http-client-subject.service";
 
 @Component({
   selector: 'app-pupils-teachers',
@@ -35,7 +36,7 @@ export class PupilsTeachersComponent implements OnInit {
 
   constructor(
     private userService: HttpClientUserService,
-    private subjectService: SubjectService,
+    private subjectService: HttpClientSubjectService,
   ) {
   }
 

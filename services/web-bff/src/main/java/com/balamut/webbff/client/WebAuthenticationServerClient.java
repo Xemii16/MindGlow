@@ -15,7 +15,7 @@ public class WebAuthenticationServerClient implements AuthenticationServerClient
 
     public WebAuthenticationServerClient(@LoadBalanced WebClient.Builder webClientBuilder, @Value("${mindglow.authentication-server.uri}") String authenticationServerUri) {
         this.webClient = webClientBuilder
-                .baseUrl(authenticationServerUri)
+                .baseUrl("lb://mindglow-authentication-server-service:8080")
                 .build();
     }
 

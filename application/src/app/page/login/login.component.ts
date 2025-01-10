@@ -4,7 +4,7 @@ import {NgIf, NgOptimizedImage} from "@angular/common";
 import {MatInput} from "@angular/material/input";
 import {MatIcon} from "@angular/material/icon";
 import {MatAnchor, MatButton, MatIconButton} from "@angular/material/button";
-import { RouterLink, RouterOutlet} from "@angular/router";
+import {Router, RouterLink, RouterOutlet} from "@angular/router";
 import {MatCheckbox} from "@angular/material/checkbox";
 
 import {
@@ -63,6 +63,7 @@ export class LoginComponent {
 
     constructor(
         private authService: HttpClientAuthenticationService,
+        private router: Router
         ) {
         const {email, password}= this.loginForm.controls;
         merge(email.statusChanges, email.valueChanges, email.updateOn)
@@ -88,6 +89,7 @@ export class LoginComponent {
             if (!isAuthenticated) {
                 this.setInputErrors();
             }
+            this.router.navigate(['/dashboard']);
         });
     }
 

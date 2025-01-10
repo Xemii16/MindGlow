@@ -117,7 +117,7 @@ export class RequestApprovalComponent implements OnInit {
       firstname: firstName.value,
       lastname: lastName.value,
       email: email.value,
-      role: role.value === 'Вчитель' ? 'TEACHER' : 'PUPIL',
+      role: role.value === 'Вчитель' ? 'TEACHER' : 'STUDENT',
       locked: false,
       enabled: true
     }).then(() => {
