@@ -5,6 +5,7 @@ import {SubjectService} from "../../../services/subject/subject.service";
 import {User} from "../../../services/user/user";
 import {Pupil} from "../../../services/subject/pupil";
 import {Subject} from "../../../services/subject/subject";
+import {HttpClientSubjectService} from "../../../services/subject/http-client-subject.service";
 
 @Component({
   selector: 'app-pupils-subjects',
@@ -21,7 +22,7 @@ export class PupilsSubjectsComponent implements OnInit {
 
   constructor(
     private userService: HttpClientUserService,
-    private subjectService: SubjectService,
+    private subjectService: HttpClientSubjectService,
   ) {
   }
 

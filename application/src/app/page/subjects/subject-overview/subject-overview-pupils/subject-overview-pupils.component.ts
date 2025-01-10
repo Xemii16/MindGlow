@@ -14,6 +14,7 @@ import {HttpClientUserService} from "../../../../services/user/http-client-user.
 import {User} from "../../../../services/user/user";
 import {SubjectService} from "../../../../services/subject/subject.service";
 import {Pupil} from "../../../../services/subject/pupil";
+import {HttpClientSubjectService} from "../../../../services/subject/http-client-subject.service";
 
 @Component({
   selector: 'app-subject-overview-pupils',
@@ -47,7 +48,7 @@ export class SubjectOverviewPupilsComponent implements OnInit {
     public dialog: MatDialog,
     private activatedRoute: ActivatedRoute,
     private userService: HttpClientUserService,
-    private subjectService: SubjectService,
+    private subjectService: HttpClientSubjectService,
   ) {
   }
 

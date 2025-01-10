@@ -10,7 +10,9 @@ import {Injectable} from "@angular/core";
 })
 
 export class HttpClientUserService implements UserService {
-  constructor(private httpClient: HttpClient) {}
+  constructor(private httpClient: HttpClient) {
+  }
+
   changePassword(password: string, oldPassword: string): Promise<boolean> {
     return new Promise<boolean>(resolve => {
       return this.httpClient.put(HttpClientHelper.buildUrl('/api/v1/authentication'), {
@@ -37,27 +39,27 @@ export class HttpClientUserService implements UserService {
 
   deleteUserById(id: number): Promise<boolean> {
     return new Promise<boolean>(resolve => {
-        return this.httpClient.delete(HttpClientHelper.buildUrl('/api/v1/users/'+id),{
-          withCredentials:true
+        return this.httpClient.delete(HttpClientHelper.buildUrl('/api/v1/users/' + id), {
+          withCredentials: true
         }).subscribe({
-          next:()=> resolve(true),
-          error:()=>resolve(false)
+          next: () => resolve(true),
+          error: () => resolve(false)
         })
       }
     )
   }
 
-getAllUsers(role: string): Promise<User[]> {
-  return new Promise<User[]>((resolve, reject) => {
-    this.httpClient.get<User[]>(HttpClientHelper.buildUrl('/api/v1/users'), {
-      params: { role: role },
-      withCredentials: true
-    }).subscribe({
-      next: (users) => resolve(users),
-      error: (err) => reject(err)
+  getAllUsers(role: string): Promise<User[]> {
+    return new Promise<User[]>((resolve, reject) => {
+      this.httpClient.get<User[]>(HttpClientHelper.buildUrl('/api/v1/users'), {
+        params: {role: role},
+        withCredentials: true
+      }).subscribe({
+        next: (users) => resolve(users),
+        error: (err) => reject(err)
+      });
     });
-  });
-}
+  }
 
   getCurrentUser(): Promise<User> {
     return new Promise<User>((resolve, reject) => {
@@ -72,7 +74,7 @@ getAllUsers(role: string): Promise<User[]> {
 
   getInformationByEmail(email: string): Promise<UserEmail> {
     return new Promise<UserEmail>((resolve, reject) => {
-      this.httpClient.get<UserEmail>(HttpClientHelper.buildUrl('/api/v1/users/email/'+email), {
+      this.httpClient.get<UserEmail>(HttpClientHelper.buildUrl('/api/v1/users/email/' + email), {
         withCredentials: true
       }).subscribe({
         next: (userEmail) => resolve(userEmail),
@@ -83,7 +85,7 @@ getAllUsers(role: string): Promise<User[]> {
 
   getUserById(id: number): Promise<User> {
     return new Promise<User>((resolve, reject) => {
-      this.httpClient.get<User>(HttpClientHelper.buildUrl('/api/v1/users/'+id), {
+      this.httpClient.get<User>(HttpClientHelper.buildUrl('/api/v1/users/' + id), {
         withCredentials: true
       }).subscribe({
         next: (user) => resolve(user),

@@ -24,7 +24,7 @@ This will open the Kubernetes dashboard in your browser.
 ![img.png](kubernetes_databases.png)
 We should see 3 green charts. (if yellow, then wait until it turns green). If all are green, then write the following commands
 ```bash
-kubectl apply -f ./mindglow-web-bff-server-deployment.yaml
+kubectl apply -f ./mindglow-web-bff-server.yaml
 kubectl apply -f ./mindglow-web-bff-server-service.yaml
 kubectl apply -f ./mindglow-authentication-server.yaml
 kubectl apply -f ./mindglow-authentication-server-service.yaml

@@ -7,6 +7,7 @@ import {MatTooltip} from "@angular/material/tooltip";
 import {NgIf} from "@angular/common";
 import {SubjectService} from "../../../../services/subject/subject.service";
 import {Subject} from "../../../../services/subject/subject";
+import {HttpClientSubjectService} from "../../../../services/subject/http-client-subject.service";
 
 @Component({
   selector: 'app-subjects-overview-main',
@@ -27,7 +28,7 @@ export class SubjectOverviewMainComponent implements OnInit {
   constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private subjectService: SubjectService,
+    private subjectService: HttpClientSubjectService,
   ) {
   }
 
