@@ -14,10 +14,12 @@ spec:
     spec:
       containers:
         - name: authentication-server
-          image: xemii16/mindglow-authentication-server:0.1.3
+          image: xemii16/mindglow-authentication-server:0.1.6
           ports:
             - containerPort: 8080
           env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: demonstration, kubernetes
             - name: RSA_PRIVATE_KEY
               valueFrom:
                 secretKeyRef:
