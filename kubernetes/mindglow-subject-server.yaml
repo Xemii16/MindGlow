@@ -14,10 +14,14 @@ spec:
     spec:
       containers:
         - name: subject-server
-          image: xemii16/mindglow-subject-server:0.2.2
+          image: xemii16/mindglow-subject-server:0.2.13
           ports:
             - containerPort: 8081
           env:
+            - name: LOGGING_LEVEL_APPLICATION
+              value: info
+            - name: SPRING_PROFILES_ACTIVE
+              value: demonstration, kubernetes
             - name: RSA_PUBLIC_KEY
               valueFrom:
                 secretKeyRef:

@@ -10,5 +10,5 @@ spring:
     baseline-on-migrate: true
 logging:
   level:
-    web: ${LOGGING_LEVEL_APPLICATION:info}
     org.springframework.security: ${LOGGING_LEVEL_SECURITY:info}
+    root: ${LOGGING_LEVEL_APPLICATION:info}
