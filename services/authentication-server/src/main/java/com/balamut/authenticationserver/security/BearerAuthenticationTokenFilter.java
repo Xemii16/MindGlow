@@ -39,7 +39,7 @@ public class BearerAuthenticationTokenFilter extends OncePerRequestFilter {
         log.trace("Token from authorization header: {}", token);
         try {
             Claims claims = jwtService.getPayload(token);
-            String email = claims.getSubject();
+            String email = claims.get("email", String.class);
             User user = (User) userDetailsService.loadUserByUsername(email);
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
         /*authentication.setDetails(

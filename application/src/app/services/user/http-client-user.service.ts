@@ -94,7 +94,13 @@ export class HttpClientUserService implements UserService {
     });
   }
 
-  register(info: { firstname: string, lastname: string, email: string, password: string }): Promise<boolean> {
+  register(info: {
+    firstname: string,
+    lastname: string,
+    email: string,
+    password: string,
+    role: string
+  }): Promise<boolean> {
     return new Promise<boolean>(resolve => {
       this.httpClient.post<{ id: number }>(HttpClientHelper.buildUrl('/api/v1/users/register'), info, {
         withCredentials: true

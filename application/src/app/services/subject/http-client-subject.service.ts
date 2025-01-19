@@ -15,7 +15,7 @@ export class HttpClientSubjectService implements SubjectService {
 
   getAllSubjects(): Promise<Subject[]> {
     return new Promise<Subject[]>(((resolve, reject) => {
-      this.http.get<Subject[]>(HttpClientHelper.buildUrl("/api/v1/subjects"))
+      this.http.get<Subject[]>(HttpClientHelper.buildUrl("/api/v1/subjects"), {withCredentials: true})
         .subscribe({next: value => resolve(value), error: error => reject(error)});
     }));
   }

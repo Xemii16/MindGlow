@@ -72,7 +72,7 @@ export class PupilsAllComponent implements OnInit {
   }
 
   private getPupils() {
-    this.userService.getAllUsers('pupils').then(users => {
+    this.userService.getAllUsers('students').then(users => {
       this.pupils = users;
     });
   }

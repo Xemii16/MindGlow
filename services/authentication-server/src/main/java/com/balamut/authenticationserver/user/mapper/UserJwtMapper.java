@@ -22,8 +22,8 @@ public class UserJwtMapper implements Mapper<User, JwtBuilder> {
         return Jwts.builder()
                 .claim("locked", user.isLocked())
                 .claim("enabled", user.isEnabled())
-                .claim("authorities", authorities
-                )
+                .claim("authorities", authorities)
+                .claim("email", user.getEmail())
                 .subject(user.getId().toString());
     }
 }

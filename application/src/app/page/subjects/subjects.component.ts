@@ -63,6 +63,4 @@ export class SubjectsComponent implements OnInit {
       if (result === null || result === undefined) return;
     });
   }
-
-  protected readonly open = open;
 }

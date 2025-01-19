@@ -21,7 +21,7 @@ import {SubjectService} from "../../../services/subject/subject.service";
 import {HttpClientSubjectService} from "../../../services/subject/http-client-subject.service";
 
 @Component({
-  selector: 'app-request-delete-confirm',
+  selector: 'app-subject-create',
   standalone: true,
   imports: [
     MatFormFieldModule,

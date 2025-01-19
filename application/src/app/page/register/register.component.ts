@@ -124,7 +124,8 @@ export class RegisterComponent {
             firstname : this.registerForm.get('firstName')?.value,
             email : this.registerForm.get('email')?.value,
             lastname : this.registerForm.get('lastName')?.value,
-            password : this.registerForm.get('password')?.value
+            password : this.registerForm.get('password')?.value,
+            role : 'TEACHER'
           }
         ).then(bool => {
           if (bool) {
