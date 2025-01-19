@@ -158,11 +158,16 @@ public class UserServiceImpl implements UserService {
         return null;
     }
 
+    @Override
+    public void deleteAll() {
+        this.userRepository.deleteAll();
+    }
+
     protected boolean matchesPassword(User user, String password) {
         return passwordEncoder.matches(password, user.getPassword());
     }
 
-    protected String generateToken(User user, TokenType type) throws UserException {
+    protected String generateToken(User user, TokenType type) {
         JwtBuilder builder = userJwtMapper.map(user);
         return jwtService.build(builder, type);
     }

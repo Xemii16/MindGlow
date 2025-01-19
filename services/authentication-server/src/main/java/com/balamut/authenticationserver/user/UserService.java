@@ -32,4 +32,6 @@ public interface UserService {
     void changePassword(String oldPassword, String password);
 
     ResponseEntity<Void> changeUser(Integer id, UserRequest request);
+
+    void deleteAll();
 }
