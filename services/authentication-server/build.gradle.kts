@@ -35,6 +35,7 @@ dependencies {
     annotationProcessor("org.projectlombok:lombok")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.security:spring-security-test")
+    runtimeOnly("com.h2database:h2")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.7.0")
     implementation("io.jsonwebtoken:jjwt-api:0.12.6")
@@ -42,6 +43,7 @@ dependencies {
     runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.12.6")
     implementation("org.bouncycastle:bcpkix-jdk18on:1.79")
     implementation("org.bouncycastle:bcprov-jdk18on:1.79")
+    testImplementation("org.assertj:assertj-core:3.27.2")
 }
 
 tasks.withType<Test> {

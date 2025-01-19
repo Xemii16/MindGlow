@@ -1,0 +1,5 @@
+token:
+  expiration:
+    access: 300
+    refresh: 3600
+  algorithm: RSA

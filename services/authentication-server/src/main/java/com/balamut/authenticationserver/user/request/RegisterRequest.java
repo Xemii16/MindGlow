@@ -10,6 +10,8 @@ public record RegisterRequest(
         @Schema(description = "User's email", example = "john.doe@mail.com")
         String email,
         @Schema(description = "User's password", example = "password")
-        String password
+        String password,
+        @Schema(description = "Role", example = "USER")
+        String role
 ) {
 }
