@@ -70,14 +70,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserResponse> getUsers(String role) throws UserException {
+    public List<UserResponse> getUsers(String role, boolean enabled) throws UserException {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         switch (role) {
             case "all" -> {
                 if (user.getRole() != Role.ADMIN) {
                     throw new UserPermissionException("You are not allowed to see all users");
                 }
-                return StreamSupport.stream(userRepository.findAll().spliterator(), false)
+                return userRepository.findAllByEnabled(enabled).stream()
                         .filter(u -> !u.getId().equals(user.getId()))
                         .map(userResponseMapper::map)
                         .collect(Collectors.toList());
@@ -86,7 +86,7 @@ public class UserServiceImpl implements UserService {
                 if (user.getRole() != Role.ADMIN) {
                     throw new UserPermissionException("You are not allowed to see teachers");
                 }
-                return userRepository.findAllByRole(Role.TEACHER).stream()
+                return userRepository.findAllByRoleAndEnabled(Role.TEACHER, enabled).stream()
                         .map(userResponseMapper::map)
                         .collect(Collectors.toList());
             }
@@ -94,7 +94,7 @@ public class UserServiceImpl implements UserService {
                 if (user.getRole() == Role.STUDENT) {
                     throw new UserPermissionException("You are not allowed to see students");
                 }
-                return userRepository.findAllByRole(Role.STUDENT).stream()
+                return userRepository.findAllByRoleAndEnabled(Role.STUDENT, enabled).stream()
                         .map(userResponseMapper::map)
                         .collect(Collectors.toList());
             }

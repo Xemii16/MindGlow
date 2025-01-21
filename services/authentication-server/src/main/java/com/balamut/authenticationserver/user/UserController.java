@@ -75,9 +75,11 @@ public class UserController {
     })
     public ResponseEntity<List<UserResponse>> getUsers(
             @RequestParam(defaultValue = "all") @Parameter(description = "Type of user that returned")
-            String role
+            String role,
+            @RequestParam(defaultValue = "true") @Parameter(description = "Include only enabled users")
+            boolean enabled
     ) {
-        return ResponseEntity.ok(userService.getUsers(role));
+        return ResponseEntity.ok(userService.getUsers(role, enabled));
     }
 
     @GetMapping("/email/{email}")
