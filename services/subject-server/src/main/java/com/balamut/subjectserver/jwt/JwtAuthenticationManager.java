@@ -25,10 +25,15 @@ public class JwtAuthenticationManager implements ReactiveAuthenticationManager {
         return jwtService.parse((String) jwtAuthentication.getCredentials())
                 .onErrorMap(throwable -> new JwtAuthenticationException("Failed to parse JWT", throwable))
                 .flatMap(claims -> {
-                    List<SimpleGrantedAuthority> authorities = Arrays.stream(claims.get("authorities", String[].class))
+                    List<SimpleGrantedAuthority> authorities = Arrays.stream(((String) claims.get("authorities")).split(","))
                             .map(SimpleGrantedAuthority::new)
                             .collect(Collectors.toList());
-                    JwtUser user = new JwtUser(claims.get("sub", Integer.class), authorities, claims.get("locked", Boolean.class), claims.get("enabled", Boolean.class));
+                    JwtUser user = new JwtUser(
+                            Integer.parseInt((String) claims.get("sub")),
+                            authorities,
+                            (Boolean) claims.get("locked"),
+                            (Boolean) claims.get("enabled")
+                    );
                     if (user.isLocked() || !user.isEnabled()) {
                         return Mono.error(new JwtAuthenticationException("User is locked or disabled"));
                     }

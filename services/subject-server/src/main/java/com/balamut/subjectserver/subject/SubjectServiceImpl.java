@@ -1,5 +1,6 @@
 package com.balamut.subjectserver.subject;
 
+import com.balamut.subjectserver.core.Role;
 import com.balamut.subjectserver.core.User;
 import com.balamut.subjectserver.subject.entity.SubjectEntity;
 import com.balamut.subjectserver.subject.entity.SubjectEntityRepository;
@@ -50,13 +51,13 @@ public class SubjectServiceImpl implements SubjectService {
         return ReactiveSecurityContextHolder.getContext()
                 .map(securityContext -> (User) securityContext.getAuthentication().getPrincipal())
                 .flatMapMany(user -> {
-                    if (user.getAuthorities().contains("ROLE_ADMIN")) {
+                    if (checkRole(user, Role.ADMIN)) {
                         return subjectEntityRepository.findAll();
                     }
-                    if (user.getAuthorities().contains("ROLE_TEACHER")) {
+                    if (checkRole(user, Role.TEACHER)) {
                         return subjectEntityRepository.findAllByTeacherId(user.getId());
                     }
-                    if (user.getAuthorities().contains("ROLE_STUDENT")) {
+                    if (checkRole(user, Role.STUDENT)) {
                         return subjectStudentsEntityRepository
                                 .findAllByStudentId(user.getId())
                                 .flatMap(entity -> subjectEntityRepository.findById(entity.getSubjectId()));
@@ -72,10 +73,10 @@ public class SubjectServiceImpl implements SubjectService {
         return ReactiveSecurityContextHolder.getContext()
                 .map(securityContext -> (User) securityContext.getAuthentication().getPrincipal())
                 .flatMap(user -> {
-                    if (user.getAuthorities().contains("ROLE_ADMIN")) {
+                    if (checkRole(user, Role.ADMIN)) {
                         return subjectEntityRepository.deleteById(id);
                     }
-                    if (user.getAuthorities().contains("ROLE_TEACHER")) {
+                    if (checkRole(user, Role.TEACHER)) {
                         return subjectEntityRepository.deleteByIdAndTeacherId(id, user.getId());
                     }
                     log.debug("User with id {} has no roles. Nothing deleted", user.getId());
@@ -89,12 +90,12 @@ public class SubjectServiceImpl implements SubjectService {
         return ReactiveSecurityContextHolder.getContext()
                 .map(securityContext -> (User) securityContext.getAuthentication().getPrincipal())
                 .flatMapMany(user -> {
-                    if (user.getAuthorities().contains("ROLE_ADMIN")) {
+                    if (checkRole(user, Role.ADMIN)) {
                         return subjectStudentsEntityRepository.findAllBySubjectId(id)
                                 .map(SubjectStudentsEntity::getStudentId)
                                 .map(PupilResponse::new);
                     }
-                    if (user.getAuthorities().contains("ROLE_TEACHER")) {
+                    if (checkRole(user, Role.TEACHER)) {
                         return subjectEntityRepository.findById(id)
                                 .filter(subject -> subject.getTeacherId().equals(user.getId()))
                                 .flatMapMany(subject -> subjectStudentsEntityRepository.findAllBySubjectId(id))
@@ -115,16 +116,16 @@ public class SubjectServiceImpl implements SubjectService {
         return ReactiveSecurityContextHolder.getContext()
                 .map(securityContext -> (User) securityContext.getAuthentication().getPrincipal())
                 .flatMapMany(user -> {
-                    if (user.getAuthorities().contains("ROLE_PUPIL")) {
+                    if (checkRole(user, Role.STUDENT)) {
                         return Flux.empty();
                     }
                     return subjectEntityRepository
                             .findById(id)
                             .filter(subject -> {
-                                if (user.getAuthorities().contains("ROLE_ADMIN")) {
+                                if (checkRole(user, Role.ADMIN)) {
                                     return true;
                                 }
-                                if (user.getAuthorities().contains("ROLE_TEACHER")) {
+                                if (checkRole(user, Role.TEACHER)) {
                                     return subject.getTeacherId().equals(user.getId());
                                 }
                                 return false;
@@ -146,10 +147,10 @@ public class SubjectServiceImpl implements SubjectService {
                 .map(securityContext -> (User) securityContext.getAuthentication().getPrincipal())
                 .flatMap(user -> subjectEntityRepository.findById(id)
                         .filter(subject -> {
-                            if (user.getAuthorities().contains("ROLE_ADMIN")) {
+                            if (checkRole(user, Role.ADMIN)) {
                                 return true;
                             }
-                            if (user.getAuthorities().contains("ROLE_TEACHER")) {
+                            if (checkRole(user, Role.TEACHER)) {
                                 return subject.getTeacherId().equals(user.getId());
                             }
                             return false;
@@ -175,5 +176,9 @@ public class SubjectServiceImpl implements SubjectService {
         }
 
         return code.toString();
+    }
+
+    private boolean checkRole(User user, Role role) {
+        return user.getAuthorities().stream().anyMatch(authority -> authority.getAuthority().equals("ROLE_" + role.name()));
     }
 }

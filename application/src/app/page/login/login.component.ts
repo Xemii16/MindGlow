@@ -88,6 +88,7 @@ export class LoginComponent {
        this.authService.authenticate(email.value, password.value).then((isAuthenticated: boolean) => {
             if (!isAuthenticated) {
                 this.setInputErrors();
+                return;
             }
             this.router.navigate(['/dashboard']);
         });
