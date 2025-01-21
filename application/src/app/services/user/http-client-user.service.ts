@@ -50,10 +50,10 @@ export class HttpClientUserService implements UserService {
     )
   }
 
-  getAllUsers(role: string): Promise<User[]> {
+  getAllUsers(role: string, enabled: boolean = true): Promise<User[]> {
     return new Promise<User[]>((resolve, reject) => {
       this.httpClient.get<User[]>(HttpClientHelper.buildUrl('/api/v1/users'), {
-        params: {role: role},
+        params: {role: role, enabled: enabled},
         withCredentials: true
       }).subscribe({
         next: (users) => resolve(users),

@@ -13,7 +13,7 @@ export interface UserService {
     password: string,
     role: string
   }) => Promise<boolean>;
-  getAllUsers: (role: string) => Promise<User[]>;
+  getAllUsers: (role: string, enabled: boolean) => Promise<User[]>;
   getCurrentUser: () => Promise<User>;
   getInformationByEmail: (email: string) => Promise<UserEmail>;
 }

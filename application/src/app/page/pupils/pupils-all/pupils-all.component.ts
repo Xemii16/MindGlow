@@ -73,7 +73,7 @@ export class PupilsAllComponent implements OnInit {
 
   private getPupils() {
     this.userService.getAllUsers('students').then(users => {
-      this.pupils = users.filter((user: User) => user.enabled);
+      this.pupils = users;
     });
   }
 }

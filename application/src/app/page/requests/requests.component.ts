@@ -46,8 +46,8 @@ export class RequestsComponent implements OnInit {
   }
 
   private getUsers() {
-    this.userService.getAllUsers("all").then((res) => {
-      this.users = res.filter((user: User) => !user.enabled);
+    this.userService.getAllUsers("all", false).then((users) => {
+      this.users = users;
     })
   }
 }
