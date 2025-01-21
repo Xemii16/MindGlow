@@ -30,7 +30,8 @@ export class HttpClientUserService implements UserService {
         firstname: user.firstname,
         lastname: user.lastname,
         locked: user.locked,
-        enabled: user.enabled
+        enabled: user.enabled,
+        role: user.role
       }, {
         withCredentials: true
       }).subscribe({next: () => resolve(true), error: () => resolve(false)})

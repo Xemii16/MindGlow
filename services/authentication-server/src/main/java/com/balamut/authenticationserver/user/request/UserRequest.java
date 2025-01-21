@@ -4,6 +4,7 @@ public record UserRequest(
         String firstname,
         String lastname,
         boolean locked,
-        boolean enabled
+        boolean enabled,
+        String role
 ) {
 }
