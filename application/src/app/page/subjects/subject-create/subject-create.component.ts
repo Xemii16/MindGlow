@@ -1,5 +1,5 @@
 import {Component, Injectable, OnInit} from '@angular/core';
-import {MatDialogRef} from "@angular/material/dialog";
+import {MatDialogActions, MatDialogContent, MatDialogRef, MatDialogTitle} from "@angular/material/dialog";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
 import {MatButtonModule} from "@angular/material/button";
@@ -19,6 +19,9 @@ import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 import {HttpClientUserService} from "../../../services/user/http-client-user.service";
 import {SubjectService} from "../../../services/subject/subject.service";
 import {HttpClientSubjectService} from "../../../services/subject/http-client-subject.service";
+import {MatAutocomplete, MatAutocompleteTrigger, MatOption} from "@angular/material/autocomplete";
+import {User} from "../../../services/user/user";
+import {NgIf} from "@angular/common";
 
 @Component({
   selector: 'app-subject-create',
@@ -29,6 +32,13 @@ import {HttpClientSubjectService} from "../../../services/subject/http-client-su
     FormsModule,
     MatButtonModule,
     ReactiveFormsModule,
+    MatDialogContent,
+    MatDialogTitle,
+    MatAutocompleteTrigger,
+    MatAutocomplete,
+    MatDialogActions,
+    MatOption,
+    NgIf,
 
   ],
   templateUrl: './subject-create.component.html',
@@ -50,6 +60,7 @@ export class SubjectCreateComponent implements OnInit {
     description: new ErrorMessageHandler('Введіть опис', '', 'Опис має бути більше за 20 символів'),
     teacher: new ErrorMessageHandler('Виберіть вчителя', '', 'Такого вчителя не існує')
   }
+  teachers: User[] = [];
 
   constructor(
     public dialogRef: MatDialogRef<SubjectCreateComponent>,
@@ -70,6 +81,9 @@ export class SubjectCreateComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.userService.getAllUsers("teachers").then((users) => {
+      this.teachers = users;
+    });
   }
 
   onNoClick(): void {
@@ -91,7 +105,7 @@ export class SubjectCreateComponent implements OnInit {
         description: description.value,
         teacher_id: Number(user.id)
       }).then((subject) => {
-        this.dialogRef.close();
+        this.dialogRef.close(subject);
       })
     })
   }

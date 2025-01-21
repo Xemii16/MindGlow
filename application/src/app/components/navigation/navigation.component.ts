@@ -10,6 +10,7 @@ import {MatMenu, MatMenuItem, MatMenuTrigger} from "@angular/material/menu";
 import {MatDialog} from "@angular/material/dialog";
 import {ChangePasswordDialogComponent} from "./change-password-dialog/change-password-dialog.component";
 import {HttpClientUserService} from "../../services/user/http-client-user.service";
+import {HttpClientAuthenticationService} from "../../services/authentication/http-client-authentication.service";
 
 @Component({
   selector: 'app-navigation',
@@ -41,7 +42,8 @@ export class NavigationComponent implements OnInit {
   constructor(
     private router: Router,
     public dialog: MatDialog,
-    private userService: HttpClientUserService
+    private userService: HttpClientUserService,
+    private authenticateService: HttpClientAuthenticationService
   ) {
   }
 
@@ -66,7 +68,9 @@ export class NavigationComponent implements OnInit {
   }
 
   logout() {
-    this.router.navigate(['/login']);
+    this.authenticateService.logout().then(() => {
+      this.router.navigate(['/login']);
+    })
   }
 
   openDialog() {

@@ -14,10 +14,14 @@ spec:
     spec:
       containers:
         - name: authentication-server
-          image: xemii16/mindglow-web-bff:0.3.7
+          image: xemii16/mindglow-web-bff:0.4.0
           ports:
             - containerPort: 8082
           env:
+            - name: LOGGING_LEVEL_APPLICATION
+              value: debug
+            - name: LOGGING_LEVEL_ROOT
+              value: debug
             - name: MINDGLOW_SUBJECT_SERVICE_URI
               value: "http://mindglow-subject-server-service:8081"
             - name: MINDGLOW_AUTHENTICATION_SERVICE_URI
@@ -30,8 +34,6 @@ spec:
               value: "Authorization,Content-Type,Cache-Control"
             - name: CORS_ALLOW_CREDENTIALS
               value: "true"
-            - name: LOGGING_LEVEL_APPLICATION
-              value: "error"
             - name: RSA_PRIVATE_KEY
               valueFrom:
                   secretKeyRef:

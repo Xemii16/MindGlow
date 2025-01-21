@@ -32,7 +32,7 @@ public class SubjectServiceImpl implements SubjectService {
 
     @Override
     public Mono<SubjectResponse> createCourse(CreateCourseRequest request, User user) {
-        if (user.getId() != request.teacherId() && !user.getAuthorities().contains("ROLE_ADMIN")) {
+        if (user.getId() != request.teacherId() && !checkRole(user, Role.ADMIN)) {
             log.debug("User with id {} has no rights to create course with teacher id {}", user.getId(), request.teacherId());
             return Mono.error(new AccessDeniedSubjectException("User has no rights to create course"));
         }

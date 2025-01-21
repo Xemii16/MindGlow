@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {MatButton} from "@angular/material/button";
 import {Router} from "@angular/router";
+import {HttpClientAuthenticationService} from "../../../services/authentication/http-client-authentication.service";
 
 @Component({
   selector: 'app-register-pending',
@@ -15,7 +16,8 @@ export class RegisterPendingComponent implements OnInit {
   email: string = '';
 
   constructor(
-    private router: Router
+    private router: Router,
+    private authenticationService: HttpClientAuthenticationService
   ) {
   }
 
@@ -32,6 +34,8 @@ export class RegisterPendingComponent implements OnInit {
 
 
   logout(): void {
-    /*this.formService.logout();*/
+    this.authenticationService.logout().then(() => {
+      this.router.navigate(['login']);
+    });
   }
 }
