@@ -42,7 +42,7 @@ import {HttpClientSubjectService} from "../../../../services/subject/http-client
 })
 export class SubjectOverviewPupilsComponent implements OnInit {
   user?: User;
-  pupils: Pupil[] = [];
+  pupils: User[] = [];
 
   constructor(
     public dialog: MatDialog,
@@ -60,8 +60,12 @@ export class SubjectOverviewPupilsComponent implements OnInit {
   }
 
   private getStudents() {
-    this.subjectService.getPupilsBySubject(this.getSubjectId()).then(subjects => {
-      this.pupils.push(...subjects);
+    this.subjectService.getPupilsBySubject(this.getSubjectId()).then(pupils => {
+      pupils.forEach(pupil => {
+        this.userService.getUserById(pupil.id).then(user => {
+          this.pupils.push(user);
+        })
+      })
     })
   }
 

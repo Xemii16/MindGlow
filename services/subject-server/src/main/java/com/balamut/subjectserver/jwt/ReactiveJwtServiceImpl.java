@@ -16,10 +16,11 @@ public class ReactiveJwtServiceImpl implements ReactiveJwtService {
 
     @Override
     public Mono<Claims> parse(String token) {
-        return Mono.fromRunnable(() -> Jwts.parser()
+        return Mono.fromSupplier(() -> Jwts.parser()
                 .verifyWith(keyPair.getPublic())
                 .build()
                 .parseSignedClaims(token)
+                .getPayload()
         );
     }
 }

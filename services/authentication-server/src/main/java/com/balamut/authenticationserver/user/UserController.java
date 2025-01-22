@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -74,9 +75,11 @@ public class UserController {
     })
     public ResponseEntity<List<UserResponse>> getUsers(
             @RequestParam(defaultValue = "all") @Parameter(description = "Type of user that returned")
-            String role
+            String role,
+            @RequestParam(defaultValue = "true") @Parameter(description = "Include only enabled users")
+            boolean enabled
     ) {
-        return ResponseEntity.ok(userService.getUsers(role));
+        return ResponseEntity.ok(userService.getUsers(role, enabled));
     }
 
     @GetMapping("/email/{email}")
@@ -100,6 +103,7 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Change user information")
     @ApiResponses({
             @ApiResponse(responseCode = "204", description = "User information changed successfully"),

@@ -11,6 +11,14 @@ export class HttpClientAuthenticationService implements AuthenticationService {
   constructor(private httpClient: HttpClient) {
   }
 
+  logout(): Promise<void> {
+    return new Promise<void>(resolve => {
+      this.httpClient.post(HttpClientHelper.buildUrl("/logout"), {}, {
+        withCredentials: true
+      }).subscribe({next: () => resolve()})
+    })
+  }
+
   authenticate(email: string, password: string): Promise<boolean> {
     return new Promise(resolve => {
       this.httpClient.post(HttpClientHelper.buildUrl("/api/v1/authentication"), {}, {

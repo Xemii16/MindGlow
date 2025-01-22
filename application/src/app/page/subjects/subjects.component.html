@@ -15,18 +15,18 @@
       <mat-card class="subject-card">
         <mat-card-header>
           <mat-card-title-group>
-            <mat-card-title>{{subject.name}}</mat-card-title>
-            <mat-card-subtitle>{{subject.teacher_id}}</mat-card-subtitle>
+            <mat-card-title>{{subject.subject.name}}</mat-card-title>
+            <mat-card-subtitle>{{subject.teacher.firstname + " " + subject.teacher.lastname}}</mat-card-subtitle>
           </mat-card-title-group>
           <button mat-icon-button disabled>
             <mat-icon>star</mat-icon>
           </button>
         </mat-card-header>
         <mat-card-content class="subject-card-content">
-          <p>{{subject.description}}</p>
+          <p>{{subject.subject.description}}</p>
         </mat-card-content>
         <mat-card-actions>
-          <button mat-button [routerLink]="subject.id.toString()">
+          <button mat-button [routerLink]="subject.subject.id.toString()">
             Відкрити
           </button>
           <button mat-icon-button disabled *ngIf="this.user?.role !== 'STUDENT'">

@@ -1,6 +1,7 @@
 package com.balamut.authenticationserver.user.modifier;
 
 import com.balamut.authenticationserver.core.Modifier;
+import com.balamut.authenticationserver.user.Role;
 import com.balamut.authenticationserver.user.User;
 import com.balamut.authenticationserver.user.request.UserRequest;
 import org.springframework.stereotype.Service;
@@ -13,6 +14,7 @@ public class UserRequestModifier implements Modifier<User, UserRequest> {
         entity.setLastname(modifier.lastname());
         entity.setLocked(modifier.locked());
         entity.setEnabled(modifier.enabled());
+        entity.setRole(Role.valueOf(modifier.role()));
         return entity;
     }
 }

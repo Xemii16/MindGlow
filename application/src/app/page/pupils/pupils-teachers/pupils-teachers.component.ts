@@ -32,7 +32,6 @@ import {HttpClientSubjectService} from "../../../services/subject/http-client-su
 export class PupilsTeachersComponent implements OnInit {
   teacherSubjects: TeacherSubjects[] = [];
   user ?: User;
-  subjects : Subject[] =[];
 
   constructor(
     private userService: HttpClientUserService,
@@ -49,20 +48,24 @@ export class PupilsTeachersComponent implements OnInit {
 
   private getStudents() {
     this.subjectService.getAllSubjects().then(subjects => {
-      this.subjects.push(...subjects);
-      this.subjects.forEach(subject => {
-        this.subjectService.getPupilsBySubject(subject.id).then(subjects => {
-          this.teacherSubjects.find(subjectStudent => subjectStudent.teacherId === subject.teacher_id)?.students.push(...subjects) || this.teacherSubjects.push({
-            teacherId: subject.teacher_id,
-            students: subjects
-          });
-        })
+      subjects.forEach(subject => {
+        this.userService.getUserById(subject.teacher_id).then(teacher => {
+          this.subjectService.getPupilsBySubject(subject.id).then(pupils => {
+            let pupilsUsers: User[] = [];
+            pupils.forEach(pupil => {
+              this.userService.getUserById(pupil.id).then(user => {
+                pupilsUsers.push(user);
+              })
+            });
+            this.teacherSubjects.push({teacher: teacher, students: pupilsUsers});
+          })
+        });
       });
     })
   }
 }
 
 interface TeacherSubjects {
-  teacherId: number
-  students: Pupil[];
+  teacher: User
+  students: User[];
 }

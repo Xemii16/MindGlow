@@ -9,6 +9,8 @@ import {Router, RouterLink, RouterOutlet} from "@angular/router";
 import {MatMenu, MatMenuItem, MatMenuTrigger} from "@angular/material/menu";
 import {MatDialog} from "@angular/material/dialog";
 import {ChangePasswordDialogComponent} from "./change-password-dialog/change-password-dialog.component";
+import {HttpClientUserService} from "../../services/user/http-client-user.service";
+import {HttpClientAuthenticationService} from "../../services/authentication/http-client-authentication.service";
 
 @Component({
   selector: 'app-navigation',
@@ -39,22 +41,23 @@ export class NavigationComponent implements OnInit {
 
   constructor(
     private router: Router,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private userService: HttpClientUserService,
+    private authenticateService: HttpClientAuthenticationService
   ) {
   }
 
   ngOnInit(): void {
-    /*this.userService.getUserByToken().then(response => {
-      if (response === null) return;
-      if (response.role === 'ADMIN') {
+    this.userService.getCurrentUser().then(user => {
+      if (user.role === 'ADMIN') {
         this.availableNavigationList.teachers = true;
         this.availableNavigationList.requests = true;
         this.availableNavigationList.pupils = true;
       }
-      if (response.role === 'TEACHER') {
+      if (user.role === 'TEACHER') {
         this.availableNavigationList.pupils = true;
       }
-    });*/
+    });
   }
 
   isCurrentRoute(route: string): boolean {
@@ -65,8 +68,9 @@ export class NavigationComponent implements OnInit {
   }
 
   logout() {
-    /*this.jwtService.removeTokens();*/
-    this.router.navigate(['/login']);
+    this.authenticateService.logout().then(() => {
+      this.router.navigate(['/login']);
+    })
   }
 
   openDialog() {

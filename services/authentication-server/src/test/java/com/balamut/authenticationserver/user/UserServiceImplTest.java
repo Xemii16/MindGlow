@@ -207,14 +207,14 @@ class UserServiceImplTest {
     @Test
     void shouldFailGetAllUsersWithWrongRole() {
         authenticateAdmin();
-        assertThatThrownBy(() -> userServiceImpl.getUsers("wrongRole")).isInstanceOf(BadRequestException.class);
+        assertThatThrownBy(() -> userServiceImpl.getUsers("wrongRole", true)).isInstanceOf(BadRequestException.class);
     }
 
     @Test
     void shouldGetAllUsers() {
         userServiceImpl.register(REGISTER_REQUEST);
         authenticateAdmin();
-        assertThat(userServiceImpl.getUsers("all")).satisfies(users -> {
+        assertThat(userServiceImpl.getUsers("all", true)).satisfies(users -> {
             assertThat(users.getFirst()).satisfies(user -> {
                 assertThat(user.firstname()).isEqualTo(REGISTER_REQUEST.firstname());
                 assertThat(user.lastname()).isEqualTo(REGISTER_REQUEST.lastname());
@@ -236,7 +236,7 @@ class UserServiceImplTest {
                 )
         );
         authenticateAdmin();
-        assertThat(userServiceImpl.getUsers("teachers")).satisfies(users -> {
+        assertThat(userServiceImpl.getUsers("teachers", true)).satisfies(users -> {
             assertThat(users.getFirst()).satisfies(user -> {
                 assertThat(user.firstname()).isEqualTo(REGISTER_REQUEST.firstname());
                 assertThat(user.lastname()).isEqualTo(REGISTER_REQUEST.lastname());
@@ -258,7 +258,7 @@ class UserServiceImplTest {
                 )
         );
         authenticateAdmin();
-        assertThat(userServiceImpl.getUsers("students")).satisfies(users -> {
+        assertThat(userServiceImpl.getUsers("students", true)).satisfies(users -> {
             assertThat(users.getFirst()).satisfies(user -> {
                 assertThat(user.firstname()).isEqualTo(REGISTER_REQUEST.firstname());
                 assertThat(user.lastname()).isEqualTo(REGISTER_REQUEST.lastname());

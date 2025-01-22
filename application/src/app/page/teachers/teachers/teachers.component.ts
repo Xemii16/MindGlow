@@ -45,8 +45,8 @@ export class TeachersComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.userService.getAllUsers("teachers").then((response) => {
-      this.teachers = response;
+    this.userService.getAllUsers("teachers").then((users) => {
+      this.teachers = users.filter((user: User) => user.enabled);
     })
   }
 

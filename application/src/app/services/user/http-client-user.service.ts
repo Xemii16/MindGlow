@@ -30,7 +30,8 @@ export class HttpClientUserService implements UserService {
         firstname: user.firstname,
         lastname: user.lastname,
         locked: user.locked,
-        enabled: user.enabled
+        enabled: user.enabled,
+        role: user.role
       }, {
         withCredentials: true
       }).subscribe({next: () => resolve(true), error: () => resolve(false)})
@@ -49,10 +50,10 @@ export class HttpClientUserService implements UserService {
     )
   }
 
-  getAllUsers(role: string): Promise<User[]> {
+  getAllUsers(role: string, enabled: boolean = true): Promise<User[]> {
     return new Promise<User[]>((resolve, reject) => {
       this.httpClient.get<User[]>(HttpClientHelper.buildUrl('/api/v1/users'), {
-        params: {role: role},
+        params: {role: role, enabled: enabled},
         withCredentials: true
       }).subscribe({
         next: (users) => resolve(users),
@@ -94,7 +95,13 @@ export class HttpClientUserService implements UserService {
     });
   }
 
-  register(info: { firstname: string, lastname: string, email: string, password: string }): Promise<boolean> {
+  register(info: {
+    firstname: string,
+    lastname: string,
+    email: string,
+    password: string,
+    role: string
+  }): Promise<boolean> {
     return new Promise<boolean>(resolve => {
       this.httpClient.post<{ id: number }>(HttpClientHelper.buildUrl('/api/v1/users/register'), info, {
         withCredentials: true

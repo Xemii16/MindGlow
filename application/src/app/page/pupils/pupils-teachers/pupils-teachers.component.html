@@ -13,11 +13,11 @@
     </div>
     <mat-list>
       <div *ngFor="let subject of this.teacherSubjects; index as i">
-        <h4 style="margin: 0" *ngIf="subject.students.length > 0">{{subject.teacherId}}</h4>
+        <h4 style="margin: 0" *ngIf="subject.students.length > 0">{{subject.teacher.firstname + " " + subject.teacher.lastname}}</h4>
         <mat-divider class="title-divider" style="width: 100%;" *ngIf="subject.students.length > 0"></mat-divider>
         <mat-list-item *ngFor="let student of subject.students">
-          <p matListItemTitle style="margin: 0" class="list-title">{{ user?.lastname + " " + user?.firstname }}</p>
-          <p matListItemLine style="margin: 0" class="list-line">{{ user?.email }}</p>
+          <p matListItemTitle style="margin: 0" class="list-title">{{ student.lastname + " " + student.firstname }}</p>
+          <p matListItemLine style="margin: 0" class="list-line">{{ student.email }}</p>
         </mat-list-item>
       </div>
     </mat-list>
