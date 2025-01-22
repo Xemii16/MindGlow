@@ -43,7 +43,7 @@ import {HttpClientSubjectService} from "../../services/subject/http-client-subje
 export class SubjectsComponent implements OnInit {
 
   user?: User;
-  subjects: Subject[] = []
+  subjects: SubjectAdditional[] = []
 
   constructor(
     public dialog: MatDialog,
@@ -54,7 +54,13 @@ export class SubjectsComponent implements OnInit {
 
   ngOnInit(): void {
     this.userService.getCurrentUser().then(user => this.user = user);
-    this.subjectService.getAllSubjects().then(subjects => this.subjects = subjects);
+    this.subjectService.getAllSubjects().then(subjects => {
+      subjects.forEach(subject => {
+        this.userService.getUserById(subject.teacher_id).then(teacher => {
+          this.subjects.push({subject: subject, teacher: teacher});
+        });
+      });
+    });
   }
 
   openDialog() {
@@ -63,4 +69,9 @@ export class SubjectsComponent implements OnInit {
       if (result === null || result === undefined) return;
     });
   }
+}
+
+interface SubjectAdditional {
+  subject: Subject;
+  teacher: User;
 }
